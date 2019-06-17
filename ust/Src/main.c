@@ -68,6 +68,67 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             the HAL_UART_RxCpltCallback can be implemented in the user file.
    */
 }
+
+static char header[] = "PA4  PA5  PA6  PA7\r\n";
+static char headerb[] = "PB12 PB13 PB14 PB15\r\n";
+
+static char open[]="o    ";
+static char close[]="c    ";
+void test(){
+  uint16_t gpionum=0x0010U;
+    HAL_UART_Transmit(&huart1,(uint8_t*)header,sizeof(header),100);
+    for (int i = 0; i < 4; i++)
+     {
+        if(HAL_GPIO_ReadPin(GPIOA,gpionum)==GPIO_PIN_SET){
+          HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),100);
+        }else{
+          HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),100);
+        }
+          gpionum=gpionum*2;
+     }
+    HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,100);
+    HAL_UART_Transmit(&huart1,(uint8_t*)headerb,sizeof(headerb),100);
+    gpionum=0x1000U;
+     for (int i = 0; i < 4; i++)
+     {
+        if(HAL_GPIO_ReadPin(GPIOB,gpionum)==GPIO_PIN_SET){
+           HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),100);
+        }else{
+           HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),100);
+         }
+          gpionum=gpionum*2;
+     }
+     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,100);
+    /*  HAL_UART_Transmit(&huart1,(uint8_t*)"Green: ",7,100);
+     if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6==GPIO_PIN_SET))
+     {
+       HAL_UART_Transmit(&huart1,(uint8_t*)"out", 3, 100);
+     }else{
+       HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 100);
+     }
+      HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,100);
+     if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5==GPIO_PIN_SET))
+       {
+        HAL_UART_Transmit(&huart1,(uint8_t*)"out", 3, 100);
+       }else{
+        HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 100);
+       }*/
+     
+   /*   HAL_UART_Transmit(&huart1,(uint8_t*)headerc,sizeof(headerc),100);
+     gpionum=0x2000U;
+     for (int i = 0; i < 3; i++)
+        {
+        if(HAL_GPIO_ReadPin(GPIOC,gpionum)==GPIO_PIN_SET){
+          HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),100);
+        }else{
+          HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),100);
+        }
+          gpionum=gpionum*2;
+        }*/
+     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n\n",3,100);
+
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -111,11 +172,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
       if(status==1 && received[0]==116){
         HAL_Delay(100);
-        HAL_UART_Transmit(&huart1, str, sizeof(str), 1000);
+        test();
         HAL_Delay(100);
-        HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
         received[0]=0;
       }
      
