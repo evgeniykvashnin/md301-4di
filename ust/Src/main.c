@@ -44,7 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
-  uint8_t received[16];
+  uint8_t received[1];
   uint8_t status=0;
   uint8_t str[]="usrt";
 /* USER CODE END PV */
@@ -63,6 +63,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   /* Prevent unused argument(s) compilation warning */
   status=1;
+    HAL_UART_Receive_IT(&huart1, received, sizeof(received));
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_UART_RxCpltCallback can be implemented in the user file.
    */
@@ -110,24 +111,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-   /*  if(status==1){
-      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
-    }
-    if(received=="100"){
-      HAL_Delay(100);
-    // HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_RESET);
-    HAL_UART_Transmit(&huart1, str, sizeof(str), 1000);
-    HAL_Delay(1000);
-    }
-*/
+      if(status==1 && received[0]==116){
+        HAL_Delay(100);
+        HAL_UART_Transmit(&huart1, str, sizeof(str), 1000);
+        HAL_Delay(100);
+        HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
+        received[0]=0;
+      }
+     
+
     // /* USER CODE END WHILE */
 
     // /* USER CODE BEGIN 3 */
-   
-    
-
-
- // }
+  }
   /* USER CODE END 3 */
 }
 
