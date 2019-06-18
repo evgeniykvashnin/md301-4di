@@ -43,8 +43,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+HAL_StatusTypeDef state;
 /* USER CODE BEGIN PV */
-  uint8_t received[1];
+  uint8_t received[4];
   uint8_t status=0;
   uint8_t str[]="usrt";
 /* USER CODE END PV */
@@ -53,6 +55,7 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -62,8 +65,10 @@ static void MX_USART1_UART_Init(void);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   /* Prevent unused argument(s) compilation warning */
-  status=1;
-    HAL_UART_Receive_IT(&huart1, received, sizeof(received));
+    if(huart==&huart1){
+      status=1;
+      HAL_UART_Receive_IT(&huart1, received, sizeof(received));
+    }
   /* NOTE : This function should not be modified, when the callback is needed,
             the HAL_UART_RxCpltCallback can be implemented in the user file.
    */
@@ -76,43 +81,43 @@ static char open[]="o    ";
 static char close[]="c    ";
 void test(){
   uint16_t gpionum=0x0010U;
-    HAL_UART_Transmit(&huart1,(uint8_t*)header,sizeof(header),100);
+    HAL_UART_Transmit(&huart1,(uint8_t*)header,sizeof(header),30);
     for (int i = 0; i < 4; i++)
      {
         if(HAL_GPIO_ReadPin(GPIOA,gpionum)==GPIO_PIN_SET){
-          HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),100);
+          HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),30);
         }else{
-          HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),100);
+          HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),30);
         }
           gpionum=gpionum*2;
      }
-    HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,100);
-    HAL_UART_Transmit(&huart1,(uint8_t*)headerb,sizeof(headerb),100);
+    HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,30);
+    HAL_UART_Transmit(&huart1,(uint8_t*)headerb,sizeof(headerb),30);
     gpionum=0x1000U;
      for (int i = 0; i < 4; i++)
      {
         if(HAL_GPIO_ReadPin(GPIOB,gpionum)==GPIO_PIN_SET){
-           HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),100);
+           HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),30);
         }else{
-           HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),100);
+           HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),30);
          }
           gpionum=gpionum*2;
      }
-     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nGreen: ",9,100);
+     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nGreen: ",9,30);
      if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)==GPIO_PIN_SET)
      {
-       HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 100);
+       HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 30);
      }else{
-       HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 100);
+       HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 30);
      }
-      HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nRed: ",7,100);
+      HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nRed: ",7,30);
      if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==GPIO_PIN_SET)
        {
-        HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 100);
+        HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 30);
        }else{
-        HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 100);
+        HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 30);
        }
-     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n\n",3,100);
+     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n\n",3,30);
 
 }
 
@@ -148,24 +153,29 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
-
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart1, received, sizeof(received));
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE END 2 */
-  
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      if(status==1 && received[0]==116){
+      if(status==1 && received[0]=='t'){
         test();
         received[0]=0;
       }
-    // /* USER CODE END WHILE */
+      state=HAL_UART_Transmit(&huart2,(uint8_t*)"test\r\n",6,100);
+      if(state==HAL_OK){
+          HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_5);
+      }
+      HAL_Delay(1000);
+    /* USER CODE END WHILE */
 
-    // /* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
@@ -239,11 +249,44 @@ static void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-
-
   /* USER CODE BEGIN USART1_Init 2 */
 
   /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 9600;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_RS485Ex_Init(&huart2, UART_DE_POLARITY_HIGH, 0, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
 
 }
 
@@ -269,6 +312,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
