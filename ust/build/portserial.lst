@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccwpV1pS.s 			page 1
+ARM GAS  /tmp/ccPQY5dg.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
   29:modbus/port/portserial.c **** static UART_HandleTypeDef huart;
   30:modbus/port/portserial.c **** static GPIO_TypeDef * DE_Port;
   31:modbus/port/portserial.c **** static uint16_t DE_Pin;
-ARM GAS  /tmp/ccwpV1pS.s 			page 2
+ARM GAS  /tmp/ccPQY5dg.s 			page 2
 
 
   32:modbus/port/portserial.c **** void prvvUARTTxReadyISR( void );
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
   59 0018 114B     		ldr	r3, .L8
   60 001a 1A68     		ldr	r2, [r3]
   61 001c 1368     		ldr	r3, [r2]
-ARM GAS  /tmp/ccwpV1pS.s 			page 3
+ARM GAS  /tmp/ccPQY5dg.s 			page 3
 
 
   62 001e 2021     		movs	r1, #32
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  108              	.L9:
  109 005e C046     		.align	2
  110              	.L8:
-ARM GAS  /tmp/ccwpV1pS.s 			page 4
+ARM GAS  /tmp/ccPQY5dg.s 			page 4
 
 
  111 0060 00000000 		.word	.LANCHOR2
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  157 0010 E560     		str	r5, [r4, #12]
   67:modbus/port/portserial.c ****     huart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
  158              		.loc 1 67 5 is_stmt 1 view .LVU28
-ARM GAS  /tmp/ccwpV1pS.s 			page 5
+ARM GAS  /tmp/ccPQY5dg.s 			page 5
 
 
  159              		.loc 1 67 39 is_stmt 0 view .LVU29
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  111:modbus/port/portserial.c ****     }
  112:modbus/port/portserial.c **** 
  113:modbus/port/portserial.c ****     return HAL_OK == HAL_RS485Ex_Init(&huart, UART_DE_POLARITY_HIGH, 0, 0) ? TRUE : FALSE;
-ARM GAS  /tmp/ccwpV1pS.s 			page 6
+ARM GAS  /tmp/ccPQY5dg.s 			page 6
 
 
  114:modbus/port/portserial.c ****   
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  207 0042 ECE7     		b	.L13
  208              	.LVL12:
  209              	.L12:
-ARM GAS  /tmp/ccwpV1pS.s 			page 7
+ARM GAS  /tmp/ccPQY5dg.s 			page 7
 
 
   77:modbus/port/portserial.c ****         DE_Port = GPIOA;
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  249              		.loc 1 110 15 is_stmt 0 view .LVU60
  250 006c 0020     		movs	r0, #0
  110:modbus/port/portserial.c ****     }
-ARM GAS  /tmp/ccwpV1pS.s 			page 8
+ARM GAS  /tmp/ccPQY5dg.s 			page 8
 
 
  251              		.loc 1 110 15 view .LVU61
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  292              	.L20:
  104:modbus/port/portserial.c ****         break;
  293              		.loc 1 104 9 is_stmt 1 view .LVU75
-ARM GAS  /tmp/ccwpV1pS.s 			page 9
+ARM GAS  /tmp/ccPQY5dg.s 			page 9
 
 
  104:modbus/port/portserial.c ****         break;
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  339              		@ args = 0, pretend = 0, frame = 0
  340              		@ frame_needed = 0, uses_anonymous_args = 0
  341              		@ link register save eliminated.
-ARM GAS  /tmp/ccwpV1pS.s 			page 10
+ARM GAS  /tmp/ccPQY5dg.s 			page 10
 
 
  122:modbus/port/portserial.c ****     /* Put a byte in the UARTs transmit buffer. This function is called
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  384 0004 9B8C     		ldrh	r3, [r3, #36]
  385              		.loc 1 135 14 view .LVU94
  386 0006 0370     		strb	r3, [r0]
-ARM GAS  /tmp/ccwpV1pS.s 			page 11
+ARM GAS  /tmp/ccPQY5dg.s 			page 11
 
 
  136:modbus/port/portserial.c ****     return TRUE;
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  150:modbus/port/portserial.c **** 			__HAL_UART_SEND_REQ(&huart, UART_RXDATA_FLUSH_REQUEST);
  151:modbus/port/portserial.c **** 			return TRUE;
  152:modbus/port/portserial.c **** 		}
-ARM GAS  /tmp/ccwpV1pS.s 			page 12
+ARM GAS  /tmp/ccPQY5dg.s 			page 12
 
 
  153:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_TXE) != RESET) &&(__HAL_UART_GET_IT_SOURCE(&huart, UART_IT_
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  464              		.loc 1 158 9 view .LVU116
  465 0028 F0E7     		b	.L31
  466              	.LVL33:
-ARM GAS  /tmp/ccwpV1pS.s 			page 13
+ARM GAS  /tmp/ccPQY5dg.s 			page 13
 
 
  467              	.L37:
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  513              		.global	prvvUARTTxReadyISR
  514              		.syntax unified
  515              		.code	16
-ARM GAS  /tmp/ccwpV1pS.s 			page 14
+ARM GAS  /tmp/ccPQY5dg.s 			page 14
 
 
  516              		.thumb_func
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  558              		@ frame_needed = 0, uses_anonymous_args = 0
  559 0000 10B5     		push	{r4, lr}
  560              	.LCFI4:
-ARM GAS  /tmp/ccwpV1pS.s 			page 15
+ARM GAS  /tmp/ccPQY5dg.s 			page 15
 
 
  561              		.cfi_def_cfa_offset 8
@@ -897,38 +897,38 @@ ARM GAS  /tmp/ccwpV1pS.s 			page 1
  615              		.file 15 "modbus/port/port.h"
  616              		.file 16 "modbus/include/mbport.h"
  617              		.file 17 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h"
-ARM GAS  /tmp/ccwpV1pS.s 			page 16
+ARM GAS  /tmp/ccPQY5dg.s 			page 16
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 portserial.c
-     /tmp/ccwpV1pS.s:16     .text.vMBPortSerialEnable:0000000000000000 $t
-     /tmp/ccwpV1pS.s:24     .text.vMBPortSerialEnable:0000000000000000 vMBPortSerialEnable
-     /tmp/ccwpV1pS.s:111    .text.vMBPortSerialEnable:0000000000000060 $d
-     /tmp/ccwpV1pS.s:118    .text.xMBPortSerialInit:0000000000000000 $t
-     /tmp/ccwpV1pS.s:125    .text.xMBPortSerialInit:0000000000000000 xMBPortSerialInit
-     /tmp/ccwpV1pS.s:318    .text.xMBPortSerialInit:00000000000000a8 $d
-     /tmp/ccwpV1pS.s:327    .text.xMBPortSerialPutByte:0000000000000000 $t
-     /tmp/ccwpV1pS.s:334    .text.xMBPortSerialPutByte:0000000000000000 xMBPortSerialPutByte
-     /tmp/ccwpV1pS.s:359    .text.xMBPortSerialPutByte:000000000000000c $d
-     /tmp/ccwpV1pS.s:364    .text.xMBPortSerialGetByte:0000000000000000 $t
-     /tmp/ccwpV1pS.s:371    .text.xMBPortSerialGetByte:0000000000000000 xMBPortSerialGetByte
-     /tmp/ccwpV1pS.s:397    .text.xMBPortSerialGetByte:000000000000000c $d
-     /tmp/ccwpV1pS.s:402    .text.UART_IRQ_Handler:0000000000000000 $t
-     /tmp/ccwpV1pS.s:409    .text.UART_IRQ_Handler:0000000000000000 UART_IRQ_Handler
-     /tmp/ccwpV1pS.s:505    .text.UART_IRQ_Handler:0000000000000050 $d
-     /tmp/ccwpV1pS.s:512    .text.prvvUARTTxReadyISR:0000000000000000 $t
-     /tmp/ccwpV1pS.s:519    .text.prvvUARTTxReadyISR:0000000000000000 prvvUARTTxReadyISR
-     /tmp/ccwpV1pS.s:541    .text.prvvUARTTxReadyISR:000000000000000c $d
-     /tmp/ccwpV1pS.s:546    .text.prvvUARTRxISR:0000000000000000 $t
-     /tmp/ccwpV1pS.s:553    .text.prvvUARTRxISR:0000000000000000 prvvUARTRxISR
-     /tmp/ccwpV1pS.s:575    .text.prvvUARTRxISR:000000000000000c $d
-     /tmp/ccwpV1pS.s:580    .bss.DE_Pin:0000000000000000 $d
-     /tmp/ccwpV1pS.s:584    .bss.DE_Pin:0000000000000000 DE_Pin
-     /tmp/ccwpV1pS.s:587    .bss.DE_Port:0000000000000000 $d
-     /tmp/ccwpV1pS.s:591    .bss.DE_Port:0000000000000000 DE_Port
-     /tmp/ccwpV1pS.s:594    .bss.huart:0000000000000000 $d
-     /tmp/ccwpV1pS.s:598    .bss.huart:0000000000000000 huart
+     /tmp/ccPQY5dg.s:16     .text.vMBPortSerialEnable:0000000000000000 $t
+     /tmp/ccPQY5dg.s:24     .text.vMBPortSerialEnable:0000000000000000 vMBPortSerialEnable
+     /tmp/ccPQY5dg.s:111    .text.vMBPortSerialEnable:0000000000000060 $d
+     /tmp/ccPQY5dg.s:118    .text.xMBPortSerialInit:0000000000000000 $t
+     /tmp/ccPQY5dg.s:125    .text.xMBPortSerialInit:0000000000000000 xMBPortSerialInit
+     /tmp/ccPQY5dg.s:318    .text.xMBPortSerialInit:00000000000000a8 $d
+     /tmp/ccPQY5dg.s:327    .text.xMBPortSerialPutByte:0000000000000000 $t
+     /tmp/ccPQY5dg.s:334    .text.xMBPortSerialPutByte:0000000000000000 xMBPortSerialPutByte
+     /tmp/ccPQY5dg.s:359    .text.xMBPortSerialPutByte:000000000000000c $d
+     /tmp/ccPQY5dg.s:364    .text.xMBPortSerialGetByte:0000000000000000 $t
+     /tmp/ccPQY5dg.s:371    .text.xMBPortSerialGetByte:0000000000000000 xMBPortSerialGetByte
+     /tmp/ccPQY5dg.s:397    .text.xMBPortSerialGetByte:000000000000000c $d
+     /tmp/ccPQY5dg.s:402    .text.UART_IRQ_Handler:0000000000000000 $t
+     /tmp/ccPQY5dg.s:409    .text.UART_IRQ_Handler:0000000000000000 UART_IRQ_Handler
+     /tmp/ccPQY5dg.s:505    .text.UART_IRQ_Handler:0000000000000050 $d
+     /tmp/ccPQY5dg.s:512    .text.prvvUARTTxReadyISR:0000000000000000 $t
+     /tmp/ccPQY5dg.s:519    .text.prvvUARTTxReadyISR:0000000000000000 prvvUARTTxReadyISR
+     /tmp/ccPQY5dg.s:541    .text.prvvUARTTxReadyISR:000000000000000c $d
+     /tmp/ccPQY5dg.s:546    .text.prvvUARTRxISR:0000000000000000 $t
+     /tmp/ccPQY5dg.s:553    .text.prvvUARTRxISR:0000000000000000 prvvUARTRxISR
+     /tmp/ccPQY5dg.s:575    .text.prvvUARTRxISR:000000000000000c $d
+     /tmp/ccPQY5dg.s:580    .bss.DE_Pin:0000000000000000 $d
+     /tmp/ccPQY5dg.s:584    .bss.DE_Pin:0000000000000000 DE_Pin
+     /tmp/ccPQY5dg.s:587    .bss.DE_Port:0000000000000000 $d
+     /tmp/ccPQY5dg.s:591    .bss.DE_Port:0000000000000000 DE_Port
+     /tmp/ccPQY5dg.s:594    .bss.huart:0000000000000000 $d
+     /tmp/ccPQY5dg.s:598    .bss.huart:0000000000000000 huart
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccKMy7cZ.s 			page 1
+ARM GAS  /tmp/ccNyWSYX.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccKMy7cZ.s 			page 1
   30:Src/stm32f0xx_it.c **** /* USER CODE BEGIN TD */
   31:Src/stm32f0xx_it.c **** 
   32:Src/stm32f0xx_it.c **** /* USER CODE END TD */
-ARM GAS  /tmp/ccKMy7cZ.s 			page 2
+ARM GAS  /tmp/ccNyWSYX.s 			page 2
 
 
   33:Src/stm32f0xx_it.c **** 
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccKMy7cZ.s 			page 1
   32              		.loc 1 81 1 view .LVU1
   33              		@ sp needed
   34 0000 7047     		bx	lr
-ARM GAS  /tmp/ccKMy7cZ.s 			page 3
+ARM GAS  /tmp/ccNyWSYX.s 			page 3
 
 
   35              		.cfi_endproc
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccKMy7cZ.s 			page 1
   72              		.cfi_startproc
   73              		@ args = 0, pretend = 0, frame = 0
   74              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /tmp/ccKMy7cZ.s 			page 4
+ARM GAS  /tmp/ccNyWSYX.s 			page 4
 
 
   75              		@ link register save eliminated.
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccKMy7cZ.s 			page 1
  123:Src/stm32f0xx_it.c **** 
  124:Src/stm32f0xx_it.c **** /**
  125:Src/stm32f0xx_it.c ****   * @brief This function handles System tick timer.
-ARM GAS  /tmp/ccKMy7cZ.s 			page 5
+ARM GAS  /tmp/ccNyWSYX.s 			page 5
 
 
  126:Src/stm32f0xx_it.c ****   */
@@ -298,191 +298,197 @@ ARM GAS  /tmp/ccKMy7cZ.s 			page 1
  145 0000 10B5     		push	{r4, lr}
  146              	.LCFI1:
  147              		.cfi_def_cfa_offset 8
-ARM GAS  /tmp/ccKMy7cZ.s 			page 6
+ARM GAS  /tmp/ccNyWSYX.s 			page 6
 
 
  148              		.cfi_offset 4, -8
  149              		.cfi_offset 14, -4
  150:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN TIM14_IRQn 0 */
- 151:Src/stm32f0xx_it.c **** 
+ 151:Src/stm32f0xx_it.c ****   TIM14_DAC1_IRQHandler(&htim14);
+ 150              		.loc 1 151 3 view .LVU13
+ 151 0002 044C     		ldr	r4, .L8
+ 152 0004 2000     		movs	r0, r4
+ 153 0006 FFF7FEFF 		bl	TIM14_DAC1_IRQHandler
+ 154              	.LVL1:
  152:Src/stm32f0xx_it.c ****   /* USER CODE END TIM14_IRQn 0 */
  153:Src/stm32f0xx_it.c ****   HAL_TIM_IRQHandler(&htim14);
- 150              		.loc 1 153 3 view .LVU13
- 151 0002 0248     		ldr	r0, .L8
- 152 0004 FFF7FEFF 		bl	HAL_TIM_IRQHandler
- 153              	.LVL1:
+ 155              		.loc 1 153 3 view .LVU14
+ 156 000a 2000     		movs	r0, r4
+ 157 000c FFF7FEFF 		bl	HAL_TIM_IRQHandler
+ 158              	.LVL2:
  154:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN TIM14_IRQn 1 */
  155:Src/stm32f0xx_it.c **** 
  156:Src/stm32f0xx_it.c ****   /* USER CODE END TIM14_IRQn 1 */
  157:Src/stm32f0xx_it.c **** }
- 154              		.loc 1 157 1 is_stmt 0 view .LVU14
- 155              		@ sp needed
- 156 0008 10BD     		pop	{r4, pc}
- 157              	.L9:
- 158 000a C046     		.align	2
- 159              	.L8:
- 160 000c 00000000 		.word	htim14
- 161              		.cfi_endproc
- 162              	.LFE42:
- 164              		.section	.text.USART1_IRQHandler,"ax",%progbits
- 165              		.align	1
- 166              		.global	USART1_IRQHandler
- 167              		.syntax unified
- 168              		.code	16
- 169              		.thumb_func
- 170              		.fpu softvfp
- 172              	USART1_IRQHandler:
- 173              	.LFB43:
+ 159              		.loc 1 157 1 is_stmt 0 view .LVU15
+ 160              		@ sp needed
+ 161 0010 10BD     		pop	{r4, pc}
+ 162              	.L9:
+ 163 0012 C046     		.align	2
+ 164              	.L8:
+ 165 0014 00000000 		.word	htim14
+ 166              		.cfi_endproc
+ 167              	.LFE42:
+ 169              		.section	.text.USART1_IRQHandler,"ax",%progbits
+ 170              		.align	1
+ 171              		.global	USART1_IRQHandler
+ 172              		.syntax unified
+ 173              		.code	16
+ 174              		.thumb_func
+ 175              		.fpu softvfp
+ 177              	USART1_IRQHandler:
+ 178              	.LFB43:
  158:Src/stm32f0xx_it.c **** 
  159:Src/stm32f0xx_it.c **** /**
  160:Src/stm32f0xx_it.c ****   * @brief This function handles USART1 global interrupt.
  161:Src/stm32f0xx_it.c ****   */
  162:Src/stm32f0xx_it.c **** void USART1_IRQHandler(void)
  163:Src/stm32f0xx_it.c **** {
- 174              		.loc 1 163 1 is_stmt 1 view -0
- 175              		.cfi_startproc
- 176              		@ args = 0, pretend = 0, frame = 0
- 177              		@ frame_needed = 0, uses_anonymous_args = 0
- 178 0000 10B5     		push	{r4, lr}
- 179              	.LCFI2:
- 180              		.cfi_def_cfa_offset 8
- 181              		.cfi_offset 4, -8
- 182              		.cfi_offset 14, -4
+ 179              		.loc 1 163 1 is_stmt 1 view -0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 0, uses_anonymous_args = 0
+ 183 0000 10B5     		push	{r4, lr}
+ 184              	.LCFI2:
+ 185              		.cfi_def_cfa_offset 8
+ 186              		.cfi_offset 4, -8
+ 187              		.cfi_offset 14, -4
  164:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN USART1_IRQn 0 */
  165:Src/stm32f0xx_it.c ****     // if (FALSE!=UART_IRQ_Handler(USART1))
  166:Src/stm32f0xx_it.c ****     // {
  167:Src/stm32f0xx_it.c ****     //   return;
  168:Src/stm32f0xx_it.c ****     // }
+ARM GAS  /tmp/ccNyWSYX.s 			page 7
+
+
  169:Src/stm32f0xx_it.c ****     
  170:Src/stm32f0xx_it.c ****   /* USER CODE END USART1_IRQn 0 */
  171:Src/stm32f0xx_it.c ****   HAL_UART_IRQHandler(&huart1);
- 183              		.loc 1 171 3 view .LVU16
- 184 0002 0248     		ldr	r0, .L11
-ARM GAS  /tmp/ccKMy7cZ.s 			page 7
-
-
- 185 0004 FFF7FEFF 		bl	HAL_UART_IRQHandler
- 186              	.LVL2:
+ 188              		.loc 1 171 3 view .LVU17
+ 189 0002 0248     		ldr	r0, .L11
+ 190 0004 FFF7FEFF 		bl	HAL_UART_IRQHandler
+ 191              	.LVL3:
  172:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN USART1_IRQn 1 */
  173:Src/stm32f0xx_it.c **** 
  174:Src/stm32f0xx_it.c ****   /* USER CODE END USART1_IRQn 1 */
  175:Src/stm32f0xx_it.c **** }
- 187              		.loc 1 175 1 is_stmt 0 view .LVU17
- 188              		@ sp needed
- 189 0008 10BD     		pop	{r4, pc}
- 190              	.L12:
- 191 000a C046     		.align	2
- 192              	.L11:
- 193 000c 00000000 		.word	huart1
- 194              		.cfi_endproc
- 195              	.LFE43:
- 197              		.section	.text.USART2_IRQHandler,"ax",%progbits
- 198              		.align	1
- 199              		.global	USART2_IRQHandler
- 200              		.syntax unified
- 201              		.code	16
- 202              		.thumb_func
- 203              		.fpu softvfp
- 205              	USART2_IRQHandler:
- 206              	.LFB44:
+ 192              		.loc 1 175 1 is_stmt 0 view .LVU18
+ 193              		@ sp needed
+ 194 0008 10BD     		pop	{r4, pc}
+ 195              	.L12:
+ 196 000a C046     		.align	2
+ 197              	.L11:
+ 198 000c 00000000 		.word	huart1
+ 199              		.cfi_endproc
+ 200              	.LFE43:
+ 202              		.section	.text.USART2_IRQHandler,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	USART2_IRQHandler
+ 205              		.syntax unified
+ 206              		.code	16
+ 207              		.thumb_func
+ 208              		.fpu softvfp
+ 210              	USART2_IRQHandler:
+ 211              	.LFB44:
  176:Src/stm32f0xx_it.c **** 
  177:Src/stm32f0xx_it.c **** /**
  178:Src/stm32f0xx_it.c ****   * @brief This function handles USART2 global interrupt.
  179:Src/stm32f0xx_it.c ****   */
  180:Src/stm32f0xx_it.c **** void USART2_IRQHandler(void)
  181:Src/stm32f0xx_it.c **** {
- 207              		.loc 1 181 1 is_stmt 1 view -0
- 208              		.cfi_startproc
- 209              		@ args = 0, pretend = 0, frame = 0
- 210              		@ frame_needed = 0, uses_anonymous_args = 0
- 211 0000 10B5     		push	{r4, lr}
- 212              	.LCFI3:
- 213              		.cfi_def_cfa_offset 8
- 214              		.cfi_offset 4, -8
- 215              		.cfi_offset 14, -4
+ 212              		.loc 1 181 1 is_stmt 1 view -0
+ 213              		.cfi_startproc
+ 214              		@ args = 0, pretend = 0, frame = 0
+ 215              		@ frame_needed = 0, uses_anonymous_args = 0
+ 216 0000 10B5     		push	{r4, lr}
+ 217              	.LCFI3:
+ 218              		.cfi_def_cfa_offset 8
+ 219              		.cfi_offset 4, -8
+ 220              		.cfi_offset 14, -4
  182:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN USART2_IRQn 0 */
  183:Src/stm32f0xx_it.c ****   if (FALSE!=UART_IRQ_Handler(USART1))
- 216              		.loc 1 183 3 view .LVU19
- 217              		.loc 1 183 14 is_stmt 0 view .LVU20
- 218 0002 0548     		ldr	r0, .L16
- 219 0004 FFF7FEFF 		bl	UART_IRQ_Handler
- 220              	.LVL3:
- 221              		.loc 1 183 6 view .LVU21
- 222 0008 0028     		cmp	r0, #0
- 223 000a 00D0     		beq	.L15
- 224              	.L13:
+ 221              		.loc 1 183 3 view .LVU20
+ 222              		.loc 1 183 14 is_stmt 0 view .LVU21
+ 223 0002 0548     		ldr	r0, .L16
+ 224 0004 FFF7FEFF 		bl	UART_IRQ_Handler
+ 225              	.LVL4:
+ 226              		.loc 1 183 6 view .LVU22
+ 227 0008 0028     		cmp	r0, #0
+ 228 000a 00D0     		beq	.L15
+ 229              	.L13:
  184:Src/stm32f0xx_it.c ****     {
  185:Src/stm32f0xx_it.c ****       return;
+ARM GAS  /tmp/ccNyWSYX.s 			page 8
+
+
  186:Src/stm32f0xx_it.c ****     }
  187:Src/stm32f0xx_it.c ****   /* USER CODE END USART2_IRQn 0 */
  188:Src/stm32f0xx_it.c ****   HAL_UART_IRQHandler(&huart2);
  189:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN USART2_IRQn 1 */
  190:Src/stm32f0xx_it.c **** 
-ARM GAS  /tmp/ccKMy7cZ.s 			page 8
-
-
  191:Src/stm32f0xx_it.c ****   /* USER CODE END USART2_IRQn 1 */
  192:Src/stm32f0xx_it.c **** }
- 225              		.loc 1 192 1 view .LVU22
- 226              		@ sp needed
- 227 000c 10BD     		pop	{r4, pc}
- 228              	.L15:
+ 230              		.loc 1 192 1 view .LVU23
+ 231              		@ sp needed
+ 232 000c 10BD     		pop	{r4, pc}
+ 233              	.L15:
  188:Src/stm32f0xx_it.c ****   /* USER CODE BEGIN USART2_IRQn 1 */
- 229              		.loc 1 188 3 is_stmt 1 view .LVU23
- 230 000e 0348     		ldr	r0, .L16+4
- 231 0010 FFF7FEFF 		bl	HAL_UART_IRQHandler
- 232              	.LVL4:
- 233 0014 FAE7     		b	.L13
- 234              	.L17:
- 235 0016 C046     		.align	2
- 236              	.L16:
- 237 0018 00380140 		.word	1073821696
- 238 001c 00000000 		.word	huart2
- 239              		.cfi_endproc
- 240              	.LFE44:
- 242              		.text
- 243              	.Letext0:
- 244              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
- 245              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
- 246              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
- 247              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f070x6.h"
- 248              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
- 249              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
- 250              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
- 251              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
- 252              		.file 10 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
- 253              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h"
- 254              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h"
- 255              		.file 13 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h"
- 256              		.file 14 "modbus/port/port.h"
- 257              		.file 15 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h"
-ARM GAS  /tmp/ccKMy7cZ.s 			page 9
+ 234              		.loc 1 188 3 is_stmt 1 view .LVU24
+ 235 000e 0348     		ldr	r0, .L16+4
+ 236 0010 FFF7FEFF 		bl	HAL_UART_IRQHandler
+ 237              	.LVL5:
+ 238 0014 FAE7     		b	.L13
+ 239              	.L17:
+ 240 0016 C046     		.align	2
+ 241              	.L16:
+ 242 0018 00380140 		.word	1073821696
+ 243 001c 00000000 		.word	huart2
+ 244              		.cfi_endproc
+ 245              	.LFE44:
+ 247              		.text
+ 248              	.Letext0:
+ 249              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 250              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 251              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 252              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f070x6.h"
+ 253              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 254              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 255              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 256              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 257              		.file 10 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
+ 258              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h"
+ 259              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h"
+ 260              		.file 13 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h"
+ 261              		.file 14 "modbus/port/port.h"
+ 262              		.file 15 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h"
+ARM GAS  /tmp/ccNyWSYX.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f0xx_it.c
-     /tmp/ccKMy7cZ.s:16     .text.NMI_Handler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:24     .text.NMI_Handler:0000000000000000 NMI_Handler
-     /tmp/ccKMy7cZ.s:39     .text.HardFault_Handler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:46     .text.HardFault_Handler:0000000000000000 HardFault_Handler
-     /tmp/ccKMy7cZ.s:62     .text.SVC_Handler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:69     .text.SVC_Handler:0000000000000000 SVC_Handler
-     /tmp/ccKMy7cZ.s:83     .text.PendSV_Handler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:90     .text.PendSV_Handler:0000000000000000 PendSV_Handler
-     /tmp/ccKMy7cZ.s:104    .text.SysTick_Handler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:111    .text.SysTick_Handler:0000000000000000 SysTick_Handler
-     /tmp/ccKMy7cZ.s:132    .text.TIM14_IRQHandler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:139    .text.TIM14_IRQHandler:0000000000000000 TIM14_IRQHandler
-     /tmp/ccKMy7cZ.s:160    .text.TIM14_IRQHandler:000000000000000c $d
-     /tmp/ccKMy7cZ.s:165    .text.USART1_IRQHandler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:172    .text.USART1_IRQHandler:0000000000000000 USART1_IRQHandler
-     /tmp/ccKMy7cZ.s:193    .text.USART1_IRQHandler:000000000000000c $d
-     /tmp/ccKMy7cZ.s:198    .text.USART2_IRQHandler:0000000000000000 $t
-     /tmp/ccKMy7cZ.s:205    .text.USART2_IRQHandler:0000000000000000 USART2_IRQHandler
-     /tmp/ccKMy7cZ.s:237    .text.USART2_IRQHandler:0000000000000018 $d
+     /tmp/ccNyWSYX.s:16     .text.NMI_Handler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:24     .text.NMI_Handler:0000000000000000 NMI_Handler
+     /tmp/ccNyWSYX.s:39     .text.HardFault_Handler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:46     .text.HardFault_Handler:0000000000000000 HardFault_Handler
+     /tmp/ccNyWSYX.s:62     .text.SVC_Handler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:69     .text.SVC_Handler:0000000000000000 SVC_Handler
+     /tmp/ccNyWSYX.s:83     .text.PendSV_Handler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:90     .text.PendSV_Handler:0000000000000000 PendSV_Handler
+     /tmp/ccNyWSYX.s:104    .text.SysTick_Handler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:111    .text.SysTick_Handler:0000000000000000 SysTick_Handler
+     /tmp/ccNyWSYX.s:132    .text.TIM14_IRQHandler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:139    .text.TIM14_IRQHandler:0000000000000000 TIM14_IRQHandler
+     /tmp/ccNyWSYX.s:165    .text.TIM14_IRQHandler:0000000000000014 $d
+     /tmp/ccNyWSYX.s:170    .text.USART1_IRQHandler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:177    .text.USART1_IRQHandler:0000000000000000 USART1_IRQHandler
+     /tmp/ccNyWSYX.s:198    .text.USART1_IRQHandler:000000000000000c $d
+     /tmp/ccNyWSYX.s:203    .text.USART2_IRQHandler:0000000000000000 $t
+     /tmp/ccNyWSYX.s:210    .text.USART2_IRQHandler:0000000000000000 USART2_IRQHandler
+     /tmp/ccNyWSYX.s:242    .text.USART2_IRQHandler:0000000000000018 $d
 
 UNDEFINED SYMBOLS
 HAL_IncTick
+TIM14_DAC1_IRQHandler
 HAL_TIM_IRQHandler
 htim14
 HAL_UART_IRQHandler

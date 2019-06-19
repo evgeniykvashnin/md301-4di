@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccPPCkqf.s 			page 1
+ARM GAS  /tmp/ccHtMMfr.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -15,21 +15,951 @@ ARM GAS  /tmp/ccPPCkqf.s 			page 1
   12              		.text
   13              	.Ltext0:
   14              		.cfi_sections	.debug_frame
-  15              	.Letext0:
-  16              		.file 1 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
-  17              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
-  18              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
-  19              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
-  20              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
-  21              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
-  22              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
-  23              		.file 8 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
-  24              		.file 9 "modbus/port/port.h"
-  25              		.file 10 "modbus/include/mbport.h"
-ARM GAS  /tmp/ccPPCkqf.s 			page 2
+  15              		.section	.text.eMBFuncReadCoils,"ax",%progbits
+  16              		.align	1
+  17              		.global	eMBFuncReadCoils
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	eMBFuncReadCoils:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "modbus/functions/mbfunccoils.c"
+   1:modbus/functions/mbfunccoils.c **** /* 
+   2:modbus/functions/mbfunccoils.c ****  * FreeModbus Libary: A portable Modbus implementation for Modbus ASCII/RTU.
+   3:modbus/functions/mbfunccoils.c ****  * Copyright (c) 2006-2018 Christian Walter <cwalter@embedded-solutions.at>
+   4:modbus/functions/mbfunccoils.c ****  * All rights reserved.
+   5:modbus/functions/mbfunccoils.c ****  *
+   6:modbus/functions/mbfunccoils.c ****  * Redistribution and use in source and binary forms, with or without
+   7:modbus/functions/mbfunccoils.c ****  * modification, are permitted provided that the following conditions
+   8:modbus/functions/mbfunccoils.c ****  * are met:
+   9:modbus/functions/mbfunccoils.c ****  * 1. Redistributions of source code must retain the above copyright
+  10:modbus/functions/mbfunccoils.c ****  *    notice, this list of conditions and the following disclaimer.
+  11:modbus/functions/mbfunccoils.c ****  * 2. Redistributions in binary form must reproduce the above copyright
+  12:modbus/functions/mbfunccoils.c ****  *    notice, this list of conditions and the following disclaimer in the
+  13:modbus/functions/mbfunccoils.c ****  *    documentation and/or other materials provided with the distribution.
+  14:modbus/functions/mbfunccoils.c ****  * 3. The name of the author may not be used to endorse or promote products
+  15:modbus/functions/mbfunccoils.c ****  *    derived from this software without specific prior written permission.
+  16:modbus/functions/mbfunccoils.c ****  *
+  17:modbus/functions/mbfunccoils.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  18:modbus/functions/mbfunccoils.c ****  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  19:modbus/functions/mbfunccoils.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  20:modbus/functions/mbfunccoils.c ****  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  21:modbus/functions/mbfunccoils.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  22:modbus/functions/mbfunccoils.c ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  23:modbus/functions/mbfunccoils.c ****  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  24:modbus/functions/mbfunccoils.c ****  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  25:modbus/functions/mbfunccoils.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  26:modbus/functions/mbfunccoils.c ****  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  27:modbus/functions/mbfunccoils.c ****  *
+  28:modbus/functions/mbfunccoils.c ****  */
+  29:modbus/functions/mbfunccoils.c **** 
+  30:modbus/functions/mbfunccoils.c **** /* ----------------------- System includes ----------------------------------*/
+  31:modbus/functions/mbfunccoils.c **** #include "stdlib.h"
+ARM GAS  /tmp/ccHtMMfr.s 			page 2
+
+
+  32:modbus/functions/mbfunccoils.c **** #include "string.h"
+  33:modbus/functions/mbfunccoils.c **** 
+  34:modbus/functions/mbfunccoils.c **** /* ----------------------- Platform includes --------------------------------*/
+  35:modbus/functions/mbfunccoils.c **** #include "port.h"
+  36:modbus/functions/mbfunccoils.c **** 
+  37:modbus/functions/mbfunccoils.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  38:modbus/functions/mbfunccoils.c **** #include "mb.h"
+  39:modbus/functions/mbfunccoils.c **** #include "mbframe.h"
+  40:modbus/functions/mbfunccoils.c **** #include "mbproto.h"
+  41:modbus/functions/mbfunccoils.c **** #include "mbconfig.h"
+  42:modbus/functions/mbfunccoils.c **** 
+  43:modbus/functions/mbfunccoils.c **** /* ----------------------- Defines ------------------------------------------*/
+  44:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_READ_ADDR_OFF           ( MB_PDU_DATA_OFF )
+  45:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_READ_COILCNT_OFF        ( MB_PDU_DATA_OFF + 2 )
+  46:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_READ_SIZE               ( 4 )
+  47:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_READ_COILCNT_MAX        ( 0x07D0 )
+  48:modbus/functions/mbfunccoils.c **** 
+  49:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_ADDR_OFF          ( MB_PDU_DATA_OFF )
+  50:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_VALUE_OFF         ( MB_PDU_DATA_OFF + 2 )
+  51:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_SIZE              ( 4 )
+  52:modbus/functions/mbfunccoils.c **** 
+  53:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_MUL_ADDR_OFF      ( MB_PDU_DATA_OFF )
+  54:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_MUL_COILCNT_OFF   ( MB_PDU_DATA_OFF + 2 )
+  55:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_MUL_BYTECNT_OFF   ( MB_PDU_DATA_OFF + 4 )
+  56:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_MUL_VALUES_OFF    ( MB_PDU_DATA_OFF + 5 )
+  57:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_MUL_SIZE_MIN      ( 5 )
+  58:modbus/functions/mbfunccoils.c **** #define MB_PDU_FUNC_WRITE_MUL_COILCNT_MAX   ( 0x07B0 )
+  59:modbus/functions/mbfunccoils.c **** 
+  60:modbus/functions/mbfunccoils.c **** /* ----------------------- Static functions ---------------------------------*/
+  61:modbus/functions/mbfunccoils.c **** eMBException    prveMBError2Exception( eMBErrorCode eErrorCode );
+  62:modbus/functions/mbfunccoils.c **** 
+  63:modbus/functions/mbfunccoils.c **** /* ----------------------- Start implementation -----------------------------*/
+  64:modbus/functions/mbfunccoils.c **** 
+  65:modbus/functions/mbfunccoils.c **** #if MB_FUNC_READ_COILS_ENABLED > 0
+  66:modbus/functions/mbfunccoils.c **** 
+  67:modbus/functions/mbfunccoils.c **** eMBException
+  68:modbus/functions/mbfunccoils.c **** eMBFuncReadCoils( UCHAR * pucFrame, USHORT * usLen )
+  69:modbus/functions/mbfunccoils.c **** {
+  28              		.loc 1 69 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 69 1 is_stmt 0 view .LVU1
+  33 0000 70B5     		push	{r4, r5, r6, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 4, -16
+  37              		.cfi_offset 5, -12
+  38              		.cfi_offset 6, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0C00     		movs	r4, r1
+  70:modbus/functions/mbfunccoils.c ****     USHORT          usRegAddress;
+  41              		.loc 1 70 5 is_stmt 1 view .LVU2
+  71:modbus/functions/mbfunccoils.c ****     USHORT          usCoilCount;
+  42              		.loc 1 71 5 view .LVU3
+  72:modbus/functions/mbfunccoils.c ****     UCHAR           ucNBytes;
+  43              		.loc 1 72 5 view .LVU4
+ARM GAS  /tmp/ccHtMMfr.s 			page 3
+
+
+  73:modbus/functions/mbfunccoils.c ****     UCHAR          *pucFrameCur;
+  44              		.loc 1 73 5 view .LVU5
+  74:modbus/functions/mbfunccoils.c **** 
+  75:modbus/functions/mbfunccoils.c ****     eMBException    eStatus = MB_EX_NONE;
+  45              		.loc 1 75 5 view .LVU6
+  46              	.LVL1:
+  76:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+  47              		.loc 1 76 5 view .LVU7
+  77:modbus/functions/mbfunccoils.c **** 
+  78:modbus/functions/mbfunccoils.c ****     if( *usLen == ( MB_PDU_FUNC_READ_SIZE + MB_PDU_SIZE_MIN ) )
+  48              		.loc 1 78 5 view .LVU8
+  49              		.loc 1 78 9 is_stmt 0 view .LVU9
+  50 0004 0B88     		ldrh	r3, [r1]
+  51              		.loc 1 78 7 view .LVU10
+  52 0006 052B     		cmp	r3, #5
+  53 0008 01D0     		beq	.L8
+  79:modbus/functions/mbfunccoils.c ****     {
+  80:modbus/functions/mbfunccoils.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF] << 8 );
+  81:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  82:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+  83:modbus/functions/mbfunccoils.c **** 
+  84:modbus/functions/mbfunccoils.c ****         usCoilCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_COILCNT_OFF] << 8 );
+  85:modbus/functions/mbfunccoils.c ****         usCoilCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_COILCNT_OFF + 1] );
+  86:modbus/functions/mbfunccoils.c **** 
+  87:modbus/functions/mbfunccoils.c ****         /* Check if the number of registers to read is valid. If not
+  88:modbus/functions/mbfunccoils.c ****          * return Modbus illegal data value exception. 
+  89:modbus/functions/mbfunccoils.c ****          */
+  90:modbus/functions/mbfunccoils.c ****         if( ( usCoilCount >= 1 ) &&
+  91:modbus/functions/mbfunccoils.c ****             ( usCoilCount < MB_PDU_FUNC_READ_COILCNT_MAX ) )
+  92:modbus/functions/mbfunccoils.c ****         {
+  93:modbus/functions/mbfunccoils.c ****             /* Set the current PDU data pointer to the beginning. */
+  94:modbus/functions/mbfunccoils.c ****             pucFrameCur = &pucFrame[MB_PDU_FUNC_OFF];
+  95:modbus/functions/mbfunccoils.c ****             *usLen = MB_PDU_FUNC_OFF;
+  96:modbus/functions/mbfunccoils.c **** 
+  97:modbus/functions/mbfunccoils.c ****             /* First byte contains the function code. */
+  98:modbus/functions/mbfunccoils.c ****             *pucFrameCur++ = MB_FUNC_READ_COILS;
+  99:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 100:modbus/functions/mbfunccoils.c **** 
+ 101:modbus/functions/mbfunccoils.c ****             /* Test if the quantity of coils is a multiple of 8. If not last
+ 102:modbus/functions/mbfunccoils.c ****              * byte is only partially field with unused coils set to zero. */
+ 103:modbus/functions/mbfunccoils.c ****             if( ( usCoilCount & 0x0007 ) != 0 )
+ 104:modbus/functions/mbfunccoils.c ****             {
+ 105:modbus/functions/mbfunccoils.c ****                 ucNBytes = ( UCHAR )( usCoilCount / 8 + 1 );
+ 106:modbus/functions/mbfunccoils.c ****             }
+ 107:modbus/functions/mbfunccoils.c ****             else
+ 108:modbus/functions/mbfunccoils.c ****             {
+ 109:modbus/functions/mbfunccoils.c ****                 ucNBytes = ( UCHAR )( usCoilCount / 8 );
+ 110:modbus/functions/mbfunccoils.c ****             }
+ 111:modbus/functions/mbfunccoils.c ****             *pucFrameCur++ = ucNBytes;
+ 112:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 113:modbus/functions/mbfunccoils.c **** 
+ 114:modbus/functions/mbfunccoils.c ****             eRegStatus =
+ 115:modbus/functions/mbfunccoils.c ****                 eMBRegCoilsCB( pucFrameCur, usRegAddress, usCoilCount,
+ 116:modbus/functions/mbfunccoils.c ****                                MB_REG_READ );
+ 117:modbus/functions/mbfunccoils.c **** 
+ 118:modbus/functions/mbfunccoils.c ****             /* If an error occured convert it into a Modbus exception. */
+ 119:modbus/functions/mbfunccoils.c ****             if( eRegStatus != MB_ENOERR )
+ARM GAS  /tmp/ccHtMMfr.s 			page 4
+
+
+ 120:modbus/functions/mbfunccoils.c ****             {
+ 121:modbus/functions/mbfunccoils.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 122:modbus/functions/mbfunccoils.c ****             }
+ 123:modbus/functions/mbfunccoils.c ****             else
+ 124:modbus/functions/mbfunccoils.c ****             {
+ 125:modbus/functions/mbfunccoils.c ****                 /* The response contains the function code, the starting address
+ 126:modbus/functions/mbfunccoils.c ****                  * and the quantity of registers. We reuse the old values in the 
+ 127:modbus/functions/mbfunccoils.c ****                  * buffer because they are still valid. */
+ 128:modbus/functions/mbfunccoils.c ****                 *usLen += ucNBytes;;
+ 129:modbus/functions/mbfunccoils.c ****             }
+ 130:modbus/functions/mbfunccoils.c ****         }
+ 131:modbus/functions/mbfunccoils.c ****         else
+ 132:modbus/functions/mbfunccoils.c ****         {
+ 133:modbus/functions/mbfunccoils.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 134:modbus/functions/mbfunccoils.c ****         }
+ 135:modbus/functions/mbfunccoils.c ****     }
+ 136:modbus/functions/mbfunccoils.c ****     else
+ 137:modbus/functions/mbfunccoils.c ****     {
+ 138:modbus/functions/mbfunccoils.c ****         /* Can't be a valid read coil register request because the length
+ 139:modbus/functions/mbfunccoils.c ****          * is incorrect. */
+ 140:modbus/functions/mbfunccoils.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+  54              		.loc 1 140 17 view .LVU11
+  55 000a 0320     		movs	r0, #3
+  56              	.LVL2:
+  57              	.L2:
+ 141:modbus/functions/mbfunccoils.c ****     }
+ 142:modbus/functions/mbfunccoils.c ****     return eStatus;
+  58              		.loc 1 142 5 is_stmt 1 view .LVU12
+ 143:modbus/functions/mbfunccoils.c **** }
+  59              		.loc 1 143 1 is_stmt 0 view .LVU13
+  60              		@ sp needed
+  61              	.LVL3:
+  62              		.loc 1 143 1 view .LVU14
+  63 000c 70BD     		pop	{r4, r5, r6, pc}
+  64              	.LVL4:
+  65              	.L8:
+  80:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  66              		.loc 1 80 9 is_stmt 1 view .LVU15
+  80:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  67              		.loc 1 80 44 is_stmt 0 view .LVU16
+  68 000e 4378     		ldrb	r3, [r0, #1]
+  80:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  69              		.loc 1 80 22 view .LVU17
+  70 0010 1B02     		lsls	r3, r3, #8
+  71              	.LVL5:
+  81:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+  72              		.loc 1 81 9 is_stmt 1 view .LVU18
+  81:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+  73              		.loc 1 81 45 is_stmt 0 view .LVU19
+  74 0012 8178     		ldrb	r1, [r0, #2]
+  75              	.LVL6:
+  81:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+  76              		.loc 1 81 22 view .LVU20
+  77 0014 1943     		orrs	r1, r3
+  78              	.LVL7:
+  82:modbus/functions/mbfunccoils.c **** 
+  79              		.loc 1 82 9 is_stmt 1 view .LVU21
+ARM GAS  /tmp/ccHtMMfr.s 			page 5
+
+
+  82:modbus/functions/mbfunccoils.c **** 
+  80              		.loc 1 82 21 is_stmt 0 view .LVU22
+  81 0016 0131     		adds	r1, r1, #1
+  82              	.LVL8:
+  82:modbus/functions/mbfunccoils.c **** 
+  83              		.loc 1 82 21 view .LVU23
+  84 0018 89B2     		uxth	r1, r1
+  85              	.LVL9:
+  84:modbus/functions/mbfunccoils.c ****         usCoilCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_COILCNT_OFF + 1] );
+  86              		.loc 1 84 9 is_stmt 1 view .LVU24
+  84:modbus/functions/mbfunccoils.c ****         usCoilCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_COILCNT_OFF + 1] );
+  87              		.loc 1 84 43 is_stmt 0 view .LVU25
+  88 001a C278     		ldrb	r2, [r0, #3]
+  84:modbus/functions/mbfunccoils.c ****         usCoilCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_COILCNT_OFF + 1] );
+  89              		.loc 1 84 21 view .LVU26
+  90 001c 1202     		lsls	r2, r2, #8
+  91              	.LVL10:
+  85:modbus/functions/mbfunccoils.c **** 
+  92              		.loc 1 85 9 is_stmt 1 view .LVU27
+  85:modbus/functions/mbfunccoils.c **** 
+  93              		.loc 1 85 44 is_stmt 0 view .LVU28
+  94 001e 0379     		ldrb	r3, [r0, #4]
+  85:modbus/functions/mbfunccoils.c **** 
+  95              		.loc 1 85 21 view .LVU29
+  96 0020 1A43     		orrs	r2, r3
+  97              	.LVL11:
+  90:modbus/functions/mbfunccoils.c ****             ( usCoilCount < MB_PDU_FUNC_READ_COILCNT_MAX ) )
+  98              		.loc 1 90 9 is_stmt 1 view .LVU30
+  90:modbus/functions/mbfunccoils.c ****             ( usCoilCount < MB_PDU_FUNC_READ_COILCNT_MAX ) )
+  99              		.loc 1 90 34 is_stmt 0 view .LVU31
+ 100 0022 531E     		subs	r3, r2, #1
+ 101 0024 9BB2     		uxth	r3, r3
+  90:modbus/functions/mbfunccoils.c ****             ( usCoilCount < MB_PDU_FUNC_READ_COILCNT_MAX ) )
+ 102              		.loc 1 90 11 view .LVU32
+ 103 0026 144D     		ldr	r5, .L10
+ 104 0028 AB42     		cmp	r3, r5
+ 105 002a 22D8     		bhi	.L7
+  94:modbus/functions/mbfunccoils.c ****             *usLen = MB_PDU_FUNC_OFF;
+ 106              		.loc 1 94 13 is_stmt 1 view .LVU33
+ 107              	.LVL12:
+  95:modbus/functions/mbfunccoils.c **** 
+ 108              		.loc 1 95 13 view .LVU34
+  95:modbus/functions/mbfunccoils.c **** 
+ 109              		.loc 1 95 20 is_stmt 0 view .LVU35
+ 110 002c 0023     		movs	r3, #0
+ 111 002e 2380     		strh	r3, [r4]
+  98:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 112              		.loc 1 98 13 is_stmt 1 view .LVU36
+ 113              	.LVL13:
+  98:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 114              		.loc 1 98 28 is_stmt 0 view .LVU37
+ 115 0030 0133     		adds	r3, r3, #1
+ 116 0032 0370     		strb	r3, [r0]
+  99:modbus/functions/mbfunccoils.c **** 
+ 117              		.loc 1 99 13 is_stmt 1 view .LVU38
+  99:modbus/functions/mbfunccoils.c **** 
+ 118              		.loc 1 99 20 is_stmt 0 view .LVU39
+ARM GAS  /tmp/ccHtMMfr.s 			page 6
+
+
+ 119 0034 2388     		ldrh	r3, [r4]
+ 120 0036 0133     		adds	r3, r3, #1
+ 121 0038 2380     		strh	r3, [r4]
+ 103:modbus/functions/mbfunccoils.c ****             {
+ 122              		.loc 1 103 13 is_stmt 1 view .LVU40
+ 103:modbus/functions/mbfunccoils.c ****             {
+ 123              		.loc 1 103 15 is_stmt 0 view .LVU41
+ 124 003a 5307     		lsls	r3, r2, #29
+ 125 003c 13D0     		beq	.L3
+ 105:modbus/functions/mbfunccoils.c ****             }
+ 126              		.loc 1 105 17 is_stmt 1 view .LVU42
+ 105:modbus/functions/mbfunccoils.c ****             }
+ 127              		.loc 1 105 28 is_stmt 0 view .LVU43
+ 128 003e D508     		lsrs	r5, r2, #3
+ 129 0040 EDB2     		uxtb	r5, r5
+ 105:modbus/functions/mbfunccoils.c ****             }
+ 130              		.loc 1 105 26 view .LVU44
+ 131 0042 0135     		adds	r5, r5, #1
+ 132 0044 EDB2     		uxtb	r5, r5
+ 133              	.LVL14:
+ 134              	.L4:
+ 111:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 135              		.loc 1 111 13 is_stmt 1 view .LVU45
+ 111:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 136              		.loc 1 111 25 is_stmt 0 view .LVU46
+ 137 0046 861C     		adds	r6, r0, #2
+ 138              	.LVL15:
+ 111:modbus/functions/mbfunccoils.c ****             *usLen += 1;
+ 139              		.loc 1 111 28 view .LVU47
+ 140 0048 4570     		strb	r5, [r0, #1]
+ 112:modbus/functions/mbfunccoils.c **** 
+ 141              		.loc 1 112 13 is_stmt 1 view .LVU48
+ 112:modbus/functions/mbfunccoils.c **** 
+ 142              		.loc 1 112 20 is_stmt 0 view .LVU49
+ 143 004a 2388     		ldrh	r3, [r4]
+ 144 004c 0133     		adds	r3, r3, #1
+ 145 004e 2380     		strh	r3, [r4]
+ 114:modbus/functions/mbfunccoils.c ****                 eMBRegCoilsCB( pucFrameCur, usRegAddress, usCoilCount,
+ 146              		.loc 1 114 13 is_stmt 1 view .LVU50
+ 115:modbus/functions/mbfunccoils.c ****                                MB_REG_READ );
+ 147              		.loc 1 115 17 is_stmt 0 view .LVU51
+ 148 0050 0023     		movs	r3, #0
+ 149 0052 3000     		movs	r0, r6
+ 150              	.LVL16:
+ 115:modbus/functions/mbfunccoils.c ****                                MB_REG_READ );
+ 151              		.loc 1 115 17 view .LVU52
+ 152 0054 FFF7FEFF 		bl	eMBRegCoilsCB
+ 153              	.LVL17:
+ 119:modbus/functions/mbfunccoils.c ****             {
+ 154              		.loc 1 119 13 is_stmt 1 view .LVU53
+ 119:modbus/functions/mbfunccoils.c ****             {
+ 155              		.loc 1 119 15 is_stmt 0 view .LVU54
+ 156 0058 0028     		cmp	r0, #0
+ 157 005a 07D1     		bne	.L9
+ 128:modbus/functions/mbfunccoils.c ****             }
+ 158              		.loc 1 128 17 is_stmt 1 view .LVU55
+ 128:modbus/functions/mbfunccoils.c ****             }
+ARM GAS  /tmp/ccHtMMfr.s 			page 7
+
+
+ 159              		.loc 1 128 24 is_stmt 0 view .LVU56
+ 160 005c 2388     		ldrh	r3, [r4]
+ 161 005e 5D19     		adds	r5, r3, r5
+ 162              	.LVL18:
+ 128:modbus/functions/mbfunccoils.c ****             }
+ 163              		.loc 1 128 24 view .LVU57
+ 164 0060 2580     		strh	r5, [r4]
+  75:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 165              		.loc 1 75 21 view .LVU58
+ 166 0062 0020     		movs	r0, #0
+ 167              	.LVL19:
+  75:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 168              		.loc 1 75 21 view .LVU59
+ 169 0064 D2E7     		b	.L2
+ 170              	.LVL20:
+ 171              	.L3:
+ 109:modbus/functions/mbfunccoils.c ****             }
+ 172              		.loc 1 109 17 is_stmt 1 view .LVU60
+ 109:modbus/functions/mbfunccoils.c ****             }
+ 173              		.loc 1 109 28 is_stmt 0 view .LVU61
+ 174 0066 D508     		lsrs	r5, r2, #3
+ 109:modbus/functions/mbfunccoils.c ****             }
+ 175              		.loc 1 109 26 view .LVU62
+ 176 0068 EDB2     		uxtb	r5, r5
+ 177              	.LVL21:
+ 109:modbus/functions/mbfunccoils.c ****             }
+ 178              		.loc 1 109 26 view .LVU63
+ 179 006a ECE7     		b	.L4
+ 180              	.LVL22:
+ 181              	.L9:
+ 121:modbus/functions/mbfunccoils.c ****             }
+ 182              		.loc 1 121 17 is_stmt 1 view .LVU64
+ 121:modbus/functions/mbfunccoils.c ****             }
+ 183              		.loc 1 121 27 is_stmt 0 view .LVU65
+ 184 006c FFF7FEFF 		bl	prveMBError2Exception
+ 185              	.LVL23:
+ 121:modbus/functions/mbfunccoils.c ****             }
+ 186              		.loc 1 121 27 view .LVU66
+ 187 0070 CCE7     		b	.L2
+ 188              	.LVL24:
+ 189              	.L7:
+ 133:modbus/functions/mbfunccoils.c ****         }
+ 190              		.loc 1 133 21 view .LVU67
+ 191 0072 0320     		movs	r0, #3
+ 192              	.LVL25:
+ 133:modbus/functions/mbfunccoils.c ****         }
+ 193              		.loc 1 133 21 view .LVU68
+ 194 0074 CAE7     		b	.L2
+ 195              	.L11:
+ 196 0076 C046     		.align	2
+ 197              	.L10:
+ 198 0078 CE070000 		.word	1998
+ 199              		.cfi_endproc
+ 200              	.LFE37:
+ 202              		.section	.text.eMBFuncWriteCoil,"ax",%progbits
+ 203              		.align	1
+ 204              		.global	eMBFuncWriteCoil
+ARM GAS  /tmp/ccHtMMfr.s 			page 8
+
+
+ 205              		.syntax unified
+ 206              		.code	16
+ 207              		.thumb_func
+ 208              		.fpu softvfp
+ 210              	eMBFuncWriteCoil:
+ 211              	.LVL26:
+ 212              	.LFB38:
+ 144:modbus/functions/mbfunccoils.c **** 
+ 145:modbus/functions/mbfunccoils.c **** #if MB_FUNC_WRITE_COIL_ENABLED > 0
+ 146:modbus/functions/mbfunccoils.c **** eMBException
+ 147:modbus/functions/mbfunccoils.c **** eMBFuncWriteCoil( UCHAR * pucFrame, USHORT * usLen )
+ 148:modbus/functions/mbfunccoils.c **** {
+ 213              		.loc 1 148 1 is_stmt 1 view -0
+ 214              		.cfi_startproc
+ 215              		@ args = 0, pretend = 0, frame = 8
+ 216              		@ frame_needed = 0, uses_anonymous_args = 0
+ 217              		.loc 1 148 1 is_stmt 0 view .LVU70
+ 218 0000 00B5     		push	{lr}
+ 219              	.LCFI1:
+ 220              		.cfi_def_cfa_offset 4
+ 221              		.cfi_offset 14, -4
+ 222 0002 83B0     		sub	sp, sp, #12
+ 223              	.LCFI2:
+ 224              		.cfi_def_cfa_offset 16
+ 149:modbus/functions/mbfunccoils.c ****     USHORT          usRegAddress;
+ 225              		.loc 1 149 5 is_stmt 1 view .LVU71
+ 150:modbus/functions/mbfunccoils.c ****     UCHAR           ucBuf[2];
+ 226              		.loc 1 150 5 view .LVU72
+ 151:modbus/functions/mbfunccoils.c **** 
+ 152:modbus/functions/mbfunccoils.c ****     eMBException    eStatus = MB_EX_NONE;
+ 227              		.loc 1 152 5 view .LVU73
+ 228              	.LVL27:
+ 153:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 229              		.loc 1 153 5 view .LVU74
+ 154:modbus/functions/mbfunccoils.c **** 
+ 155:modbus/functions/mbfunccoils.c ****     if( *usLen == ( MB_PDU_FUNC_WRITE_SIZE + MB_PDU_SIZE_MIN ) )
+ 230              		.loc 1 155 5 view .LVU75
+ 231              		.loc 1 155 9 is_stmt 0 view .LVU76
+ 232 0004 0B88     		ldrh	r3, [r1]
+ 233              		.loc 1 155 7 view .LVU77
+ 234 0006 052B     		cmp	r3, #5
+ 235 0008 02D0     		beq	.L20
+ 156:modbus/functions/mbfunccoils.c ****     {
+ 157:modbus/functions/mbfunccoils.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF] << 8 );
+ 158:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+ 159:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+ 160:modbus/functions/mbfunccoils.c **** 
+ 161:modbus/functions/mbfunccoils.c ****         if( ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF + 1] == 0x00 ) &&
+ 162:modbus/functions/mbfunccoils.c ****             ( ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF ) ||
+ 163:modbus/functions/mbfunccoils.c ****               ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0x00 ) ) )
+ 164:modbus/functions/mbfunccoils.c ****         {
+ 165:modbus/functions/mbfunccoils.c ****             ucBuf[1] = 0;
+ 166:modbus/functions/mbfunccoils.c ****             if( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF )
+ 167:modbus/functions/mbfunccoils.c ****             {
+ 168:modbus/functions/mbfunccoils.c ****                 ucBuf[0] = 1;
+ 169:modbus/functions/mbfunccoils.c ****             }
+ 170:modbus/functions/mbfunccoils.c ****             else
+ARM GAS  /tmp/ccHtMMfr.s 			page 9
+
+
+ 171:modbus/functions/mbfunccoils.c ****             {
+ 172:modbus/functions/mbfunccoils.c ****                 ucBuf[0] = 0;
+ 173:modbus/functions/mbfunccoils.c ****             }
+ 174:modbus/functions/mbfunccoils.c ****             eRegStatus =
+ 175:modbus/functions/mbfunccoils.c ****                 eMBRegCoilsCB( &ucBuf[0], usRegAddress, 1, MB_REG_WRITE );
+ 176:modbus/functions/mbfunccoils.c **** 
+ 177:modbus/functions/mbfunccoils.c ****             /* If an error occured convert it into a Modbus exception. */
+ 178:modbus/functions/mbfunccoils.c ****             if( eRegStatus != MB_ENOERR )
+ 179:modbus/functions/mbfunccoils.c ****             {
+ 180:modbus/functions/mbfunccoils.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 181:modbus/functions/mbfunccoils.c ****             }
+ 182:modbus/functions/mbfunccoils.c ****         }
+ 183:modbus/functions/mbfunccoils.c ****         else
+ 184:modbus/functions/mbfunccoils.c ****         {
+ 185:modbus/functions/mbfunccoils.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 186:modbus/functions/mbfunccoils.c ****         }
+ 187:modbus/functions/mbfunccoils.c ****     }
+ 188:modbus/functions/mbfunccoils.c ****     else
+ 189:modbus/functions/mbfunccoils.c ****     {
+ 190:modbus/functions/mbfunccoils.c ****         /* Can't be a valid write coil register request because the length
+ 191:modbus/functions/mbfunccoils.c ****          * is incorrect. */
+ 192:modbus/functions/mbfunccoils.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 236              		.loc 1 192 17 view .LVU78
+ 237 000a 0320     		movs	r0, #3
+ 238              	.LVL28:
+ 239              	.L13:
+ 193:modbus/functions/mbfunccoils.c ****     }
+ 194:modbus/functions/mbfunccoils.c ****     return eStatus;
+ 240              		.loc 1 194 5 is_stmt 1 view .LVU79
+ 195:modbus/functions/mbfunccoils.c **** }
+ 241              		.loc 1 195 1 is_stmt 0 view .LVU80
+ 242 000c 03B0     		add	sp, sp, #12
+ 243              		@ sp needed
+ 244 000e 00BD     		pop	{pc}
+ 245              	.LVL29:
+ 246              	.L20:
+ 157:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+ 247              		.loc 1 157 9 is_stmt 1 view .LVU81
+ 157:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+ 248              		.loc 1 157 44 is_stmt 0 view .LVU82
+ 249 0010 4378     		ldrb	r3, [r0, #1]
+ 157:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+ 250              		.loc 1 157 22 view .LVU83
+ 251 0012 1B02     		lsls	r3, r3, #8
+ 252              	.LVL30:
+ 158:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+ 253              		.loc 1 158 9 is_stmt 1 view .LVU84
+ 158:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+ 254              		.loc 1 158 45 is_stmt 0 view .LVU85
+ 255 0014 8178     		ldrb	r1, [r0, #2]
+ 256              	.LVL31:
+ 158:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+ 257              		.loc 1 158 22 view .LVU86
+ 258 0016 1943     		orrs	r1, r3
+ 259              	.LVL32:
+ 159:modbus/functions/mbfunccoils.c **** 
+ 260              		.loc 1 159 9 is_stmt 1 view .LVU87
+ARM GAS  /tmp/ccHtMMfr.s 			page 10
+
+
+ 159:modbus/functions/mbfunccoils.c **** 
+ 261              		.loc 1 159 21 is_stmt 0 view .LVU88
+ 262 0018 0131     		adds	r1, r1, #1
+ 263              	.LVL33:
+ 159:modbus/functions/mbfunccoils.c **** 
+ 264              		.loc 1 159 21 view .LVU89
+ 265 001a 89B2     		uxth	r1, r1
+ 266              	.LVL34:
+ 161:modbus/functions/mbfunccoils.c ****             ( ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF ) ||
+ 267              		.loc 1 161 9 is_stmt 1 view .LVU90
+ 161:modbus/functions/mbfunccoils.c ****             ( ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF ) ||
+ 268              		.loc 1 161 23 is_stmt 0 view .LVU91
+ 269 001c 0379     		ldrb	r3, [r0, #4]
+ 161:modbus/functions/mbfunccoils.c ****             ( ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF ) ||
+ 270              		.loc 1 161 11 view .LVU92
+ 271 001e 002B     		cmp	r3, #0
+ 272 0020 1BD1     		bne	.L17
+ 162:modbus/functions/mbfunccoils.c ****               ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0x00 ) ) )
+ 273              		.loc 1 162 25 discriminator 1 view .LVU93
+ 274 0022 C278     		ldrb	r2, [r0, #3]
+ 162:modbus/functions/mbfunccoils.c ****               ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0x00 ) ) )
+ 275              		.loc 1 162 65 discriminator 1 view .LVU94
+ 276 0024 531E     		subs	r3, r2, #1
+ 277 0026 DBB2     		uxtb	r3, r3
+ 161:modbus/functions/mbfunccoils.c ****             ( ( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF ) ||
+ 278              		.loc 1 161 67 discriminator 1 view .LVU95
+ 279 0028 FD2B     		cmp	r3, #253
+ 280 002a 18D9     		bls	.L18
+ 165:modbus/functions/mbfunccoils.c ****             if( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF )
+ 281              		.loc 1 165 13 is_stmt 1 view .LVU96
+ 165:modbus/functions/mbfunccoils.c ****             if( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF )
+ 282              		.loc 1 165 22 is_stmt 0 view .LVU97
+ 283 002c 01AB     		add	r3, sp, #4
+ 284 002e 0020     		movs	r0, #0
+ 285              	.LVL35:
+ 165:modbus/functions/mbfunccoils.c ****             if( pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF] == 0xFF )
+ 286              		.loc 1 165 22 view .LVU98
+ 287 0030 5870     		strb	r0, [r3, #1]
+ 166:modbus/functions/mbfunccoils.c ****             {
+ 288              		.loc 1 166 13 is_stmt 1 view .LVU99
+ 166:modbus/functions/mbfunccoils.c ****             {
+ 289              		.loc 1 166 15 is_stmt 0 view .LVU100
+ 290 0032 FF2A     		cmp	r2, #255
+ 291 0034 0BD0     		beq	.L21
+ 172:modbus/functions/mbfunccoils.c ****             }
+ 292              		.loc 1 172 17 is_stmt 1 view .LVU101
+ 172:modbus/functions/mbfunccoils.c ****             }
+ 293              		.loc 1 172 26 is_stmt 0 view .LVU102
+ 294 0036 01AB     		add	r3, sp, #4
+ 295 0038 0022     		movs	r2, #0
+ 296 003a 1A70     		strb	r2, [r3]
+ 297              	.L15:
+ 174:modbus/functions/mbfunccoils.c ****                 eMBRegCoilsCB( &ucBuf[0], usRegAddress, 1, MB_REG_WRITE );
+ 298              		.loc 1 174 13 is_stmt 1 view .LVU103
+ 175:modbus/functions/mbfunccoils.c **** 
+ 299              		.loc 1 175 17 is_stmt 0 view .LVU104
+ 300 003c 0123     		movs	r3, #1
+ARM GAS  /tmp/ccHtMMfr.s 			page 11
+
+
+ 301 003e 0122     		movs	r2, #1
+ 302 0040 01A8     		add	r0, sp, #4
+ 303 0042 FFF7FEFF 		bl	eMBRegCoilsCB
+ 304              	.LVL36:
+ 178:modbus/functions/mbfunccoils.c ****             {
+ 305              		.loc 1 178 13 is_stmt 1 view .LVU105
+ 178:modbus/functions/mbfunccoils.c ****             {
+ 306              		.loc 1 178 15 is_stmt 0 view .LVU106
+ 307 0046 0028     		cmp	r0, #0
+ 308 0048 04D1     		bne	.L22
+ 152:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 309              		.loc 1 152 21 view .LVU107
+ 310 004a 0020     		movs	r0, #0
+ 311              	.LVL37:
+ 152:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 312              		.loc 1 152 21 view .LVU108
+ 313 004c DEE7     		b	.L13
+ 314              	.LVL38:
+ 315              	.L21:
+ 168:modbus/functions/mbfunccoils.c ****             }
+ 316              		.loc 1 168 17 is_stmt 1 view .LVU109
+ 168:modbus/functions/mbfunccoils.c ****             }
+ 317              		.loc 1 168 26 is_stmt 0 view .LVU110
+ 318 004e FE3A     		subs	r2, r2, #254
+ 319 0050 1A70     		strb	r2, [r3]
+ 320 0052 F3E7     		b	.L15
+ 321              	.LVL39:
+ 322              	.L22:
+ 180:modbus/functions/mbfunccoils.c ****             }
+ 323              		.loc 1 180 17 is_stmt 1 view .LVU111
+ 180:modbus/functions/mbfunccoils.c ****             }
+ 324              		.loc 1 180 27 is_stmt 0 view .LVU112
+ 325 0054 FFF7FEFF 		bl	prveMBError2Exception
+ 326              	.LVL40:
+ 180:modbus/functions/mbfunccoils.c ****             }
+ 327              		.loc 1 180 27 view .LVU113
+ 328 0058 D8E7     		b	.L13
+ 329              	.LVL41:
+ 330              	.L17:
+ 185:modbus/functions/mbfunccoils.c ****         }
+ 331              		.loc 1 185 21 view .LVU114
+ 332 005a 0320     		movs	r0, #3
+ 333              	.LVL42:
+ 185:modbus/functions/mbfunccoils.c ****         }
+ 334              		.loc 1 185 21 view .LVU115
+ 335 005c D6E7     		b	.L13
+ 336              	.LVL43:
+ 337              	.L18:
+ 185:modbus/functions/mbfunccoils.c ****         }
+ 338              		.loc 1 185 21 view .LVU116
+ 339 005e 0320     		movs	r0, #3
+ 340              	.LVL44:
+ 185:modbus/functions/mbfunccoils.c ****         }
+ 341              		.loc 1 185 21 view .LVU117
+ 342 0060 D4E7     		b	.L13
+ 343              		.cfi_endproc
+ 344              	.LFE38:
+ARM GAS  /tmp/ccHtMMfr.s 			page 12
+
+
+ 346              		.section	.text.eMBFuncWriteMultipleCoils,"ax",%progbits
+ 347              		.align	1
+ 348              		.global	eMBFuncWriteMultipleCoils
+ 349              		.syntax unified
+ 350              		.code	16
+ 351              		.thumb_func
+ 352              		.fpu softvfp
+ 354              	eMBFuncWriteMultipleCoils:
+ 355              	.LVL45:
+ 356              	.LFB39:
+ 196:modbus/functions/mbfunccoils.c **** 
+ 197:modbus/functions/mbfunccoils.c **** #endif
+ 198:modbus/functions/mbfunccoils.c **** 
+ 199:modbus/functions/mbfunccoils.c **** #if MB_FUNC_WRITE_MULTIPLE_COILS_ENABLED > 0
+ 200:modbus/functions/mbfunccoils.c **** eMBException
+ 201:modbus/functions/mbfunccoils.c **** eMBFuncWriteMultipleCoils( UCHAR * pucFrame, USHORT * usLen )
+ 202:modbus/functions/mbfunccoils.c **** {
+ 357              		.loc 1 202 1 is_stmt 1 view -0
+ 358              		.cfi_startproc
+ 359              		@ args = 0, pretend = 0, frame = 0
+ 360              		@ frame_needed = 0, uses_anonymous_args = 0
+ 361              		.loc 1 202 1 is_stmt 0 view .LVU119
+ 362 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 363              	.LCFI3:
+ 364              		.cfi_def_cfa_offset 24
+ 365              		.cfi_offset 3, -24
+ 366              		.cfi_offset 4, -20
+ 367              		.cfi_offset 5, -16
+ 368              		.cfi_offset 6, -12
+ 369              		.cfi_offset 7, -8
+ 370              		.cfi_offset 14, -4
+ 371 0002 0C00     		movs	r4, r1
+ 203:modbus/functions/mbfunccoils.c ****     USHORT          usRegAddress;
+ 372              		.loc 1 203 5 is_stmt 1 view .LVU120
+ 204:modbus/functions/mbfunccoils.c ****     USHORT          usCoilCnt;
+ 373              		.loc 1 204 5 view .LVU121
+ 205:modbus/functions/mbfunccoils.c ****     UCHAR           ucByteCount;
+ 374              		.loc 1 205 5 view .LVU122
+ 206:modbus/functions/mbfunccoils.c ****     UCHAR           ucByteCountVerify;
+ 375              		.loc 1 206 5 view .LVU123
+ 207:modbus/functions/mbfunccoils.c **** 
+ 208:modbus/functions/mbfunccoils.c ****     eMBException    eStatus = MB_EX_NONE;
+ 376              		.loc 1 208 5 view .LVU124
+ 377              	.LVL46:
+ 209:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 378              		.loc 1 209 5 view .LVU125
+ 210:modbus/functions/mbfunccoils.c **** 
+ 211:modbus/functions/mbfunccoils.c ****     if( *usLen > ( MB_PDU_FUNC_WRITE_SIZE + MB_PDU_SIZE_MIN ) )
+ 379              		.loc 1 211 5 view .LVU126
+ 380              		.loc 1 211 9 is_stmt 0 view .LVU127
+ 381 0004 0B88     		ldrh	r3, [r1]
+ 382              		.loc 1 211 7 view .LVU128
+ 383 0006 052B     		cmp	r3, #5
+ 384 0008 29D9     		bls	.L28
+ 212:modbus/functions/mbfunccoils.c ****     {
+ 213:modbus/functions/mbfunccoils.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_ADDR_OFF] << 8 );
+ 385              		.loc 1 213 9 is_stmt 1 view .LVU129
+ARM GAS  /tmp/ccHtMMfr.s 			page 13
+
+
+ 386              		.loc 1 213 44 is_stmt 0 view .LVU130
+ 387 000a 4378     		ldrb	r3, [r0, #1]
+ 388              		.loc 1 213 22 view .LVU131
+ 389 000c 1B02     		lsls	r3, r3, #8
+ 390              	.LVL47:
+ 214:modbus/functions/mbfunccoils.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_ADDR_OFF + 1] );
+ 391              		.loc 1 214 9 is_stmt 1 view .LVU132
+ 392              		.loc 1 214 45 is_stmt 0 view .LVU133
+ 393 000e 8178     		ldrb	r1, [r0, #2]
+ 394              	.LVL48:
+ 395              		.loc 1 214 22 view .LVU134
+ 396 0010 1943     		orrs	r1, r3
+ 397              	.LVL49:
+ 215:modbus/functions/mbfunccoils.c ****         usRegAddress++;
+ 398              		.loc 1 215 9 is_stmt 1 view .LVU135
+ 399              		.loc 1 215 21 is_stmt 0 view .LVU136
+ 400 0012 0131     		adds	r1, r1, #1
+ 401              	.LVL50:
+ 402              		.loc 1 215 21 view .LVU137
+ 403 0014 89B2     		uxth	r1, r1
+ 404              	.LVL51:
+ 216:modbus/functions/mbfunccoils.c **** 
+ 217:modbus/functions/mbfunccoils.c ****         usCoilCnt = ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_COILCNT_OFF] << 8 );
+ 405              		.loc 1 217 9 is_stmt 1 view .LVU138
+ 406              		.loc 1 217 41 is_stmt 0 view .LVU139
+ 407 0016 C278     		ldrb	r2, [r0, #3]
+ 408              		.loc 1 217 19 view .LVU140
+ 409 0018 1202     		lsls	r2, r2, #8
+ 410              	.LVL52:
+ 218:modbus/functions/mbfunccoils.c ****         usCoilCnt |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_COILCNT_OFF + 1] );
+ 411              		.loc 1 218 9 is_stmt 1 view .LVU141
+ 412              		.loc 1 218 42 is_stmt 0 view .LVU142
+ 413 001a 0379     		ldrb	r3, [r0, #4]
+ 414              		.loc 1 218 19 view .LVU143
+ 415 001c 1A43     		orrs	r2, r3
+ 416              	.LVL53:
+ 219:modbus/functions/mbfunccoils.c **** 
+ 220:modbus/functions/mbfunccoils.c ****         ucByteCount = pucFrame[MB_PDU_FUNC_WRITE_MUL_BYTECNT_OFF];
+ 417              		.loc 1 220 9 is_stmt 1 view .LVU144
+ 418              		.loc 1 220 21 is_stmt 0 view .LVU145
+ 419 001e 4779     		ldrb	r7, [r0, #5]
+ 420              	.LVL54:
+ 221:modbus/functions/mbfunccoils.c **** 
+ 222:modbus/functions/mbfunccoils.c ****         /* Compute the number of expected bytes in the request. */
+ 223:modbus/functions/mbfunccoils.c ****         if( ( usCoilCnt & 0x0007 ) != 0 )
+ 421              		.loc 1 223 9 is_stmt 1 view .LVU146
+ 422              		.loc 1 223 11 is_stmt 0 view .LVU147
+ 423 0020 5307     		lsls	r3, r2, #29
+ 424 0022 0CD0     		beq	.L25
+ 224:modbus/functions/mbfunccoils.c ****         {
+ 225:modbus/functions/mbfunccoils.c ****             ucByteCountVerify = ( UCHAR )( usCoilCnt / 8 + 1 );
+ 425              		.loc 1 225 13 is_stmt 1 view .LVU148
+ 426              		.loc 1 225 33 is_stmt 0 view .LVU149
+ 427 0024 D308     		lsrs	r3, r2, #3
+ 428 0026 DBB2     		uxtb	r3, r3
+ 429              		.loc 1 225 31 view .LVU150
+ 430 0028 0133     		adds	r3, r3, #1
+ARM GAS  /tmp/ccHtMMfr.s 			page 14
+
+
+ 431 002a DBB2     		uxtb	r3, r3
+ 432              	.LVL55:
+ 433              	.L26:
+ 226:modbus/functions/mbfunccoils.c ****         }
+ 227:modbus/functions/mbfunccoils.c ****         else
+ 228:modbus/functions/mbfunccoils.c ****         {
+ 229:modbus/functions/mbfunccoils.c ****             ucByteCountVerify = ( UCHAR )( usCoilCnt / 8 );
+ 230:modbus/functions/mbfunccoils.c ****         }
+ 231:modbus/functions/mbfunccoils.c **** 
+ 232:modbus/functions/mbfunccoils.c ****         if( ( usCoilCnt >= 1 ) &&
+ 434              		.loc 1 232 9 is_stmt 1 view .LVU151
+ 435              		.loc 1 232 32 is_stmt 0 view .LVU152
+ 436 002c 551E     		subs	r5, r2, #1
+ 437 002e ADB2     		uxth	r5, r5
+ 438              		.loc 1 232 11 view .LVU153
+ 439 0030 0D4E     		ldr	r6, .L33
+ 440 0032 B542     		cmp	r5, r6
+ 441 0034 15D8     		bhi	.L29
+ 233:modbus/functions/mbfunccoils.c ****             ( usCoilCnt <= MB_PDU_FUNC_WRITE_MUL_COILCNT_MAX ) &&
+ 442              		.loc 1 233 64 view .LVU154
+ 443 0036 BB42     		cmp	r3, r7
+ 444 0038 04D0     		beq	.L31
+ 234:modbus/functions/mbfunccoils.c ****             ( ucByteCountVerify == ucByteCount ) )
+ 235:modbus/functions/mbfunccoils.c ****         {
+ 236:modbus/functions/mbfunccoils.c ****             eRegStatus =
+ 237:modbus/functions/mbfunccoils.c ****                 eMBRegCoilsCB( &pucFrame[MB_PDU_FUNC_WRITE_MUL_VALUES_OFF],
+ 238:modbus/functions/mbfunccoils.c ****                                usRegAddress, usCoilCnt, MB_REG_WRITE );
+ 239:modbus/functions/mbfunccoils.c **** 
+ 240:modbus/functions/mbfunccoils.c ****             /* If an error occured convert it into a Modbus exception. */
+ 241:modbus/functions/mbfunccoils.c ****             if( eRegStatus != MB_ENOERR )
+ 242:modbus/functions/mbfunccoils.c ****             {
+ 243:modbus/functions/mbfunccoils.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 244:modbus/functions/mbfunccoils.c ****             }
+ 245:modbus/functions/mbfunccoils.c ****             else
+ 246:modbus/functions/mbfunccoils.c ****             {
+ 247:modbus/functions/mbfunccoils.c ****                 /* The response contains the function code, the starting address
+ 248:modbus/functions/mbfunccoils.c ****                  * and the quantity of registers. We reuse the old values in the 
+ 249:modbus/functions/mbfunccoils.c ****                  * buffer because they are still valid. */
+ 250:modbus/functions/mbfunccoils.c ****                 *usLen = MB_PDU_FUNC_WRITE_MUL_BYTECNT_OFF;
+ 251:modbus/functions/mbfunccoils.c ****             }
+ 252:modbus/functions/mbfunccoils.c ****         }
+ 253:modbus/functions/mbfunccoils.c ****         else
+ 254:modbus/functions/mbfunccoils.c ****         {
+ 255:modbus/functions/mbfunccoils.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 445              		.loc 1 255 21 view .LVU155
+ 446 003a 0320     		movs	r0, #3
+ 447              	.LVL56:
+ 448              		.loc 1 255 21 view .LVU156
+ 449 003c 10E0     		b	.L24
+ 450              	.LVL57:
+ 451              	.L25:
+ 229:modbus/functions/mbfunccoils.c ****         }
+ 452              		.loc 1 229 13 is_stmt 1 view .LVU157
+ 229:modbus/functions/mbfunccoils.c ****         }
+ 453              		.loc 1 229 33 is_stmt 0 view .LVU158
+ 454 003e D308     		lsrs	r3, r2, #3
+ 229:modbus/functions/mbfunccoils.c ****         }
+ARM GAS  /tmp/ccHtMMfr.s 			page 15
+
+
+ 455              		.loc 1 229 31 view .LVU159
+ 456 0040 DBB2     		uxtb	r3, r3
+ 457              	.LVL58:
+ 229:modbus/functions/mbfunccoils.c ****         }
+ 458              		.loc 1 229 31 view .LVU160
+ 459 0042 F3E7     		b	.L26
+ 460              	.L31:
+ 236:modbus/functions/mbfunccoils.c ****                 eMBRegCoilsCB( &pucFrame[MB_PDU_FUNC_WRITE_MUL_VALUES_OFF],
+ 461              		.loc 1 236 13 is_stmt 1 view .LVU161
+ 237:modbus/functions/mbfunccoils.c ****                                usRegAddress, usCoilCnt, MB_REG_WRITE );
+ 462              		.loc 1 237 17 is_stmt 0 view .LVU162
+ 463 0044 0630     		adds	r0, r0, #6
+ 464              	.LVL59:
+ 237:modbus/functions/mbfunccoils.c ****                                usRegAddress, usCoilCnt, MB_REG_WRITE );
+ 465              		.loc 1 237 17 view .LVU163
+ 466 0046 0123     		movs	r3, #1
+ 467              	.LVL60:
+ 237:modbus/functions/mbfunccoils.c ****                                usRegAddress, usCoilCnt, MB_REG_WRITE );
+ 468              		.loc 1 237 17 view .LVU164
+ 469 0048 FFF7FEFF 		bl	eMBRegCoilsCB
+ 470              	.LVL61:
+ 241:modbus/functions/mbfunccoils.c ****             {
+ 471              		.loc 1 241 13 is_stmt 1 view .LVU165
+ 241:modbus/functions/mbfunccoils.c ****             {
+ 472              		.loc 1 241 15 is_stmt 0 view .LVU166
+ 473 004c 0028     		cmp	r0, #0
+ 474 004e 03D1     		bne	.L32
+ 250:modbus/functions/mbfunccoils.c ****             }
+ 475              		.loc 1 250 17 is_stmt 1 view .LVU167
+ 250:modbus/functions/mbfunccoils.c ****             }
+ 476              		.loc 1 250 24 is_stmt 0 view .LVU168
+ 477 0050 0523     		movs	r3, #5
+ 478 0052 2380     		strh	r3, [r4]
+ 208:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 479              		.loc 1 208 21 view .LVU169
+ 480 0054 0020     		movs	r0, #0
+ 481              	.LVL62:
+ 208:modbus/functions/mbfunccoils.c ****     eMBErrorCode    eRegStatus;
+ 482              		.loc 1 208 21 view .LVU170
+ 483 0056 03E0     		b	.L24
+ 484              	.LVL63:
+ 485              	.L32:
+ 243:modbus/functions/mbfunccoils.c ****             }
+ 486              		.loc 1 243 17 is_stmt 1 view .LVU171
+ 243:modbus/functions/mbfunccoils.c ****             }
+ 487              		.loc 1 243 27 is_stmt 0 view .LVU172
+ 488 0058 FFF7FEFF 		bl	prveMBError2Exception
+ 489              	.LVL64:
+ 243:modbus/functions/mbfunccoils.c ****             }
+ 490              		.loc 1 243 27 view .LVU173
+ 491 005c 00E0     		b	.L24
+ 492              	.LVL65:
+ 493              	.L28:
+ 256:modbus/functions/mbfunccoils.c ****         }
+ 257:modbus/functions/mbfunccoils.c ****     }
+ 258:modbus/functions/mbfunccoils.c ****     else
+ 259:modbus/functions/mbfunccoils.c ****     {
+ARM GAS  /tmp/ccHtMMfr.s 			page 16
+
+
+ 260:modbus/functions/mbfunccoils.c ****         /* Can't be a valid write coil register request because the length
+ 261:modbus/functions/mbfunccoils.c ****          * is incorrect. */
+ 262:modbus/functions/mbfunccoils.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 494              		.loc 1 262 17 view .LVU174
+ 495 005e 0320     		movs	r0, #3
+ 496              	.LVL66:
+ 497              	.L24:
+ 263:modbus/functions/mbfunccoils.c ****     }
+ 264:modbus/functions/mbfunccoils.c ****     return eStatus;
+ 498              		.loc 1 264 5 is_stmt 1 view .LVU175
+ 265:modbus/functions/mbfunccoils.c **** }
+ 499              		.loc 1 265 1 is_stmt 0 view .LVU176
+ 500              		@ sp needed
+ 501              	.LVL67:
+ 502              		.loc 1 265 1 view .LVU177
+ 503 0060 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 504              	.LVL68:
+ 505              	.L29:
+ 255:modbus/functions/mbfunccoils.c ****         }
+ 506              		.loc 1 255 21 view .LVU178
+ 507 0062 0320     		movs	r0, #3
+ 508              	.LVL69:
+ 255:modbus/functions/mbfunccoils.c ****         }
+ 509              		.loc 1 255 21 view .LVU179
+ 510 0064 FCE7     		b	.L24
+ 511              	.L34:
+ 512 0066 C046     		.align	2
+ 513              	.L33:
+ 514 0068 AF070000 		.word	1967
+ 515              		.cfi_endproc
+ 516              	.LFE39:
+ 518              		.text
+ 519              	.Letext0:
+ 520              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 521              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 522              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 523              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 524              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 525              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 526              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 527              		.file 9 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 528              		.file 10 "modbus/port/port.h"
+ 529              		.file 11 "modbus/include/mbport.h"
+ 530              		.file 12 "modbus/include/mbproto.h"
+ 531              		.file 13 "modbus/include/mb.h"
+ARM GAS  /tmp/ccHtMMfr.s 			page 17
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mbfunccoils.c
+     /tmp/ccHtMMfr.s:16     .text.eMBFuncReadCoils:0000000000000000 $t
+     /tmp/ccHtMMfr.s:24     .text.eMBFuncReadCoils:0000000000000000 eMBFuncReadCoils
+     /tmp/ccHtMMfr.s:198    .text.eMBFuncReadCoils:0000000000000078 $d
+     /tmp/ccHtMMfr.s:203    .text.eMBFuncWriteCoil:0000000000000000 $t
+     /tmp/ccHtMMfr.s:210    .text.eMBFuncWriteCoil:0000000000000000 eMBFuncWriteCoil
+     /tmp/ccHtMMfr.s:347    .text.eMBFuncWriteMultipleCoils:0000000000000000 $t
+     /tmp/ccHtMMfr.s:354    .text.eMBFuncWriteMultipleCoils:0000000000000000 eMBFuncWriteMultipleCoils
+     /tmp/ccHtMMfr.s:514    .text.eMBFuncWriteMultipleCoils:0000000000000068 $d
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+eMBRegCoilsCB
+prveMBError2Exception

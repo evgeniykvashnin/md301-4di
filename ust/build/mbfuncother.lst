@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc2EomDx.s 			page 1
+ARM GAS  /tmp/ccYenlxN.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -15,21 +15,324 @@ ARM GAS  /tmp/cc2EomDx.s 			page 1
   12              		.text
   13              	.Ltext0:
   14              		.cfi_sections	.debug_frame
-  15              	.Letext0:
-  16              		.file 1 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
-  17              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
-  18              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
-  19              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
-  20              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
-  21              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
-  22              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
-  23              		.file 8 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
-  24              		.file 9 "modbus/port/port.h"
-  25              		.file 10 "modbus/include/mbport.h"
-ARM GAS  /tmp/cc2EomDx.s 			page 2
+  15              		.section	.text.eMBSetSlaveID,"ax",%progbits
+  16              		.align	1
+  17              		.global	eMBSetSlaveID
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	eMBSetSlaveID:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "modbus/functions/mbfuncother.c"
+   1:modbus/functions/mbfuncother.c **** /* 
+   2:modbus/functions/mbfuncother.c ****  * FreeModbus Libary: A portable Modbus implementation for Modbus ASCII/RTU.
+   3:modbus/functions/mbfuncother.c ****  * Copyright (c) 2006-2018 Christian Walter <cwalter@embedded-solutions.at>
+   4:modbus/functions/mbfuncother.c ****  * All rights reserved.
+   5:modbus/functions/mbfuncother.c ****  *
+   6:modbus/functions/mbfuncother.c ****  * Redistribution and use in source and binary forms, with or without
+   7:modbus/functions/mbfuncother.c ****  * modification, are permitted provided that the following conditions
+   8:modbus/functions/mbfuncother.c ****  * are met:
+   9:modbus/functions/mbfuncother.c ****  * 1. Redistributions of source code must retain the above copyright
+  10:modbus/functions/mbfuncother.c ****  *    notice, this list of conditions and the following disclaimer.
+  11:modbus/functions/mbfuncother.c ****  * 2. Redistributions in binary form must reproduce the above copyright
+  12:modbus/functions/mbfuncother.c ****  *    notice, this list of conditions and the following disclaimer in the
+  13:modbus/functions/mbfuncother.c ****  *    documentation and/or other materials provided with the distribution.
+  14:modbus/functions/mbfuncother.c ****  * 3. The name of the author may not be used to endorse or promote products
+  15:modbus/functions/mbfuncother.c ****  *    derived from this software without specific prior written permission.
+  16:modbus/functions/mbfuncother.c ****  *
+  17:modbus/functions/mbfuncother.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  18:modbus/functions/mbfuncother.c ****  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  19:modbus/functions/mbfuncother.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  20:modbus/functions/mbfuncother.c ****  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  21:modbus/functions/mbfuncother.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  22:modbus/functions/mbfuncother.c ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  23:modbus/functions/mbfuncother.c ****  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  24:modbus/functions/mbfuncother.c ****  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  25:modbus/functions/mbfuncother.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  26:modbus/functions/mbfuncother.c ****  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  27:modbus/functions/mbfuncother.c ****  *
+  28:modbus/functions/mbfuncother.c ****  */
+  29:modbus/functions/mbfuncother.c **** 
+  30:modbus/functions/mbfuncother.c **** /* ----------------------- System includes ----------------------------------*/
+  31:modbus/functions/mbfuncother.c **** #include "stdlib.h"
+ARM GAS  /tmp/ccYenlxN.s 			page 2
+
+
+  32:modbus/functions/mbfuncother.c **** #include "string.h"
+  33:modbus/functions/mbfuncother.c **** 
+  34:modbus/functions/mbfuncother.c **** /* ----------------------- Platform includes --------------------------------*/
+  35:modbus/functions/mbfuncother.c **** #include "port.h"
+  36:modbus/functions/mbfuncother.c **** 
+  37:modbus/functions/mbfuncother.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  38:modbus/functions/mbfuncother.c **** #include "mb.h"
+  39:modbus/functions/mbfuncother.c **** #include "mbframe.h"
+  40:modbus/functions/mbfuncother.c **** #include "mbproto.h"
+  41:modbus/functions/mbfuncother.c **** #include "mbconfig.h"
+  42:modbus/functions/mbfuncother.c **** 
+  43:modbus/functions/mbfuncother.c **** #if MB_FUNC_OTHER_REP_SLAVEID_ENABLED > 0
+  44:modbus/functions/mbfuncother.c **** 
+  45:modbus/functions/mbfuncother.c **** /* ----------------------- Static variables ---------------------------------*/
+  46:modbus/functions/mbfuncother.c **** static UCHAR    ucMBSlaveID[MB_FUNC_OTHER_REP_SLAVEID_BUF];
+  47:modbus/functions/mbfuncother.c **** static USHORT   usMBSlaveIDLen;
+  48:modbus/functions/mbfuncother.c **** 
+  49:modbus/functions/mbfuncother.c **** /* ----------------------- Start implementation -----------------------------*/
+  50:modbus/functions/mbfuncother.c **** 
+  51:modbus/functions/mbfuncother.c **** eMBErrorCode
+  52:modbus/functions/mbfuncother.c **** eMBSetSlaveID( UCHAR ucSlaveID, BOOL xIsRunning,
+  53:modbus/functions/mbfuncother.c ****                UCHAR const *pucAdditional, USHORT usAdditionalLen )
+  54:modbus/functions/mbfuncother.c **** {
+  28              		.loc 1 54 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 54 1 is_stmt 0 view .LVU1
+  33 0000 70B5     		push	{r4, r5, r6, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 4, -16
+  37              		.cfi_offset 5, -12
+  38              		.cfi_offset 6, -8
+  39              		.cfi_offset 14, -4
+  40 0002 1500     		movs	r5, r2
+  41 0004 1C00     		movs	r4, r3
+  55:modbus/functions/mbfuncother.c ****     eMBErrorCode    eStatus = MB_ENOERR;
+  42              		.loc 1 55 5 is_stmt 1 view .LVU2
+  43              	.LVL1:
+  56:modbus/functions/mbfuncother.c **** 
+  57:modbus/functions/mbfuncother.c ****     /* the first byte and second byte in the buffer is reserved for
+  58:modbus/functions/mbfuncother.c ****      * the parameter ucSlaveID and the running flag. The rest of
+  59:modbus/functions/mbfuncother.c ****      * the buffer is available for additional data. */
+  60:modbus/functions/mbfuncother.c ****     if( usAdditionalLen + 2 < MB_FUNC_OTHER_REP_SLAVEID_BUF )
+  44              		.loc 1 60 5 view .LVU3
+  45              		.loc 1 60 7 is_stmt 0 view .LVU4
+  46 0006 1D2B     		cmp	r3, #29
+  47 0008 1AD8     		bhi	.L4
+  61:modbus/functions/mbfuncother.c ****     {
+  62:modbus/functions/mbfuncother.c ****         usMBSlaveIDLen = 0;
+  48              		.loc 1 62 9 is_stmt 1 view .LVU5
+  63:modbus/functions/mbfuncother.c ****         ucMBSlaveID[usMBSlaveIDLen++] = ucSlaveID;
+  49              		.loc 1 63 9 view .LVU6
+  50              		.loc 1 63 39 is_stmt 0 view .LVU7
+  51 000a 0E4B     		ldr	r3, .L8
+  52              	.LVL2:
+ARM GAS  /tmp/ccYenlxN.s 			page 3
+
+
+  53              		.loc 1 63 39 view .LVU8
+  54 000c 1870     		strb	r0, [r3]
+  64:modbus/functions/mbfuncother.c ****         ucMBSlaveID[usMBSlaveIDLen++] = ( UCHAR )( xIsRunning ? 0xFF : 0x00 );
+  55              		.loc 1 64 9 is_stmt 1 view .LVU9
+  56              		.loc 1 64 41 is_stmt 0 view .LVU10
+  57 000e 0029     		cmp	r1, #0
+  58 0010 09D0     		beq	.L5
+  59 0012 FF22     		movs	r2, #255
+  60              	.LVL3:
+  61              	.L3:
+  62              		.loc 1 64 35 discriminator 4 view .LVU11
+  63 0014 0C4B     		ldr	r3, .L8+4
+  64 0016 0221     		movs	r1, #2
+  65              	.LVL4:
+  66              		.loc 1 64 35 discriminator 4 view .LVU12
+  67 0018 1980     		strh	r1, [r3]
+  68              		.loc 1 64 39 discriminator 4 view .LVU13
+  69 001a 0A4B     		ldr	r3, .L8
+  70 001c 5A70     		strb	r2, [r3, #1]
+  65:modbus/functions/mbfuncother.c ****         if( usAdditionalLen > 0 )
+  71              		.loc 1 65 9 is_stmt 1 discriminator 4 view .LVU14
+  72              		.loc 1 65 11 is_stmt 0 discriminator 4 view .LVU15
+  73 001e 002C     		cmp	r4, #0
+  74 0020 03D1     		bne	.L7
+  55:modbus/functions/mbfuncother.c **** 
+  75              		.loc 1 55 21 view .LVU16
+  76 0022 0020     		movs	r0, #0
+  77              	.LVL5:
+  78              	.L2:
+  66:modbus/functions/mbfuncother.c ****         {
+  67:modbus/functions/mbfuncother.c ****             memcpy( &ucMBSlaveID[usMBSlaveIDLen], pucAdditional,
+  68:modbus/functions/mbfuncother.c ****                     ( size_t )usAdditionalLen );
+  69:modbus/functions/mbfuncother.c ****             usMBSlaveIDLen += usAdditionalLen;
+  70:modbus/functions/mbfuncother.c ****         }
+  71:modbus/functions/mbfuncother.c ****     }
+  72:modbus/functions/mbfuncother.c ****     else
+  73:modbus/functions/mbfuncother.c ****     {
+  74:modbus/functions/mbfuncother.c ****         eStatus = MB_ENORES;
+  75:modbus/functions/mbfuncother.c ****     }
+  76:modbus/functions/mbfuncother.c ****     return eStatus;
+  79              		.loc 1 76 5 is_stmt 1 view .LVU17
+  77:modbus/functions/mbfuncother.c **** }
+  80              		.loc 1 77 1 is_stmt 0 view .LVU18
+  81              		@ sp needed
+  82              	.LVL6:
+  83              		.loc 1 77 1 view .LVU19
+  84 0024 70BD     		pop	{r4, r5, r6, pc}
+  85              	.LVL7:
+  86              	.L5:
+  64:modbus/functions/mbfuncother.c ****         if( usAdditionalLen > 0 )
+  87              		.loc 1 64 41 view .LVU20
+  88 0026 0022     		movs	r2, #0
+  89              	.LVL8:
+  64:modbus/functions/mbfuncother.c ****         if( usAdditionalLen > 0 )
+  90              		.loc 1 64 41 view .LVU21
+  91 0028 F4E7     		b	.L3
+  92              	.LVL9:
+ARM GAS  /tmp/ccYenlxN.s 			page 4
+
+
+  93              	.L7:
+  67:modbus/functions/mbfuncother.c ****                     ( size_t )usAdditionalLen );
+  94              		.loc 1 67 13 is_stmt 1 view .LVU22
+  95 002a 1800     		movs	r0, r3
+  96              	.LVL10:
+  67:modbus/functions/mbfuncother.c ****                     ( size_t )usAdditionalLen );
+  97              		.loc 1 67 13 is_stmt 0 view .LVU23
+  98 002c 2200     		movs	r2, r4
+  99 002e 2900     		movs	r1, r5
+ 100 0030 0230     		adds	r0, r0, #2
+ 101 0032 FFF7FEFF 		bl	memcpy
+ 102              	.LVL11:
+  69:modbus/functions/mbfuncother.c ****         }
+ 103              		.loc 1 69 13 is_stmt 1 view .LVU24
+  69:modbus/functions/mbfuncother.c ****         }
+ 104              		.loc 1 69 28 is_stmt 0 view .LVU25
+ 105 0036 0234     		adds	r4, r4, #2
+ 106 0038 034B     		ldr	r3, .L8+4
+ 107 003a 1C80     		strh	r4, [r3]
+  55:modbus/functions/mbfuncother.c **** 
+ 108              		.loc 1 55 21 view .LVU26
+ 109 003c 0020     		movs	r0, #0
+ 110 003e F1E7     		b	.L2
+ 111              	.LVL12:
+ 112              	.L4:
+  74:modbus/functions/mbfuncother.c ****     }
+ 113              		.loc 1 74 17 view .LVU27
+ 114 0040 0420     		movs	r0, #4
+ 115              	.LVL13:
+  74:modbus/functions/mbfuncother.c ****     }
+ 116              		.loc 1 74 17 view .LVU28
+ 117 0042 EFE7     		b	.L2
+ 118              	.L9:
+ 119              		.align	2
+ 120              	.L8:
+ 121 0044 00000000 		.word	.LANCHOR0
+ 122 0048 00000000 		.word	.LANCHOR1
+ 123              		.cfi_endproc
+ 124              	.LFE37:
+ 126              		.section	.text.eMBFuncReportSlaveID,"ax",%progbits
+ 127              		.align	1
+ 128              		.global	eMBFuncReportSlaveID
+ 129              		.syntax unified
+ 130              		.code	16
+ 131              		.thumb_func
+ 132              		.fpu softvfp
+ 134              	eMBFuncReportSlaveID:
+ 135              	.LVL14:
+ 136              	.LFB38:
+  78:modbus/functions/mbfuncother.c **** 
+  79:modbus/functions/mbfuncother.c **** eMBException
+  80:modbus/functions/mbfuncother.c **** eMBFuncReportSlaveID( UCHAR * pucFrame, USHORT * usLen )
+  81:modbus/functions/mbfuncother.c **** {
+ 137              		.loc 1 81 1 is_stmt 1 view -0
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 0
+ 140              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccYenlxN.s 			page 5
+
+
+ 141              		.loc 1 81 1 is_stmt 0 view .LVU30
+ 142 0000 70B5     		push	{r4, r5, r6, lr}
+ 143              	.LCFI1:
+ 144              		.cfi_def_cfa_offset 16
+ 145              		.cfi_offset 4, -16
+ 146              		.cfi_offset 5, -12
+ 147              		.cfi_offset 6, -8
+ 148              		.cfi_offset 14, -4
+ 149 0002 0D00     		movs	r5, r1
+  82:modbus/functions/mbfuncother.c ****     memcpy( &pucFrame[MB_PDU_DATA_OFF], &ucMBSlaveID[0], ( size_t )usMBSlaveIDLen );
+ 150              		.loc 1 82 5 is_stmt 1 view .LVU31
+ 151              		.loc 1 82 13 is_stmt 0 view .LVU32
+ 152 0004 0130     		adds	r0, r0, #1
+ 153              	.LVL15:
+ 154              		.loc 1 82 5 view .LVU33
+ 155 0006 054B     		ldr	r3, .L11
+ 156 0008 1C88     		ldrh	r4, [r3]
+ 157 000a 2200     		movs	r2, r4
+ 158 000c 0449     		ldr	r1, .L11+4
+ 159              	.LVL16:
+ 160              		.loc 1 82 5 view .LVU34
+ 161 000e FFF7FEFF 		bl	memcpy
+ 162              	.LVL17:
+  83:modbus/functions/mbfuncother.c ****     *usLen = ( USHORT )( MB_PDU_DATA_OFF + usMBSlaveIDLen );
+ 163              		.loc 1 83 5 is_stmt 1 view .LVU35
+ 164              		.loc 1 83 14 is_stmt 0 view .LVU36
+ 165 0012 0134     		adds	r4, r4, #1
+ 166              		.loc 1 83 12 view .LVU37
+ 167 0014 2C80     		strh	r4, [r5]
+  84:modbus/functions/mbfuncother.c ****     return MB_EX_NONE;
+ 168              		.loc 1 84 5 is_stmt 1 view .LVU38
+  85:modbus/functions/mbfuncother.c **** }
+ 169              		.loc 1 85 1 is_stmt 0 view .LVU39
+ 170 0016 0020     		movs	r0, #0
+ 171              		@ sp needed
+ 172              	.LVL18:
+ 173              		.loc 1 85 1 view .LVU40
+ 174 0018 70BD     		pop	{r4, r5, r6, pc}
+ 175              	.L12:
+ 176 001a C046     		.align	2
+ 177              	.L11:
+ 178 001c 00000000 		.word	.LANCHOR1
+ 179 0020 00000000 		.word	.LANCHOR0
+ 180              		.cfi_endproc
+ 181              	.LFE38:
+ 183              		.section	.bss.ucMBSlaveID,"aw",%nobits
+ 184              		.align	2
+ 185              		.set	.LANCHOR0,. + 0
+ 188              	ucMBSlaveID:
+ 189 0000 00000000 		.space	32
+ 189      00000000 
+ 189      00000000 
+ 189      00000000 
+ 189      00000000 
+ 190              		.section	.bss.usMBSlaveIDLen,"aw",%nobits
+ 191              		.align	1
+ 192              		.set	.LANCHOR1,. + 0
+ARM GAS  /tmp/ccYenlxN.s 			page 6
+
+
+ 195              	usMBSlaveIDLen:
+ 196 0000 0000     		.space	2
+ 197              		.text
+ 198              	.Letext0:
+ 199              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 200              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 201              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 202              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 203              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 204              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 205              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 206              		.file 9 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 207              		.file 10 "modbus/port/port.h"
+ 208              		.file 11 "modbus/include/mbport.h"
+ 209              		.file 12 "modbus/include/mbproto.h"
+ 210              		.file 13 "modbus/include/mb.h"
+ 211              		.file 14 "<built-in>"
+ARM GAS  /tmp/ccYenlxN.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mbfuncother.c
+     /tmp/ccYenlxN.s:16     .text.eMBSetSlaveID:0000000000000000 $t
+     /tmp/ccYenlxN.s:24     .text.eMBSetSlaveID:0000000000000000 eMBSetSlaveID
+     /tmp/ccYenlxN.s:121    .text.eMBSetSlaveID:0000000000000044 $d
+     /tmp/ccYenlxN.s:127    .text.eMBFuncReportSlaveID:0000000000000000 $t
+     /tmp/ccYenlxN.s:134    .text.eMBFuncReportSlaveID:0000000000000000 eMBFuncReportSlaveID
+     /tmp/ccYenlxN.s:178    .text.eMBFuncReportSlaveID:000000000000001c $d
+     /tmp/ccYenlxN.s:184    .bss.ucMBSlaveID:0000000000000000 $d
+     /tmp/ccYenlxN.s:188    .bss.ucMBSlaveID:0000000000000000 ucMBSlaveID
+     /tmp/ccYenlxN.s:191    .bss.usMBSlaveIDLen:0000000000000000 $d
+     /tmp/ccYenlxN.s:195    .bss.usMBSlaveIDLen:0000000000000000 usMBSlaveIDLen
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+memcpy

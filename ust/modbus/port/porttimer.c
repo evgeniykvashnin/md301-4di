@@ -43,7 +43,6 @@ xMBPortTimersInit( USHORT usTim1Timerout50us )
     return HAL_OK == HAL_TIM_Base_Init(&htim14) ? TRUE : FALSE;
 }
 
-
 inline void
 vMBPortTimersEnable(  )
 {
@@ -65,12 +64,11 @@ vMBPortTimersDisable(  )
  */
 static void prvvTIMERExpiredISR( void )
 {
-    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
     ( void )pxMBPortCBTimerExpired(  );
 }
-void TIM6_DAC1_IRQHandler(void) {
+void TIM14_DAC1_IRQHandler(void) {
 	/* TIM Update event */
-   
+    HAL_Delay(1000);
 	if(__HAL_TIM_GET_FLAG(&htim14, TIM_FLAG_UPDATE) != RESET && __HAL_TIM_GET_IT_SOURCE(&htim14, TIM_IT_UPDATE) !=RESET) {
 		__HAL_TIM_CLEAR_IT(&htim14, TIM_IT_UPDATE);
 		if (!--counter)

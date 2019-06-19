@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccn5smZ1.s 			page 1
+ARM GAS  /tmp/ccrMcL7D.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
   29:modbus/mb.c   **** 
   30:modbus/mb.c   **** /* ----------------------- System includes ----------------------------------*/
   31:modbus/mb.c   **** #include "stdlib.h"
-ARM GAS  /tmp/ccn5smZ1.s 			page 2
+ARM GAS  /tmp/ccrMcL7D.s 			page 2
 
 
   32:modbus/mb.c   **** #include "string.h"
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
   86:modbus/mb.c   **** BOOL( *pxMBPortCBTimerExpired ) ( void );
   87:modbus/mb.c   **** 
   88:modbus/mb.c   **** BOOL( *pxMBFrameCBReceiveFSMCur ) ( void );
-ARM GAS  /tmp/ccn5smZ1.s 			page 3
+ARM GAS  /tmp/ccrMcL7D.s 			page 3
 
 
   89:modbus/mb.c   **** BOOL( *pxMBFrameCBTransmitFSMCur ) ( void );
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
   40 0002 0D00     		movs	r5, r1
   41 0004 1100     		movs	r1, r2
   42              	.LVL1:
-ARM GAS  /tmp/ccn5smZ1.s 			page 4
+ARM GAS  /tmp/ccrMcL7D.s 			page 4
 
 
   43              		.loc 1 130 1 view .LVU2
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
  160:modbus/mb.c   ****         case MB_ASCII:
  161:modbus/mb.c   ****             pvMBFrameStartCur = eMBASCIIStart;
  162:modbus/mb.c   ****             pvMBFrameStopCur = eMBASCIIStop;
-ARM GAS  /tmp/ccn5smZ1.s 			page 5
+ARM GAS  /tmp/ccrMcL7D.s 			page 5
 
 
  163:modbus/mb.c   ****             peMBFrameSendCur = eMBASCIISend;
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
  152:modbus/mb.c   ****             pxMBFrameCBTransmitterEmpty = xMBRTUTransmitFSM;
   98              		.loc 1 152 13 is_stmt 1 view .LVU24
  152:modbus/mb.c   ****             pxMBFrameCBTransmitterEmpty = xMBRTUTransmitFSM;
-ARM GAS  /tmp/ccn5smZ1.s 			page 6
+ARM GAS  /tmp/ccrMcL7D.s 			page 6
 
 
   99              		.loc 1 152 37 is_stmt 0 view .LVU25
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
  187:modbus/mb.c   ****                 eMBState = STATE_DISABLED;
  133              		.loc 1 187 17 view .LVU40
  134              		.loc 1 187 26 is_stmt 0 view .LVU41
-ARM GAS  /tmp/ccn5smZ1.s 			page 7
+ARM GAS  /tmp/ccrMcL7D.s 			page 7
 
 
  135 0062 144B     		ldr	r3, .L7+64
@@ -415,17 +415,17 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
  178 00b4 00000000 		.word	.LANCHOR6
  179              		.cfi_endproc
  180              	.LFE37:
- 182              		.section	.text.eMBRegisterCB,"ax",%progbits
+ 182              		.section	.text.eMBRegCoilsCB,"ax",%progbits
  183              		.align	1
- 184              		.global	eMBRegisterCB
-ARM GAS  /tmp/ccn5smZ1.s 			page 8
+ 184              		.global	eMBRegCoilsCB
+ARM GAS  /tmp/ccrMcL7D.s 			page 8
 
 
  185              		.syntax unified
  186              		.code	16
  187              		.thumb_func
  188              		.fpu softvfp
- 190              	eMBRegisterCB:
+ 190              	eMBRegCoilsCB:
  191              	.LVL14:
  192              	.LFB38:
  193:modbus/mb.c   **** 
@@ -460,39 +460,190 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
  222:modbus/mb.c   **** #endif
  223:modbus/mb.c   **** 
  224:modbus/mb.c   **** eMBErrorCode
- 225:modbus/mb.c   **** eMBRegisterCB( UCHAR ucFunctionCode, pxMBFunctionHandler pxHandler )
- 226:modbus/mb.c   **** {
- 193              		.loc 1 226 1 is_stmt 1 view -0
+ 225:modbus/mb.c   **** eMBRegCoilsCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNCoils,
+ 226:modbus/mb.c   ****                eMBRegisterMode eMode )
+ 227:modbus/mb.c   **** {
+ 193              		.loc 1 227 1 is_stmt 1 view -0
  194              		.cfi_startproc
  195              		@ args = 0, pretend = 0, frame = 0
  196              		@ frame_needed = 0, uses_anonymous_args = 0
- 197              		.loc 1 226 1 is_stmt 0 view .LVU49
- 198 0000 10B5     		push	{r4, lr}
- 199              	.LCFI1:
- 200              		.cfi_def_cfa_offset 8
- 201              		.cfi_offset 4, -8
- 202              		.cfi_offset 14, -4
- 227:modbus/mb.c   ****     int             i;
- 203              		.loc 1 227 5 is_stmt 1 view .LVU50
- 228:modbus/mb.c   ****     eMBErrorCode    eStatus;
- 204              		.loc 1 228 5 view .LVU51
- 229:modbus/mb.c   **** 
- 230:modbus/mb.c   ****     if( ( 0 < ucFunctionCode ) && ( ucFunctionCode <= 127 ) )
-ARM GAS  /tmp/ccn5smZ1.s 			page 9
+ 197              		@ link register save eliminated.
+ 228:modbus/mb.c   ****     return MB_ENOREG;
+ 198              		.loc 1 228 5 view .LVU49
+ 229:modbus/mb.c   **** }
+ 199              		.loc 1 229 1 is_stmt 0 view .LVU50
+ 200 0000 0120     		movs	r0, #1
+ 201              	.LVL15:
+ 202              		.loc 1 229 1 view .LVU51
+ 203              		@ sp needed
+ 204 0002 7047     		bx	lr
+ 205              		.cfi_endproc
+ARM GAS  /tmp/ccrMcL7D.s 			page 9
 
 
- 205              		.loc 1 230 5 view .LVU52
- 206              		.loc 1 230 32 is_stmt 0 view .LVU53
- 207 0002 43B2     		sxtb	r3, r0
- 208              		.loc 1 230 7 view .LVU54
- 209 0004 002B     		cmp	r3, #0
- 210 0006 2FDD     		ble	.L20
- 231:modbus/mb.c   ****     {
- 232:modbus/mb.c   ****         ENTER_CRITICAL_SECTION(  );
- 211              		.loc 1 232 9 is_stmt 1 view .LVU55
- 212              	.LBB6:
- 213              	.LBI6:
- 214              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+ 206              	.LFE38:
+ 208              		.section	.text.eMBRegHoldingCB,"ax",%progbits
+ 209              		.align	1
+ 210              		.global	eMBRegHoldingCB
+ 211              		.syntax unified
+ 212              		.code	16
+ 213              		.thumb_func
+ 214              		.fpu softvfp
+ 216              	eMBRegHoldingCB:
+ 217              	.LVL16:
+ 218              	.LFB39:
+ 230:modbus/mb.c   **** 
+ 231:modbus/mb.c   **** eMBErrorCode
+ 232:modbus/mb.c   **** eMBRegHoldingCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs,
+ 233:modbus/mb.c   ****                  eMBRegisterMode eMode )
+ 234:modbus/mb.c   **** {
+ 219              		.loc 1 234 1 is_stmt 1 view -0
+ 220              		.cfi_startproc
+ 221              		@ args = 0, pretend = 0, frame = 0
+ 222              		@ frame_needed = 0, uses_anonymous_args = 0
+ 223              		@ link register save eliminated.
+ 235:modbus/mb.c   ****     return MB_ENOREG;
+ 224              		.loc 1 235 5 view .LVU53
+ 236:modbus/mb.c   **** }
+ 225              		.loc 1 236 1 is_stmt 0 view .LVU54
+ 226 0000 0120     		movs	r0, #1
+ 227              	.LVL17:
+ 228              		.loc 1 236 1 view .LVU55
+ 229              		@ sp needed
+ 230 0002 7047     		bx	lr
+ 231              		.cfi_endproc
+ 232              	.LFE39:
+ 234              		.section	.text.eMBRegDiscreteCB,"ax",%progbits
+ 235              		.align	1
+ 236              		.global	eMBRegDiscreteCB
+ 237              		.syntax unified
+ 238              		.code	16
+ 239              		.thumb_func
+ 240              		.fpu softvfp
+ 242              	eMBRegDiscreteCB:
+ 243              	.LVL18:
+ 244              	.LFB40:
+ 237:modbus/mb.c   **** 
+ 238:modbus/mb.c   **** eMBErrorCode
+ 239:modbus/mb.c   **** eMBRegDiscreteCB( UCHAR * pucRegBuffer, USHORT usAddress,
+ 240:modbus/mb.c   ****                                   USHORT usNDiscrete )
+ 241:modbus/mb.c   ****                                   {
+ 245              		.loc 1 241 35 is_stmt 1 view -0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              		@ link register save eliminated.
+ 242:modbus/mb.c   ****                                       return MB_ENOREG;
+ 250              		.loc 1 242 39 view .LVU57
+ 243:modbus/mb.c   ****                                   };
+ 251              		.loc 1 243 35 is_stmt 0 view .LVU58
+ 252 0000 0120     		movs	r0, #1
+ARM GAS  /tmp/ccrMcL7D.s 			page 10
+
+
+ 253              	.LVL19:
+ 254              		.loc 1 243 35 view .LVU59
+ 255              		@ sp needed
+ 256 0002 7047     		bx	lr
+ 257              		.cfi_endproc
+ 258              	.LFE40:
+ 260              		.section	.text.eMBRegInputCB,"ax",%progbits
+ 261              		.align	1
+ 262              		.global	eMBRegInputCB
+ 263              		.syntax unified
+ 264              		.code	16
+ 265              		.thumb_func
+ 266              		.fpu softvfp
+ 268              	eMBRegInputCB:
+ 269              	.LVL20:
+ 270              	.LFB41:
+ 244:modbus/mb.c   **** eMBErrorCode
+ 245:modbus/mb.c   **** eMBRegInputCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs )
+ 246:modbus/mb.c   **** {
+ 271              		.loc 1 246 1 is_stmt 1 view -0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 0
+ 274              		@ frame_needed = 0, uses_anonymous_args = 0
+ 275              		@ link register save eliminated.
+ 247:modbus/mb.c   ****     // eMBErrorCode    eStatus = MB_ENOERR;
+ 248:modbus/mb.c   ****     // int             iRegIndex;
+ 249:modbus/mb.c   **** 
+ 250:modbus/mb.c   ****     // if( ( usAddress >= REG_INPUT_START )
+ 251:modbus/mb.c   ****     //     && ( usAddress + usNRegs <= REG_INPUT_START + REG_INPUT_NREGS ) )
+ 252:modbus/mb.c   ****     // {
+ 253:modbus/mb.c   ****     //     iRegIndex = ( int )( usAddress - usRegInputStart );
+ 254:modbus/mb.c   ****     //     while( usNRegs > 0 )
+ 255:modbus/mb.c   ****     //     {
+ 256:modbus/mb.c   ****     //         *pucRegBuffer++ =
+ 257:modbus/mb.c   ****     //             ( unsigned char )( usRegInputBuf[iRegIndex] >> 8 );
+ 258:modbus/mb.c   ****     //         *pucRegBuffer++ =
+ 259:modbus/mb.c   ****     //             ( unsigned char )( usRegInputBuf[iRegIndex] & 0xFF );
+ 260:modbus/mb.c   ****     //         iRegIndex++;
+ 261:modbus/mb.c   ****     //         usNRegs--;
+ 262:modbus/mb.c   ****     //     }
+ 263:modbus/mb.c   ****     // }
+ 264:modbus/mb.c   ****     // else
+ 265:modbus/mb.c   ****     // {
+ 266:modbus/mb.c   ****     //     eStatus = MB_ENOREG;
+ 267:modbus/mb.c   ****     // }
+ 268:modbus/mb.c   **** 
+ 269:modbus/mb.c   ****     // return eStatus;
+ 270:modbus/mb.c   ****     return MB_ENOREG;
+ 276              		.loc 1 270 5 view .LVU61
+ 271:modbus/mb.c   **** }
+ 277              		.loc 1 271 1 is_stmt 0 view .LVU62
+ 278 0000 0120     		movs	r0, #1
+ 279              	.LVL21:
+ 280              		.loc 1 271 1 view .LVU63
+ 281              		@ sp needed
+ 282 0002 7047     		bx	lr
+ 283              		.cfi_endproc
+ARM GAS  /tmp/ccrMcL7D.s 			page 11
+
+
+ 284              	.LFE41:
+ 286              		.section	.text.eMBRegisterCB,"ax",%progbits
+ 287              		.align	1
+ 288              		.global	eMBRegisterCB
+ 289              		.syntax unified
+ 290              		.code	16
+ 291              		.thumb_func
+ 292              		.fpu softvfp
+ 294              	eMBRegisterCB:
+ 295              	.LVL22:
+ 296              	.LFB42:
+ 272:modbus/mb.c   **** 
+ 273:modbus/mb.c   **** eMBErrorCode
+ 274:modbus/mb.c   **** eMBRegisterCB( UCHAR ucFunctionCode, pxMBFunctionHandler pxHandler )
+ 275:modbus/mb.c   **** {
+ 297              		.loc 1 275 1 is_stmt 1 view -0
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              		.loc 1 275 1 is_stmt 0 view .LVU65
+ 302 0000 10B5     		push	{r4, lr}
+ 303              	.LCFI1:
+ 304              		.cfi_def_cfa_offset 8
+ 305              		.cfi_offset 4, -8
+ 306              		.cfi_offset 14, -4
+ 276:modbus/mb.c   ****     int             i;
+ 307              		.loc 1 276 5 is_stmt 1 view .LVU66
+ 277:modbus/mb.c   ****     eMBErrorCode    eStatus;
+ 308              		.loc 1 277 5 view .LVU67
+ 278:modbus/mb.c   **** 
+ 279:modbus/mb.c   ****     if( ( 0 < ucFunctionCode ) && ( ucFunctionCode <= 127 ) )
+ 309              		.loc 1 279 5 view .LVU68
+ 310              		.loc 1 279 32 is_stmt 0 view .LVU69
+ 311 0002 43B2     		sxtb	r3, r0
+ 312              		.loc 1 279 7 view .LVU70
+ 313 0004 002B     		cmp	r3, #0
+ 314 0006 2FDD     		ble	.L24
+ 280:modbus/mb.c   ****     {
+ 281:modbus/mb.c   ****         ENTER_CRITICAL_SECTION(  );
+ 315              		.loc 1 281 9 is_stmt 1 view .LVU71
+ 316              	.LBB6:
+ 317              	.LBI6:
+ 318              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
    1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
    2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
    3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS Cortex-M Core Function/Instruction Header File
@@ -507,6 +658,9 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
   12:Drivers/CMSIS/Include/cmsis_gcc.h ****    - Redistributions of source code must retain the above copyright
   13:Drivers/CMSIS/Include/cmsis_gcc.h ****      notice, this list of conditions and the following disclaimer.
   14:Drivers/CMSIS/Include/cmsis_gcc.h ****    - Redistributions in binary form must reproduce the above copyright
+ARM GAS  /tmp/ccrMcL7D.s 			page 12
+
+
   15:Drivers/CMSIS/Include/cmsis_gcc.h ****      notice, this list of conditions and the following disclaimer in the
   16:Drivers/CMSIS/Include/cmsis_gcc.h ****      documentation and/or other materials provided with the distribution.
   17:Drivers/CMSIS/Include/cmsis_gcc.h ****    - Neither the name of ARM nor the names of its contributors may be used
@@ -538,9 +692,6 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
   43:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
   44:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   45:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /tmp/ccn5smZ1.s 			page 10
-
-
   46:Drivers/CMSIS/Include/cmsis_gcc.h **** 
   47:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
   48:Drivers/CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
@@ -565,1055 +716,1099 @@ ARM GAS  /tmp/ccn5smZ1.s 			page 1
   67:Drivers/CMSIS/Include/cmsis_gcc.h ****   Can only be executed in Privileged modes.
   68:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
   69:Drivers/CMSIS/Include/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __disable_irq(void)
- 215              		.loc 2 69 57 view .LVU56
- 216              	.LBB7:
+ 319              		.loc 2 69 57 view .LVU72
+ 320              	.LBB7:
+ARM GAS  /tmp/ccrMcL7D.s 			page 13
+
+
   70:Drivers/CMSIS/Include/cmsis_gcc.h **** {
   71:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
- 217              		.loc 2 71 3 view .LVU57
- 218              		.syntax divided
- 219              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
- 220 0008 72B6     		cpsid i
- 221              	@ 0 "" 2
- 222              		.thumb
- 223              		.syntax unified
- 224              	.LBE7:
- 225              	.LBE6:
- 233:modbus/mb.c   ****         if( pxHandler != NULL )
- 226              		.loc 1 233 9 view .LVU58
- 227              		.loc 1 233 11 is_stmt 0 view .LVU59
- 228 000a 0029     		cmp	r1, #0
- 229 000c 0CD0     		beq	.L23
- 234:modbus/mb.c   ****         {
- 235:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
- 230              		.loc 1 235 20 view .LVU60
- 231 000e 0023     		movs	r3, #0
- 232              	.L11:
- 233              	.LVL15:
- 234              		.loc 1 235 13 discriminator 1 view .LVU61
- 235 0010 0F2B     		cmp	r3, #15
- 236 0012 18DC     		bgt	.L15
- 236:modbus/mb.c   ****             {
- 237:modbus/mb.c   ****                 if( ( xFuncHandlers[i].pxHandler == NULL ) ||
- 237              		.loc 1 237 17 is_stmt 1 view .LVU62
- 238              		.loc 1 237 39 is_stmt 0 view .LVU63
- 239 0014 DC00     		lsls	r4, r3, #3
- 240 0016 154A     		ldr	r2, .L26
-ARM GAS  /tmp/ccn5smZ1.s 			page 11
+ 321              		.loc 2 71 3 view .LVU73
+ 322              		.syntax divided
+ 323              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 324 0008 72B6     		cpsid i
+ 325              	@ 0 "" 2
+ 326              		.thumb
+ 327              		.syntax unified
+ 328              	.LBE7:
+ 329              	.LBE6:
+ 282:modbus/mb.c   ****         if( pxHandler != NULL )
+ 330              		.loc 1 282 9 view .LVU74
+ 331              		.loc 1 282 11 is_stmt 0 view .LVU75
+ 332 000a 0029     		cmp	r1, #0
+ 333 000c 0CD0     		beq	.L27
+ 283:modbus/mb.c   ****         {
+ 284:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
+ 334              		.loc 1 284 20 view .LVU76
+ 335 000e 0023     		movs	r3, #0
+ 336              	.L15:
+ 337              	.LVL23:
+ 338              		.loc 1 284 13 discriminator 1 view .LVU77
+ 339 0010 0F2B     		cmp	r3, #15
+ 340 0012 18DC     		bgt	.L19
+ 285:modbus/mb.c   ****             {
+ 286:modbus/mb.c   ****                 if( ( xFuncHandlers[i].pxHandler == NULL ) ||
+ 341              		.loc 1 286 17 is_stmt 1 view .LVU78
+ 342              		.loc 1 286 39 is_stmt 0 view .LVU79
+ 343 0014 DC00     		lsls	r4, r3, #3
+ 344 0016 154A     		ldr	r2, .L30
+ 345 0018 1219     		adds	r2, r2, r4
+ 346 001a 5268     		ldr	r2, [r2, #4]
+ 347              		.loc 1 286 19 view .LVU80
+ 348 001c 002A     		cmp	r2, #0
+ 349 001e 0DD0     		beq	.L17
+ 350              		.loc 1 286 60 discriminator 1 view .LVU81
+ 351 0020 8A42     		cmp	r2, r1
+ 352 0022 0BD0     		beq	.L17
+ 284:modbus/mb.c   ****             {
+ 353              		.loc 1 284 52 discriminator 2 view .LVU82
+ 354 0024 0133     		adds	r3, r3, #1
+ 355              	.LVL24:
+ 284:modbus/mb.c   ****             {
+ 356              		.loc 1 284 52 discriminator 2 view .LVU83
+ 357 0026 F3E7     		b	.L15
+ 358              	.LVL25:
+ 359              	.L27:
+ 287:modbus/mb.c   ****                     ( xFuncHandlers[i].pxHandler == pxHandler ) )
+ 288:modbus/mb.c   ****                 {
+ 289:modbus/mb.c   ****                     xFuncHandlers[i].ucFunctionCode = ucFunctionCode;
+ 290:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
+ 291:modbus/mb.c   ****                     break;
+ 292:modbus/mb.c   ****                 }
+ 293:modbus/mb.c   ****             }
+ 294:modbus/mb.c   ****             eStatus = ( i != MB_FUNC_HANDLERS_MAX ) ? MB_ENOERR : MB_ENORES;
+ 295:modbus/mb.c   ****         }
+ARM GAS  /tmp/ccrMcL7D.s 			page 14
 
 
- 241 0018 1219     		adds	r2, r2, r4
- 242 001a 5268     		ldr	r2, [r2, #4]
- 243              		.loc 1 237 19 view .LVU64
- 244 001c 002A     		cmp	r2, #0
- 245 001e 0DD0     		beq	.L13
- 246              		.loc 1 237 60 discriminator 1 view .LVU65
- 247 0020 8A42     		cmp	r2, r1
- 248 0022 0BD0     		beq	.L13
- 235:modbus/mb.c   ****             {
- 249              		.loc 1 235 52 discriminator 2 view .LVU66
- 250 0024 0133     		adds	r3, r3, #1
- 251              	.LVL16:
- 235:modbus/mb.c   ****             {
- 252              		.loc 1 235 52 discriminator 2 view .LVU67
- 253 0026 F3E7     		b	.L11
- 254              	.LVL17:
- 255              	.L23:
- 238:modbus/mb.c   ****                     ( xFuncHandlers[i].pxHandler == pxHandler ) )
- 239:modbus/mb.c   ****                 {
- 240:modbus/mb.c   ****                     xFuncHandlers[i].ucFunctionCode = ucFunctionCode;
- 241:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
- 242:modbus/mb.c   ****                     break;
- 243:modbus/mb.c   ****                 }
- 244:modbus/mb.c   ****             }
- 245:modbus/mb.c   ****             eStatus = ( i != MB_FUNC_HANDLERS_MAX ) ? MB_ENOERR : MB_ENORES;
- 246:modbus/mb.c   ****         }
- 247:modbus/mb.c   ****         else
- 248:modbus/mb.c   ****         {
- 249:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
- 256              		.loc 1 249 20 view .LVU68
- 257 0028 0023     		movs	r3, #0
- 258              	.LVL18:
- 259              	.L12:
- 260              		.loc 1 249 13 discriminator 1 view .LVU69
- 261 002a 0F2B     		cmp	r3, #15
- 262 002c 18DC     		bgt	.L24
- 250:modbus/mb.c   ****             {
- 251:modbus/mb.c   ****                 if( xFuncHandlers[i].ucFunctionCode == ucFunctionCode )
- 263              		.loc 1 251 17 is_stmt 1 view .LVU70
- 264              		.loc 1 251 37 is_stmt 0 view .LVU71
- 265 002e DA00     		lsls	r2, r3, #3
- 266 0030 0E49     		ldr	r1, .L26
- 267 0032 525C     		ldrb	r2, [r2, r1]
- 268              		.loc 1 251 19 view .LVU72
- 269 0034 8242     		cmp	r2, r0
- 270 0036 0BD0     		beq	.L25
- 249:modbus/mb.c   ****             {
- 271              		.loc 1 249 52 discriminator 2 view .LVU73
- 272 0038 0133     		adds	r3, r3, #1
- 273              	.LVL19:
- 249:modbus/mb.c   ****             {
- 274              		.loc 1 249 52 discriminator 2 view .LVU74
- 275 003a F6E7     		b	.L12
- 276              	.LVL20:
- 277              	.L13:
- 240:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
- 278              		.loc 1 240 21 is_stmt 1 view .LVU75
-ARM GAS  /tmp/ccn5smZ1.s 			page 12
+ 296:modbus/mb.c   ****         else
+ 297:modbus/mb.c   ****         {
+ 298:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
+ 360              		.loc 1 298 20 view .LVU84
+ 361 0028 0023     		movs	r3, #0
+ 362              	.LVL26:
+ 363              	.L16:
+ 364              		.loc 1 298 13 discriminator 1 view .LVU85
+ 365 002a 0F2B     		cmp	r3, #15
+ 366 002c 18DC     		bgt	.L28
+ 299:modbus/mb.c   ****             {
+ 300:modbus/mb.c   ****                 if( xFuncHandlers[i].ucFunctionCode == ucFunctionCode )
+ 367              		.loc 1 300 17 is_stmt 1 view .LVU86
+ 368              		.loc 1 300 37 is_stmt 0 view .LVU87
+ 369 002e DA00     		lsls	r2, r3, #3
+ 370 0030 0E49     		ldr	r1, .L30
+ 371 0032 525C     		ldrb	r2, [r2, r1]
+ 372              		.loc 1 300 19 view .LVU88
+ 373 0034 8242     		cmp	r2, r0
+ 374 0036 0BD0     		beq	.L29
+ 298:modbus/mb.c   ****             {
+ 375              		.loc 1 298 52 discriminator 2 view .LVU89
+ 376 0038 0133     		adds	r3, r3, #1
+ 377              	.LVL27:
+ 298:modbus/mb.c   ****             {
+ 378              		.loc 1 298 52 discriminator 2 view .LVU90
+ 379 003a F6E7     		b	.L16
+ 380              	.LVL28:
+ 381              	.L17:
+ 289:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
+ 382              		.loc 1 289 21 is_stmt 1 view .LVU91
+ 289:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
+ 383              		.loc 1 289 53 is_stmt 0 view .LVU92
+ 384 003c 0B4A     		ldr	r2, .L30
+ 385 003e DC00     		lsls	r4, r3, #3
+ 386 0040 A054     		strb	r0, [r4, r2]
+ 290:modbus/mb.c   ****                     break;
+ 387              		.loc 1 290 21 is_stmt 1 view .LVU93
+ 290:modbus/mb.c   ****                     break;
+ 388              		.loc 1 290 48 is_stmt 0 view .LVU94
+ 389 0042 1219     		adds	r2, r2, r4
+ 390 0044 5160     		str	r1, [r2, #4]
+ 291:modbus/mb.c   ****                 }
+ 391              		.loc 1 291 21 is_stmt 1 view .LVU95
+ 392              	.L19:
+ 294:modbus/mb.c   ****         }
+ 393              		.loc 1 294 13 view .LVU96
+ 294:modbus/mb.c   ****         }
+ 394              		.loc 1 294 65 is_stmt 0 view .LVU97
+ 395 0046 102B     		cmp	r3, #16
+ 396 0048 0CD0     		beq	.L26
+ 397 004a 0020     		movs	r0, #0
+ 398              	.LVL29:
+ 399              	.L21:
+ 301:modbus/mb.c   ****                 {
+ 302:modbus/mb.c   ****                     xFuncHandlers[i].ucFunctionCode = 0;
+ 303:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
+ARM GAS  /tmp/ccrMcL7D.s 			page 15
 
 
- 240:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
- 279              		.loc 1 240 53 is_stmt 0 view .LVU76
- 280 003c 0B4A     		ldr	r2, .L26
- 281 003e DC00     		lsls	r4, r3, #3
- 282 0040 A054     		strb	r0, [r4, r2]
- 241:modbus/mb.c   ****                     break;
- 283              		.loc 1 241 21 is_stmt 1 view .LVU77
- 241:modbus/mb.c   ****                     break;
- 284              		.loc 1 241 48 is_stmt 0 view .LVU78
- 285 0042 1219     		adds	r2, r2, r4
- 286 0044 5160     		str	r1, [r2, #4]
- 242:modbus/mb.c   ****                 }
- 287              		.loc 1 242 21 is_stmt 1 view .LVU79
- 288              	.L15:
- 245:modbus/mb.c   ****         }
- 289              		.loc 1 245 13 view .LVU80
- 245:modbus/mb.c   ****         }
- 290              		.loc 1 245 65 is_stmt 0 view .LVU81
- 291 0046 102B     		cmp	r3, #16
- 292 0048 0CD0     		beq	.L22
- 293 004a 0020     		movs	r0, #0
- 294              	.LVL21:
- 295              	.L17:
- 252:modbus/mb.c   ****                 {
- 253:modbus/mb.c   ****                     xFuncHandlers[i].ucFunctionCode = 0;
- 254:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
- 255:modbus/mb.c   ****                     break;
- 256:modbus/mb.c   ****                 }
- 257:modbus/mb.c   ****             }
- 258:modbus/mb.c   ****             /* Remove can't fail. */
- 259:modbus/mb.c   ****             eStatus = MB_ENOERR;
- 260:modbus/mb.c   ****         }
- 261:modbus/mb.c   ****         EXIT_CRITICAL_SECTION(  );
- 296              		.loc 1 261 9 is_stmt 1 view .LVU82
- 297              	.LBB8:
- 298              	.LBI8:
+ 304:modbus/mb.c   ****                     break;
+ 305:modbus/mb.c   ****                 }
+ 306:modbus/mb.c   ****             }
+ 307:modbus/mb.c   ****             /* Remove can't fail. */
+ 308:modbus/mb.c   ****             eStatus = MB_ENOERR;
+ 309:modbus/mb.c   ****         }
+ 310:modbus/mb.c   ****         EXIT_CRITICAL_SECTION(  );
+ 400              		.loc 1 310 9 is_stmt 1 view .LVU98
+ 401              	.LBB8:
+ 402              	.LBI8:
   58:Drivers/CMSIS/Include/cmsis_gcc.h **** {
- 299              		.loc 2 58 57 view .LVU83
- 300              	.LBB9:
+ 403              		.loc 2 58 57 view .LVU99
+ 404              	.LBB9:
   60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
- 301              		.loc 2 60 3 view .LVU84
- 302              		.syntax divided
- 303              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
- 304 004c 62B6     		cpsie i
- 305              	@ 0 "" 2
- 306              	.LVL22:
- 307              		.thumb
- 308              		.syntax unified
- 309              	.L10:
+ 405              		.loc 2 60 3 view .LVU100
+ 406              		.syntax divided
+ 407              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 408 004c 62B6     		cpsie i
+ 409              	@ 0 "" 2
+ 410              	.LVL30:
+ 411              		.thumb
+ 412              		.syntax unified
+ 413              	.L14:
   60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
- 310              		.loc 2 60 3 is_stmt 0 view .LVU85
- 311              	.LBE9:
- 312              	.LBE8:
- 262:modbus/mb.c   ****     }
- 263:modbus/mb.c   ****     else
- 264:modbus/mb.c   ****     {
- 265:modbus/mb.c   ****         eStatus = MB_EINVAL;
-ARM GAS  /tmp/ccn5smZ1.s 			page 13
+ 414              		.loc 2 60 3 is_stmt 0 view .LVU101
+ 415              	.LBE9:
+ 416              	.LBE8:
+ 311:modbus/mb.c   ****     }
+ 312:modbus/mb.c   ****     else
+ 313:modbus/mb.c   ****     {
+ 314:modbus/mb.c   ****         eStatus = MB_EINVAL;
+ 315:modbus/mb.c   ****     }
+ 316:modbus/mb.c   ****     return eStatus;
+ 417              		.loc 1 316 5 is_stmt 1 view .LVU102
+ 317:modbus/mb.c   **** }
+ 418              		.loc 1 317 1 is_stmt 0 view .LVU103
+ 419              		@ sp needed
+ 420 004e 10BD     		pop	{r4, pc}
+ 421              	.LVL31:
+ 422              	.L29:
+ 302:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
+ 423              		.loc 1 302 21 is_stmt 1 view .LVU104
+ 302:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
+ 424              		.loc 1 302 53 is_stmt 0 view .LVU105
+ 425 0050 0A00     		movs	r2, r1
+ 426 0052 DB00     		lsls	r3, r3, #3
+ 427              	.LVL32:
+ 302:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
+ 428              		.loc 1 302 53 view .LVU106
+ 429 0054 0021     		movs	r1, #0
+ 430 0056 9954     		strb	r1, [r3, r2]
+ 303:modbus/mb.c   ****                     break;
+ 431              		.loc 1 303 21 is_stmt 1 view .LVU107
+ 303:modbus/mb.c   ****                     break;
+ 432              		.loc 1 303 48 is_stmt 0 view .LVU108
+ 433 0058 D318     		adds	r3, r2, r3
+ 434 005a 5960     		str	r1, [r3, #4]
+ARM GAS  /tmp/ccrMcL7D.s 			page 16
 
 
- 266:modbus/mb.c   ****     }
- 267:modbus/mb.c   ****     return eStatus;
- 313              		.loc 1 267 5 is_stmt 1 view .LVU86
- 268:modbus/mb.c   **** }
- 314              		.loc 1 268 1 is_stmt 0 view .LVU87
- 315              		@ sp needed
- 316 004e 10BD     		pop	{r4, pc}
- 317              	.LVL23:
- 318              	.L25:
- 253:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
- 319              		.loc 1 253 21 is_stmt 1 view .LVU88
- 253:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
- 320              		.loc 1 253 53 is_stmt 0 view .LVU89
- 321 0050 0A00     		movs	r2, r1
- 322 0052 DB00     		lsls	r3, r3, #3
- 323              	.LVL24:
- 253:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = NULL;
- 324              		.loc 1 253 53 view .LVU90
- 325 0054 0021     		movs	r1, #0
- 326 0056 9954     		strb	r1, [r3, r2]
- 254:modbus/mb.c   ****                     break;
- 327              		.loc 1 254 21 is_stmt 1 view .LVU91
- 254:modbus/mb.c   ****                     break;
- 328              		.loc 1 254 48 is_stmt 0 view .LVU92
- 329 0058 D318     		adds	r3, r2, r3
- 330 005a 5960     		str	r1, [r3, #4]
- 255:modbus/mb.c   ****                 }
- 331              		.loc 1 255 21 is_stmt 1 view .LVU93
- 259:modbus/mb.c   ****         }
- 332              		.loc 1 259 21 is_stmt 0 view .LVU94
- 333 005c 0020     		movs	r0, #0
- 334              	.LVL25:
- 255:modbus/mb.c   ****                 }
- 335              		.loc 1 255 21 view .LVU95
- 336 005e F5E7     		b	.L17
- 337              	.LVL26:
- 338              	.L24:
- 259:modbus/mb.c   ****         }
- 339              		.loc 1 259 21 view .LVU96
- 340 0060 0020     		movs	r0, #0
- 341              	.LVL27:
- 259:modbus/mb.c   ****         }
- 342              		.loc 1 259 21 view .LVU97
- 343 0062 F3E7     		b	.L17
- 344              	.LVL28:
- 345              	.L22:
- 245:modbus/mb.c   ****         }
- 346              		.loc 1 245 65 view .LVU98
- 347 0064 0420     		movs	r0, #4
- 348              	.LVL29:
- 245:modbus/mb.c   ****         }
- 349              		.loc 1 245 65 view .LVU99
- 350 0066 F1E7     		b	.L17
- 351              	.LVL30:
- 352              	.L20:
- 265:modbus/mb.c   ****     }
- 353              		.loc 1 265 17 view .LVU100
-ARM GAS  /tmp/ccn5smZ1.s 			page 14
+ 304:modbus/mb.c   ****                 }
+ 435              		.loc 1 304 21 is_stmt 1 view .LVU109
+ 308:modbus/mb.c   ****         }
+ 436              		.loc 1 308 21 is_stmt 0 view .LVU110
+ 437 005c 0020     		movs	r0, #0
+ 438              	.LVL33:
+ 304:modbus/mb.c   ****                 }
+ 439              		.loc 1 304 21 view .LVU111
+ 440 005e F5E7     		b	.L21
+ 441              	.LVL34:
+ 442              	.L28:
+ 308:modbus/mb.c   ****         }
+ 443              		.loc 1 308 21 view .LVU112
+ 444 0060 0020     		movs	r0, #0
+ 445              	.LVL35:
+ 308:modbus/mb.c   ****         }
+ 446              		.loc 1 308 21 view .LVU113
+ 447 0062 F3E7     		b	.L21
+ 448              	.LVL36:
+ 449              	.L26:
+ 294:modbus/mb.c   ****         }
+ 450              		.loc 1 294 65 view .LVU114
+ 451 0064 0420     		movs	r0, #4
+ 452              	.LVL37:
+ 294:modbus/mb.c   ****         }
+ 453              		.loc 1 294 65 view .LVU115
+ 454 0066 F1E7     		b	.L21
+ 455              	.LVL38:
+ 456              	.L24:
+ 314:modbus/mb.c   ****     }
+ 457              		.loc 1 314 17 view .LVU116
+ 458 0068 0220     		movs	r0, #2
+ 459              	.LVL39:
+ 314:modbus/mb.c   ****     }
+ 460              		.loc 1 314 17 view .LVU117
+ 461 006a F0E7     		b	.L14
+ 462              	.L31:
+ 463              		.align	2
+ 464              	.L30:
+ 465 006c 00000000 		.word	xFuncHandlers
+ 466              		.cfi_endproc
+ 467              	.LFE42:
+ 469              		.section	.text.eMBClose,"ax",%progbits
+ 470              		.align	1
+ 471              		.global	eMBClose
+ 472              		.syntax unified
+ 473              		.code	16
+ 474              		.thumb_func
+ 475              		.fpu softvfp
+ 477              	eMBClose:
+ 478              	.LFB43:
+ 318:modbus/mb.c   **** 
+ 319:modbus/mb.c   **** 
+ 320:modbus/mb.c   **** eMBErrorCode
+ 321:modbus/mb.c   **** eMBClose( void )
+ 322:modbus/mb.c   **** {
+ 479              		.loc 1 322 1 is_stmt 1 view -0
+ARM GAS  /tmp/ccrMcL7D.s 			page 17
 
 
- 354 0068 0220     		movs	r0, #2
- 355              	.LVL31:
- 265:modbus/mb.c   ****     }
- 356              		.loc 1 265 17 view .LVU101
- 357 006a F0E7     		b	.L10
- 358              	.L27:
- 359              		.align	2
- 360              	.L26:
- 361 006c 00000000 		.word	xFuncHandlers
- 362              		.cfi_endproc
- 363              	.LFE38:
- 365              		.section	.text.eMBClose,"ax",%progbits
- 366              		.align	1
- 367              		.global	eMBClose
- 368              		.syntax unified
- 369              		.code	16
- 370              		.thumb_func
- 371              		.fpu softvfp
- 373              	eMBClose:
- 374              	.LFB39:
- 269:modbus/mb.c   **** 
- 270:modbus/mb.c   **** 
- 271:modbus/mb.c   **** eMBErrorCode
- 272:modbus/mb.c   **** eMBClose( void )
- 273:modbus/mb.c   **** {
- 375              		.loc 1 273 1 is_stmt 1 view -0
- 376              		.cfi_startproc
- 377              		@ args = 0, pretend = 0, frame = 0
- 378              		@ frame_needed = 0, uses_anonymous_args = 0
- 379 0000 10B5     		push	{r4, lr}
- 380              	.LCFI2:
- 381              		.cfi_def_cfa_offset 8
- 382              		.cfi_offset 4, -8
- 383              		.cfi_offset 14, -4
- 274:modbus/mb.c   ****     eMBErrorCode    eStatus = MB_ENOERR;
- 384              		.loc 1 274 5 view .LVU103
- 385              	.LVL32:
- 275:modbus/mb.c   **** 
- 276:modbus/mb.c   ****     if( eMBState == STATE_DISABLED )
- 386              		.loc 1 276 5 view .LVU104
- 387              		.loc 1 276 18 is_stmt 0 view .LVU105
- 388 0002 074B     		ldr	r3, .L33
- 389 0004 1B78     		ldrb	r3, [r3]
- 390              		.loc 1 276 7 view .LVU106
- 391 0006 012B     		cmp	r3, #1
- 392 0008 01D0     		beq	.L32
- 277:modbus/mb.c   ****     {
- 278:modbus/mb.c   ****         if( pvMBFrameCloseCur != NULL )
- 279:modbus/mb.c   ****         {
- 280:modbus/mb.c   ****             pvMBFrameCloseCur(  );
- 281:modbus/mb.c   ****         }
- 282:modbus/mb.c   ****     }
- 283:modbus/mb.c   ****     else
- 284:modbus/mb.c   ****     {
- 285:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
- 393              		.loc 1 285 17 view .LVU107
- 394 000a 0620     		movs	r0, #6
-ARM GAS  /tmp/ccn5smZ1.s 			page 15
+ 480              		.cfi_startproc
+ 481              		@ args = 0, pretend = 0, frame = 0
+ 482              		@ frame_needed = 0, uses_anonymous_args = 0
+ 483 0000 10B5     		push	{r4, lr}
+ 484              	.LCFI2:
+ 485              		.cfi_def_cfa_offset 8
+ 486              		.cfi_offset 4, -8
+ 487              		.cfi_offset 14, -4
+ 323:modbus/mb.c   ****     eMBErrorCode    eStatus = MB_ENOERR;
+ 488              		.loc 1 323 5 view .LVU119
+ 489              	.LVL40:
+ 324:modbus/mb.c   **** 
+ 325:modbus/mb.c   ****     if( eMBState == STATE_DISABLED )
+ 490              		.loc 1 325 5 view .LVU120
+ 491              		.loc 1 325 18 is_stmt 0 view .LVU121
+ 492 0002 074B     		ldr	r3, .L37
+ 493 0004 1B78     		ldrb	r3, [r3]
+ 494              		.loc 1 325 7 view .LVU122
+ 495 0006 012B     		cmp	r3, #1
+ 496 0008 01D0     		beq	.L36
+ 326:modbus/mb.c   ****     {
+ 327:modbus/mb.c   ****         if( pvMBFrameCloseCur != NULL )
+ 328:modbus/mb.c   ****         {
+ 329:modbus/mb.c   ****             pvMBFrameCloseCur(  );
+ 330:modbus/mb.c   ****         }
+ 331:modbus/mb.c   ****     }
+ 332:modbus/mb.c   ****     else
+ 333:modbus/mb.c   ****     {
+ 334:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
+ 497              		.loc 1 334 17 view .LVU123
+ 498 000a 0620     		movs	r0, #6
+ 499              	.L33:
+ 500              	.LVL41:
+ 335:modbus/mb.c   ****     }
+ 336:modbus/mb.c   ****     return eStatus;
+ 501              		.loc 1 336 5 is_stmt 1 view .LVU124
+ 337:modbus/mb.c   **** }
+ 502              		.loc 1 337 1 is_stmt 0 view .LVU125
+ 503              		@ sp needed
+ 504 000c 10BD     		pop	{r4, pc}
+ 505              	.LVL42:
+ 506              	.L36:
+ 327:modbus/mb.c   ****         {
+ 507              		.loc 1 327 9 is_stmt 1 view .LVU126
+ 327:modbus/mb.c   ****         {
+ 508              		.loc 1 327 31 is_stmt 0 view .LVU127
+ 509 000e 054B     		ldr	r3, .L37+4
+ 510 0010 1B68     		ldr	r3, [r3]
+ 327:modbus/mb.c   ****         {
+ 511              		.loc 1 327 11 view .LVU128
+ 512 0012 002B     		cmp	r3, #0
+ 513 0014 02D0     		beq	.L35
+ 329:modbus/mb.c   ****         }
+ 514              		.loc 1 329 13 is_stmt 1 view .LVU129
+ 515 0016 9847     		blx	r3
+ 516              	.LVL43:
+ 323:modbus/mb.c   **** 
+ARM GAS  /tmp/ccrMcL7D.s 			page 18
 
 
- 395              	.L29:
- 396              	.LVL33:
- 286:modbus/mb.c   ****     }
- 287:modbus/mb.c   ****     return eStatus;
- 397              		.loc 1 287 5 is_stmt 1 view .LVU108
- 288:modbus/mb.c   **** }
- 398              		.loc 1 288 1 is_stmt 0 view .LVU109
- 399              		@ sp needed
- 400 000c 10BD     		pop	{r4, pc}
- 401              	.LVL34:
- 402              	.L32:
- 278:modbus/mb.c   ****         {
- 403              		.loc 1 278 9 is_stmt 1 view .LVU110
- 278:modbus/mb.c   ****         {
- 404              		.loc 1 278 31 is_stmt 0 view .LVU111
- 405 000e 054B     		ldr	r3, .L33+4
- 406 0010 1B68     		ldr	r3, [r3]
- 278:modbus/mb.c   ****         {
- 407              		.loc 1 278 11 view .LVU112
- 408 0012 002B     		cmp	r3, #0
- 409 0014 02D0     		beq	.L31
- 280:modbus/mb.c   ****         }
- 410              		.loc 1 280 13 is_stmt 1 view .LVU113
- 411 0016 9847     		blx	r3
- 412              	.LVL35:
- 274:modbus/mb.c   **** 
- 413              		.loc 1 274 21 is_stmt 0 view .LVU114
- 414 0018 0020     		movs	r0, #0
- 415 001a F7E7     		b	.L29
- 416              	.L31:
- 417 001c 0020     		movs	r0, #0
- 418 001e F5E7     		b	.L29
- 419              	.L34:
- 420              		.align	2
- 421              	.L33:
- 422 0020 00000000 		.word	.LANCHOR6
- 423 0024 00000000 		.word	.LANCHOR5
- 424              		.cfi_endproc
- 425              	.LFE39:
- 427              		.section	.text.eMBEnable,"ax",%progbits
- 428              		.align	1
- 429              		.global	eMBEnable
- 430              		.syntax unified
- 431              		.code	16
- 432              		.thumb_func
- 433              		.fpu softvfp
- 435              	eMBEnable:
- 436              	.LFB40:
- 289:modbus/mb.c   **** 
- 290:modbus/mb.c   **** eMBErrorCode
- 291:modbus/mb.c   **** eMBEnable( void )
- 292:modbus/mb.c   **** {
- 437              		.loc 1 292 1 is_stmt 1 view -0
- 438              		.cfi_startproc
- 439              		@ args = 0, pretend = 0, frame = 0
- 440              		@ frame_needed = 0, uses_anonymous_args = 0
- 441 0000 10B5     		push	{r4, lr}
-ARM GAS  /tmp/ccn5smZ1.s 			page 16
-
-
- 442              	.LCFI3:
- 443              		.cfi_def_cfa_offset 8
- 444              		.cfi_offset 4, -8
- 445              		.cfi_offset 14, -4
- 293:modbus/mb.c   ****     eMBErrorCode    eStatus = MB_ENOERR;
- 446              		.loc 1 293 5 view .LVU116
- 447              	.LVL36:
- 294:modbus/mb.c   **** 
- 295:modbus/mb.c   ****     if( eMBState == STATE_DISABLED )
- 448              		.loc 1 295 5 view .LVU117
- 449              		.loc 1 295 18 is_stmt 0 view .LVU118
- 450 0002 074B     		ldr	r3, .L39
- 451 0004 1B78     		ldrb	r3, [r3]
- 452              		.loc 1 295 7 view .LVU119
- 453 0006 012B     		cmp	r3, #1
- 454 0008 01D0     		beq	.L38
- 296:modbus/mb.c   ****     {
- 297:modbus/mb.c   ****         /* Activate the protocol stack. */
- 298:modbus/mb.c   ****         pvMBFrameStartCur(  );
- 299:modbus/mb.c   ****         eMBState = STATE_ENABLED;
- 300:modbus/mb.c   ****     }
- 301:modbus/mb.c   ****     else
- 302:modbus/mb.c   ****     {
- 303:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
- 455              		.loc 1 303 17 view .LVU120
- 456 000a 0620     		movs	r0, #6
- 457              	.L36:
- 458              	.LVL37:
- 304:modbus/mb.c   ****     }
- 305:modbus/mb.c   ****     return eStatus;
- 459              		.loc 1 305 5 is_stmt 1 view .LVU121
- 306:modbus/mb.c   **** }
- 460              		.loc 1 306 1 is_stmt 0 view .LVU122
- 461              		@ sp needed
- 462 000c 10BD     		pop	{r4, pc}
- 463              	.LVL38:
- 464              	.L38:
- 298:modbus/mb.c   ****         eMBState = STATE_ENABLED;
- 465              		.loc 1 298 9 is_stmt 1 view .LVU123
- 466 000e 054B     		ldr	r3, .L39+4
- 467 0010 1B68     		ldr	r3, [r3]
- 468 0012 9847     		blx	r3
- 469              	.LVL39:
- 299:modbus/mb.c   ****     }
- 470              		.loc 1 299 9 view .LVU124
- 299:modbus/mb.c   ****     }
- 471              		.loc 1 299 18 is_stmt 0 view .LVU125
- 472 0014 024B     		ldr	r3, .L39
- 473 0016 0022     		movs	r2, #0
- 474 0018 1A70     		strb	r2, [r3]
- 293:modbus/mb.c   **** 
- 475              		.loc 1 293 21 view .LVU126
- 476 001a 0020     		movs	r0, #0
- 477 001c F6E7     		b	.L36
- 478              	.L40:
- 479 001e C046     		.align	2
- 480              	.L39:
-ARM GAS  /tmp/ccn5smZ1.s 			page 17
-
-
- 481 0020 00000000 		.word	.LANCHOR6
- 482 0024 00000000 		.word	.LANCHOR1
- 483              		.cfi_endproc
- 484              	.LFE40:
- 486              		.section	.text.eMBDisable,"ax",%progbits
- 487              		.align	1
- 488              		.global	eMBDisable
- 489              		.syntax unified
- 490              		.code	16
- 491              		.thumb_func
- 492              		.fpu softvfp
- 494              	eMBDisable:
- 495              	.LFB41:
- 307:modbus/mb.c   **** 
- 308:modbus/mb.c   **** eMBErrorCode
- 309:modbus/mb.c   **** eMBDisable( void )
- 310:modbus/mb.c   **** {
- 496              		.loc 1 310 1 is_stmt 1 view -0
- 497              		.cfi_startproc
- 498              		@ args = 0, pretend = 0, frame = 0
- 499              		@ frame_needed = 0, uses_anonymous_args = 0
- 500 0000 10B5     		push	{r4, lr}
- 501              	.LCFI4:
- 502              		.cfi_def_cfa_offset 8
- 503              		.cfi_offset 4, -8
- 504              		.cfi_offset 14, -4
- 311:modbus/mb.c   ****     eMBErrorCode    eStatus;
- 505              		.loc 1 311 5 view .LVU128
- 312:modbus/mb.c   **** 
- 313:modbus/mb.c   ****     if( eMBState == STATE_ENABLED )
- 506              		.loc 1 313 5 view .LVU129
- 507              		.loc 1 313 18 is_stmt 0 view .LVU130
- 508 0002 094B     		ldr	r3, .L46
- 509 0004 1B78     		ldrb	r3, [r3]
- 510              		.loc 1 313 7 view .LVU131
- 511 0006 002B     		cmp	r3, #0
- 512 0008 07D1     		bne	.L42
- 314:modbus/mb.c   ****     {
- 315:modbus/mb.c   ****         pvMBFrameStopCur(  );
- 513              		.loc 1 315 9 is_stmt 1 view .LVU132
- 514 000a 084B     		ldr	r3, .L46+4
- 515 000c 1B68     		ldr	r3, [r3]
- 516 000e 9847     		blx	r3
- 517              	.LVL40:
- 316:modbus/mb.c   ****         eMBState = STATE_DISABLED;
- 518              		.loc 1 316 9 view .LVU133
- 519              		.loc 1 316 18 is_stmt 0 view .LVU134
- 520 0010 054B     		ldr	r3, .L46
- 521 0012 0122     		movs	r2, #1
- 522 0014 1A70     		strb	r2, [r3]
- 317:modbus/mb.c   ****         eStatus = MB_ENOERR;
- 523              		.loc 1 317 9 is_stmt 1 view .LVU135
- 524              	.LVL41:
- 525              		.loc 1 317 17 is_stmt 0 view .LVU136
- 526 0016 0020     		movs	r0, #0
- 527              	.LVL42:
- 528              	.L43:
-ARM GAS  /tmp/ccn5smZ1.s 			page 18
-
-
- 318:modbus/mb.c   ****     }
- 319:modbus/mb.c   ****     else if( eMBState == STATE_DISABLED )
- 320:modbus/mb.c   ****     {
- 321:modbus/mb.c   ****         eStatus = MB_ENOERR;
- 322:modbus/mb.c   ****     }
- 323:modbus/mb.c   ****     else
- 324:modbus/mb.c   ****     {
- 325:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
- 326:modbus/mb.c   ****     }
- 327:modbus/mb.c   ****     return eStatus;
- 529              		.loc 1 327 5 is_stmt 1 view .LVU137
- 328:modbus/mb.c   **** }
- 530              		.loc 1 328 1 is_stmt 0 view .LVU138
- 531              		@ sp needed
- 532 0018 10BD     		pop	{r4, pc}
- 533              	.LVL43:
- 534              	.L42:
- 319:modbus/mb.c   ****     {
- 535              		.loc 1 319 10 is_stmt 1 view .LVU139
- 319:modbus/mb.c   ****     {
- 536              		.loc 1 319 12 is_stmt 0 view .LVU140
- 537 001a 012B     		cmp	r3, #1
- 538 001c 01D0     		beq	.L45
- 325:modbus/mb.c   ****     }
- 539              		.loc 1 325 17 view .LVU141
- 540 001e 0620     		movs	r0, #6
- 541 0020 FAE7     		b	.L43
- 542              	.L45:
- 321:modbus/mb.c   ****     }
- 543              		.loc 1 321 17 view .LVU142
- 544 0022 0020     		movs	r0, #0
- 545 0024 F8E7     		b	.L43
- 546              	.L47:
- 547 0026 C046     		.align	2
- 548              	.L46:
- 549 0028 00000000 		.word	.LANCHOR6
- 550 002c 00000000 		.word	.LANCHOR2
- 551              		.cfi_endproc
- 552              	.LFE41:
- 554              		.section	.text.eMBPoll,"ax",%progbits
- 555              		.align	1
- 556              		.global	eMBPoll
- 557              		.syntax unified
- 558              		.code	16
- 559              		.thumb_func
- 560              		.fpu softvfp
- 562              	eMBPoll:
- 563              	.LFB42:
- 329:modbus/mb.c   **** 
- 330:modbus/mb.c   **** eMBErrorCode
- 331:modbus/mb.c   **** eMBPoll( void )
- 332:modbus/mb.c   **** {
- 564              		.loc 1 332 1 is_stmt 1 view -0
- 565              		.cfi_startproc
- 566              		@ args = 0, pretend = 0, frame = 8
- 567              		@ frame_needed = 0, uses_anonymous_args = 0
- 568 0000 10B5     		push	{r4, lr}
-ARM GAS  /tmp/ccn5smZ1.s 			page 19
-
-
- 569              	.LCFI5:
- 570              		.cfi_def_cfa_offset 8
- 571              		.cfi_offset 4, -8
- 572              		.cfi_offset 14, -4
- 573 0002 82B0     		sub	sp, sp, #8
- 574              	.LCFI6:
- 575              		.cfi_def_cfa_offset 16
- 333:modbus/mb.c   ****     static UCHAR   *ucMBFrame;
- 576              		.loc 1 333 5 view .LVU144
- 334:modbus/mb.c   ****     static UCHAR    ucRcvAddress;
- 577              		.loc 1 334 5 view .LVU145
- 335:modbus/mb.c   ****     static UCHAR    ucFunctionCode;
- 578              		.loc 1 335 5 view .LVU146
- 336:modbus/mb.c   ****     static USHORT   usLength;
- 579              		.loc 1 336 5 view .LVU147
- 337:modbus/mb.c   ****     static eMBException eException;
- 580              		.loc 1 337 5 view .LVU148
+ 517              		.loc 1 323 21 is_stmt 0 view .LVU130
+ 518 0018 0020     		movs	r0, #0
+ 519 001a F7E7     		b	.L33
+ 520              	.L35:
+ 521 001c 0020     		movs	r0, #0
+ 522 001e F5E7     		b	.L33
+ 523              	.L38:
+ 524              		.align	2
+ 525              	.L37:
+ 526 0020 00000000 		.word	.LANCHOR6
+ 527 0024 00000000 		.word	.LANCHOR5
+ 528              		.cfi_endproc
+ 529              	.LFE43:
+ 531              		.section	.text.eMBEnable,"ax",%progbits
+ 532              		.align	1
+ 533              		.global	eMBEnable
+ 534              		.syntax unified
+ 535              		.code	16
+ 536              		.thumb_func
+ 537              		.fpu softvfp
+ 539              	eMBEnable:
+ 540              	.LFB44:
  338:modbus/mb.c   **** 
- 339:modbus/mb.c   ****     int             i;
- 581              		.loc 1 339 5 view .LVU149
- 340:modbus/mb.c   ****     eMBErrorCode    eStatus = MB_ENOERR;
- 582              		.loc 1 340 5 view .LVU150
- 583              	.LVL44:
- 341:modbus/mb.c   ****     eMBEventType    eEvent;
- 584              		.loc 1 341 5 view .LVU151
- 342:modbus/mb.c   **** 
- 343:modbus/mb.c   ****     /* Check if the protocol stack is ready. */
- 344:modbus/mb.c   ****     if( eMBState != STATE_ENABLED )
- 585              		.loc 1 344 5 view .LVU152
- 586              		.loc 1 344 18 is_stmt 0 view .LVU153
- 587 0004 364B     		ldr	r3, .L63
- 588 0006 1B78     		ldrb	r3, [r3]
- 589              		.loc 1 344 7 view .LVU154
- 590 0008 002B     		cmp	r3, #0
- 591 000a 63D1     		bne	.L58
+ 339:modbus/mb.c   **** eMBErrorCode
+ 340:modbus/mb.c   **** eMBEnable( void )
+ 341:modbus/mb.c   **** {
+ 541              		.loc 1 341 1 is_stmt 1 view -0
+ 542              		.cfi_startproc
+ 543              		@ args = 0, pretend = 0, frame = 0
+ 544              		@ frame_needed = 0, uses_anonymous_args = 0
+ 545 0000 10B5     		push	{r4, lr}
+ 546              	.LCFI3:
+ 547              		.cfi_def_cfa_offset 8
+ 548              		.cfi_offset 4, -8
+ 549              		.cfi_offset 14, -4
+ 342:modbus/mb.c   ****     eMBErrorCode    eStatus = MB_ENOERR;
+ 550              		.loc 1 342 5 view .LVU132
+ 551              	.LVL44:
+ 343:modbus/mb.c   **** 
+ 344:modbus/mb.c   ****     if( eMBState == STATE_DISABLED )
+ 552              		.loc 1 344 5 view .LVU133
+ 553              		.loc 1 344 18 is_stmt 0 view .LVU134
+ 554 0002 074B     		ldr	r3, .L43
+ 555 0004 1B78     		ldrb	r3, [r3]
+ 556              		.loc 1 344 7 view .LVU135
+ 557 0006 012B     		cmp	r3, #1
+ 558 0008 01D0     		beq	.L42
  345:modbus/mb.c   ****     {
- 346:modbus/mb.c   ****         return MB_EILLSTATE;
- 347:modbus/mb.c   ****     }
- 348:modbus/mb.c   **** 
- 349:modbus/mb.c   ****     /* Check if there is a event available. If not return control to caller.
- 350:modbus/mb.c   ****      * Otherwise we will handle the event. */
- 351:modbus/mb.c   ****     if( xMBPortEventGet( &eEvent ) == TRUE )
- 592              		.loc 1 351 5 is_stmt 1 view .LVU155
- 593              		.loc 1 351 9 is_stmt 0 view .LVU156
- 594 000c 6B46     		mov	r3, sp
- 595 000e D81D     		adds	r0, r3, #7
- 596 0010 FFF7FEFF 		bl	xMBPortEventGet
- 597              	.LVL45:
- 598              		.loc 1 351 7 view .LVU157
- 599 0014 0128     		cmp	r0, #1
- 600 0016 03D0     		beq	.L62
- 352:modbus/mb.c   ****     {
- 353:modbus/mb.c   ****         switch ( eEvent )
- 354:modbus/mb.c   ****         {
- 355:modbus/mb.c   ****         case EV_READY:
- 356:modbus/mb.c   ****             break;
- 357:modbus/mb.c   **** 
-ARM GAS  /tmp/ccn5smZ1.s 			page 20
+ 346:modbus/mb.c   ****         /* Activate the protocol stack. */
+ 347:modbus/mb.c   ****         pvMBFrameStartCur(  );
+ 348:modbus/mb.c   ****         eMBState = STATE_ENABLED;
+ 349:modbus/mb.c   ****     }
+ 350:modbus/mb.c   ****     else
+ 351:modbus/mb.c   ****     {
+ 352:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
+ 559              		.loc 1 352 17 view .LVU136
+ 560 000a 0620     		movs	r0, #6
+ARM GAS  /tmp/ccrMcL7D.s 			page 19
 
 
- 358:modbus/mb.c   ****         case EV_FRAME_RECEIVED:
- 359:modbus/mb.c   ****             eStatus = peMBFrameReceiveCur( &ucRcvAddress, &ucMBFrame, &usLength );
- 360:modbus/mb.c   ****             if( eStatus == MB_ENOERR )
- 361:modbus/mb.c   ****             {
- 362:modbus/mb.c   ****                 /* Check if the frame is for us. If not ignore the frame. */
- 363:modbus/mb.c   ****                 if( ( ucRcvAddress == ucMBAddress ) || ( ucRcvAddress == MB_ADDRESS_BROADCAST ) )
- 364:modbus/mb.c   ****                 {
- 365:modbus/mb.c   ****                     ( void )xMBPortEventPost( EV_EXECUTE );
- 366:modbus/mb.c   ****                 }
- 367:modbus/mb.c   ****             }
- 368:modbus/mb.c   ****             break;
- 369:modbus/mb.c   **** 
- 370:modbus/mb.c   ****         case EV_EXECUTE:
- 371:modbus/mb.c   ****             ucFunctionCode = ucMBFrame[MB_PDU_FUNC_OFF];
- 372:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
- 373:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
- 374:modbus/mb.c   ****             {
- 375:modbus/mb.c   ****                 /* No more function handlers registered. Abort. */
- 376:modbus/mb.c   ****                 if( xFuncHandlers[i].ucFunctionCode == 0 )
- 377:modbus/mb.c   ****                 {
- 378:modbus/mb.c   ****                     break;
- 379:modbus/mb.c   ****                 }
- 380:modbus/mb.c   ****                 else if( xFuncHandlers[i].ucFunctionCode == ucFunctionCode )
- 381:modbus/mb.c   ****                 {
- 382:modbus/mb.c   ****                     eException = xFuncHandlers[i].pxHandler( ucMBFrame, &usLength );
- 383:modbus/mb.c   ****                     break;
- 384:modbus/mb.c   ****                 }
- 385:modbus/mb.c   ****             }
- 386:modbus/mb.c   **** 
- 387:modbus/mb.c   ****             /* If the request was not sent to the broadcast address we
- 388:modbus/mb.c   ****              * return a reply. */
- 389:modbus/mb.c   ****             if( ucRcvAddress != MB_ADDRESS_BROADCAST )
- 390:modbus/mb.c   ****             {
- 391:modbus/mb.c   ****                 if( eException != MB_EX_NONE )
- 392:modbus/mb.c   ****                 {
- 393:modbus/mb.c   ****                     /* An exception occured. Build an error frame. */
- 394:modbus/mb.c   ****                     usLength = 0;
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = ( UCHAR )( ucFunctionCode | MB_FUNC_ERROR );
- 396:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 397:modbus/mb.c   ****                 }
- 398:modbus/mb.c   ****                 if( ( eMBCurrentMode == MB_ASCII ) && MB_ASCII_TIMEOUT_WAIT_BEFORE_SEND_MS )
- 399:modbus/mb.c   ****                 {
- 400:modbus/mb.c   ****                     vMBPortTimersDelay( MB_ASCII_TIMEOUT_WAIT_BEFORE_SEND_MS );
- 401:modbus/mb.c   ****                 }                
- 402:modbus/mb.c   ****                 eStatus = peMBFrameSendCur( ucMBAddress, ucMBFrame, usLength );
- 403:modbus/mb.c   ****             }
- 404:modbus/mb.c   ****             break;
- 405:modbus/mb.c   **** 
- 406:modbus/mb.c   ****         case EV_FRAME_SENT:
- 407:modbus/mb.c   ****             break;
- 408:modbus/mb.c   ****         }
- 409:modbus/mb.c   ****     }
- 410:modbus/mb.c   ****     return MB_ENOERR;
- 601              		.loc 1 410 12 view .LVU158
- 602 0018 0024     		movs	r4, #0
- 603              	.LVL46:
- 604              	.L49:
-ARM GAS  /tmp/ccn5smZ1.s 			page 21
+ 561              	.L40:
+ 562              	.LVL45:
+ 353:modbus/mb.c   ****     }
+ 354:modbus/mb.c   ****     return eStatus;
+ 563              		.loc 1 354 5 is_stmt 1 view .LVU137
+ 355:modbus/mb.c   **** }
+ 564              		.loc 1 355 1 is_stmt 0 view .LVU138
+ 565              		@ sp needed
+ 566 000c 10BD     		pop	{r4, pc}
+ 567              	.LVL46:
+ 568              	.L42:
+ 347:modbus/mb.c   ****         eMBState = STATE_ENABLED;
+ 569              		.loc 1 347 9 is_stmt 1 view .LVU139
+ 570 000e 054B     		ldr	r3, .L43+4
+ 571 0010 1B68     		ldr	r3, [r3]
+ 572 0012 9847     		blx	r3
+ 573              	.LVL47:
+ 348:modbus/mb.c   ****     }
+ 574              		.loc 1 348 9 view .LVU140
+ 348:modbus/mb.c   ****     }
+ 575              		.loc 1 348 18 is_stmt 0 view .LVU141
+ 576 0014 024B     		ldr	r3, .L43
+ 577 0016 0022     		movs	r2, #0
+ 578 0018 1A70     		strb	r2, [r3]
+ 342:modbus/mb.c   **** 
+ 579              		.loc 1 342 21 view .LVU142
+ 580 001a 0020     		movs	r0, #0
+ 581 001c F6E7     		b	.L40
+ 582              	.L44:
+ 583 001e C046     		.align	2
+ 584              	.L43:
+ 585 0020 00000000 		.word	.LANCHOR6
+ 586 0024 00000000 		.word	.LANCHOR1
+ 587              		.cfi_endproc
+ 588              	.LFE44:
+ 590              		.section	.text.eMBDisable,"ax",%progbits
+ 591              		.align	1
+ 592              		.global	eMBDisable
+ 593              		.syntax unified
+ 594              		.code	16
+ 595              		.thumb_func
+ 596              		.fpu softvfp
+ 598              	eMBDisable:
+ 599              	.LFB45:
+ 356:modbus/mb.c   **** 
+ 357:modbus/mb.c   **** eMBErrorCode
+ 358:modbus/mb.c   **** eMBDisable( void )
+ 359:modbus/mb.c   **** {
+ 600              		.loc 1 359 1 is_stmt 1 view -0
+ 601              		.cfi_startproc
+ 602              		@ args = 0, pretend = 0, frame = 0
+ 603              		@ frame_needed = 0, uses_anonymous_args = 0
+ 604 0000 10B5     		push	{r4, lr}
+ 605              	.LCFI4:
+ 606              		.cfi_def_cfa_offset 8
+ 607              		.cfi_offset 4, -8
+ 608              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccrMcL7D.s 			page 20
 
 
- 411:modbus/mb.c   **** }
- 605              		.loc 1 411 1 view .LVU159
- 606 001a 2000     		movs	r0, r4
- 607 001c 02B0     		add	sp, sp, #8
- 608              		@ sp needed
- 609 001e 10BD     		pop	{r4, pc}
- 610              	.LVL47:
- 611              	.L62:
- 353:modbus/mb.c   ****         {
- 612              		.loc 1 353 9 is_stmt 1 view .LVU160
- 613 0020 6B46     		mov	r3, sp
- 614 0022 0733     		adds	r3, r3, #7
- 615 0024 1B78     		ldrb	r3, [r3]
- 616 0026 012B     		cmp	r3, #1
- 617 0028 03D0     		beq	.L50
- 618 002a 022B     		cmp	r3, #2
- 619 002c 15D0     		beq	.L51
- 410:modbus/mb.c   **** }
- 620              		.loc 1 410 12 is_stmt 0 view .LVU161
- 621 002e 0024     		movs	r4, #0
- 622 0030 F3E7     		b	.L49
- 623              	.L50:
- 359:modbus/mb.c   ****             if( eStatus == MB_ENOERR )
- 624              		.loc 1 359 13 is_stmt 1 view .LVU162
- 359:modbus/mb.c   ****             if( eStatus == MB_ENOERR )
- 625              		.loc 1 359 23 is_stmt 0 view .LVU163
- 626 0032 2C4B     		ldr	r3, .L63+4
- 627 0034 1B68     		ldr	r3, [r3]
- 628 0036 2C4A     		ldr	r2, .L63+8
- 629 0038 2C49     		ldr	r1, .L63+12
- 630 003a 2D48     		ldr	r0, .L63+16
- 631 003c 9847     		blx	r3
- 632              	.LVL48:
- 633 003e 041E     		subs	r4, r0, #0
- 634              	.LVL49:
- 360:modbus/mb.c   ****             {
- 635              		.loc 1 360 13 is_stmt 1 view .LVU164
- 360:modbus/mb.c   ****             {
- 636              		.loc 1 360 15 is_stmt 0 view .LVU165
- 637 0040 4AD1     		bne	.L60
- 363:modbus/mb.c   ****                 {
- 638              		.loc 1 363 17 is_stmt 1 view .LVU166
- 363:modbus/mb.c   ****                 {
- 639              		.loc 1 363 36 is_stmt 0 view .LVU167
- 640 0042 2B4B     		ldr	r3, .L63+16
- 641 0044 1B78     		ldrb	r3, [r3]
- 642 0046 2B4A     		ldr	r2, .L63+20
- 643 0048 1278     		ldrb	r2, [r2]
- 363:modbus/mb.c   ****                 {
- 644              		.loc 1 363 19 view .LVU168
- 645 004a 9342     		cmp	r3, r2
- 646 004c 01D0     		beq	.L52
- 363:modbus/mb.c   ****                 {
- 647              		.loc 1 363 53 discriminator 1 view .LVU169
- 648 004e 002B     		cmp	r3, #0
- 649 0050 E3D1     		bne	.L49
- 650              	.L52:
-ARM GAS  /tmp/ccn5smZ1.s 			page 22
+ 360:modbus/mb.c   ****     eMBErrorCode    eStatus;
+ 609              		.loc 1 360 5 view .LVU144
+ 361:modbus/mb.c   **** 
+ 362:modbus/mb.c   ****     if( eMBState == STATE_ENABLED )
+ 610              		.loc 1 362 5 view .LVU145
+ 611              		.loc 1 362 18 is_stmt 0 view .LVU146
+ 612 0002 094B     		ldr	r3, .L50
+ 613 0004 1B78     		ldrb	r3, [r3]
+ 614              		.loc 1 362 7 view .LVU147
+ 615 0006 002B     		cmp	r3, #0
+ 616 0008 07D1     		bne	.L46
+ 363:modbus/mb.c   ****     {
+ 364:modbus/mb.c   ****         pvMBFrameStopCur(  );
+ 617              		.loc 1 364 9 is_stmt 1 view .LVU148
+ 618 000a 084B     		ldr	r3, .L50+4
+ 619 000c 1B68     		ldr	r3, [r3]
+ 620 000e 9847     		blx	r3
+ 621              	.LVL48:
+ 365:modbus/mb.c   ****         eMBState = STATE_DISABLED;
+ 622              		.loc 1 365 9 view .LVU149
+ 623              		.loc 1 365 18 is_stmt 0 view .LVU150
+ 624 0010 054B     		ldr	r3, .L50
+ 625 0012 0122     		movs	r2, #1
+ 626 0014 1A70     		strb	r2, [r3]
+ 366:modbus/mb.c   ****         eStatus = MB_ENOERR;
+ 627              		.loc 1 366 9 is_stmt 1 view .LVU151
+ 628              	.LVL49:
+ 629              		.loc 1 366 17 is_stmt 0 view .LVU152
+ 630 0016 0020     		movs	r0, #0
+ 631              	.LVL50:
+ 632              	.L47:
+ 367:modbus/mb.c   ****     }
+ 368:modbus/mb.c   ****     else if( eMBState == STATE_DISABLED )
+ 369:modbus/mb.c   ****     {
+ 370:modbus/mb.c   ****         eStatus = MB_ENOERR;
+ 371:modbus/mb.c   ****     }
+ 372:modbus/mb.c   ****     else
+ 373:modbus/mb.c   ****     {
+ 374:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
+ 375:modbus/mb.c   ****     }
+ 376:modbus/mb.c   ****     return eStatus;
+ 633              		.loc 1 376 5 is_stmt 1 view .LVU153
+ 377:modbus/mb.c   **** }
+ 634              		.loc 1 377 1 is_stmt 0 view .LVU154
+ 635              		@ sp needed
+ 636 0018 10BD     		pop	{r4, pc}
+ 637              	.LVL51:
+ 638              	.L46:
+ 368:modbus/mb.c   ****     {
+ 639              		.loc 1 368 10 is_stmt 1 view .LVU155
+ 368:modbus/mb.c   ****     {
+ 640              		.loc 1 368 12 is_stmt 0 view .LVU156
+ 641 001a 012B     		cmp	r3, #1
+ 642 001c 01D0     		beq	.L49
+ 374:modbus/mb.c   ****     }
+ 643              		.loc 1 374 17 view .LVU157
+ 644 001e 0620     		movs	r0, #6
+ARM GAS  /tmp/ccrMcL7D.s 			page 21
 
 
- 365:modbus/mb.c   ****                 }
- 651              		.loc 1 365 21 is_stmt 1 view .LVU170
- 365:modbus/mb.c   ****                 }
- 652              		.loc 1 365 29 is_stmt 0 view .LVU171
- 653 0052 0220     		movs	r0, #2
- 654              	.LVL50:
- 365:modbus/mb.c   ****                 }
- 655              		.loc 1 365 29 view .LVU172
- 656 0054 FFF7FEFF 		bl	xMBPortEventPost
- 657              	.LVL51:
- 658 0058 DFE7     		b	.L49
- 659              	.LVL52:
- 660              	.L51:
- 371:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
- 661              		.loc 1 371 13 is_stmt 1 view .LVU173
- 371:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
- 662              		.loc 1 371 39 is_stmt 0 view .LVU174
- 663 005a 244B     		ldr	r3, .L63+12
- 664 005c 1868     		ldr	r0, [r3]
- 665 005e 0478     		ldrb	r4, [r0]
- 371:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
- 666              		.loc 1 371 28 view .LVU175
- 667 0060 254B     		ldr	r3, .L63+24
- 668 0062 1C70     		strb	r4, [r3]
- 372:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
- 669              		.loc 1 372 13 is_stmt 1 view .LVU176
- 372:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
- 670              		.loc 1 372 24 is_stmt 0 view .LVU177
- 671 0064 254B     		ldr	r3, .L63+28
- 672 0066 0122     		movs	r2, #1
- 673 0068 1A70     		strb	r2, [r3]
- 373:modbus/mb.c   ****             {
- 674              		.loc 1 373 13 is_stmt 1 view .LVU178
- 675              	.LVL53:
- 373:modbus/mb.c   ****             {
- 676              		.loc 1 373 20 is_stmt 0 view .LVU179
- 677 006a 0023     		movs	r3, #0
- 373:modbus/mb.c   ****             {
- 678              		.loc 1 373 13 view .LVU180
- 679 006c 00E0     		b	.L53
- 680              	.LVL54:
- 681              	.L55:
- 373:modbus/mb.c   ****             {
- 682              		.loc 1 373 52 discriminator 2 view .LVU181
- 683 006e 0133     		adds	r3, r3, #1
- 684              	.LVL55:
- 685              	.L53:
- 373:modbus/mb.c   ****             {
- 686              		.loc 1 373 13 discriminator 1 view .LVU182
- 687 0070 0F2B     		cmp	r3, #15
- 688 0072 0DDC     		bgt	.L54
- 376:modbus/mb.c   ****                 {
- 689              		.loc 1 376 17 is_stmt 1 view .LVU183
- 376:modbus/mb.c   ****                 {
- 690              		.loc 1 376 37 is_stmt 0 view .LVU184
- 691 0074 DA00     		lsls	r2, r3, #3
- 692 0076 2249     		ldr	r1, .L63+32
-ARM GAS  /tmp/ccn5smZ1.s 			page 23
+ 645 0020 FAE7     		b	.L47
+ 646              	.L49:
+ 370:modbus/mb.c   ****     }
+ 647              		.loc 1 370 17 view .LVU158
+ 648 0022 0020     		movs	r0, #0
+ 649 0024 F8E7     		b	.L47
+ 650              	.L51:
+ 651 0026 C046     		.align	2
+ 652              	.L50:
+ 653 0028 00000000 		.word	.LANCHOR6
+ 654 002c 00000000 		.word	.LANCHOR2
+ 655              		.cfi_endproc
+ 656              	.LFE45:
+ 658              		.section	.text.eMBPoll,"ax",%progbits
+ 659              		.align	1
+ 660              		.global	eMBPoll
+ 661              		.syntax unified
+ 662              		.code	16
+ 663              		.thumb_func
+ 664              		.fpu softvfp
+ 666              	eMBPoll:
+ 667              	.LFB46:
+ 378:modbus/mb.c   **** 
+ 379:modbus/mb.c   **** eMBErrorCode
+ 380:modbus/mb.c   **** eMBPoll( void )
+ 381:modbus/mb.c   **** {
+ 668              		.loc 1 381 1 is_stmt 1 view -0
+ 669              		.cfi_startproc
+ 670              		@ args = 0, pretend = 0, frame = 8
+ 671              		@ frame_needed = 0, uses_anonymous_args = 0
+ 672 0000 10B5     		push	{r4, lr}
+ 673              	.LCFI5:
+ 674              		.cfi_def_cfa_offset 8
+ 675              		.cfi_offset 4, -8
+ 676              		.cfi_offset 14, -4
+ 677 0002 82B0     		sub	sp, sp, #8
+ 678              	.LCFI6:
+ 679              		.cfi_def_cfa_offset 16
+ 382:modbus/mb.c   ****     static UCHAR   *ucMBFrame;
+ 680              		.loc 1 382 5 view .LVU160
+ 383:modbus/mb.c   ****     static UCHAR    ucRcvAddress;
+ 681              		.loc 1 383 5 view .LVU161
+ 384:modbus/mb.c   ****     static UCHAR    ucFunctionCode;
+ 682              		.loc 1 384 5 view .LVU162
+ 385:modbus/mb.c   ****     static USHORT   usLength;
+ 683              		.loc 1 385 5 view .LVU163
+ 386:modbus/mb.c   ****     static eMBException eException;
+ 684              		.loc 1 386 5 view .LVU164
+ 387:modbus/mb.c   **** 
+ 388:modbus/mb.c   ****     int             i;
+ 685              		.loc 1 388 5 view .LVU165
+ 389:modbus/mb.c   ****     eMBErrorCode    eStatus = MB_ENOERR;
+ 686              		.loc 1 389 5 view .LVU166
+ 687              	.LVL52:
+ 390:modbus/mb.c   ****     eMBEventType    eEvent;
+ 688              		.loc 1 390 5 view .LVU167
+ 391:modbus/mb.c   **** 
+ARM GAS  /tmp/ccrMcL7D.s 			page 22
 
 
- 693 0078 525C     		ldrb	r2, [r2, r1]
- 376:modbus/mb.c   ****                 {
- 694              		.loc 1 376 19 view .LVU185
- 695 007a 002A     		cmp	r2, #0
- 696 007c 08D0     		beq	.L54
- 380:modbus/mb.c   ****                 {
- 697              		.loc 1 380 22 is_stmt 1 view .LVU186
- 380:modbus/mb.c   ****                 {
- 698              		.loc 1 380 24 is_stmt 0 view .LVU187
- 699 007e 9442     		cmp	r4, r2
- 700 0080 F5D1     		bne	.L55
- 382:modbus/mb.c   ****                     break;
- 701              		.loc 1 382 21 is_stmt 1 view .LVU188
- 382:modbus/mb.c   ****                     break;
- 702              		.loc 1 382 50 is_stmt 0 view .LVU189
- 703 0082 DB00     		lsls	r3, r3, #3
- 704              	.LVL56:
- 382:modbus/mb.c   ****                     break;
- 705              		.loc 1 382 50 view .LVU190
- 706 0084 CB18     		adds	r3, r1, r3
- 707 0086 5B68     		ldr	r3, [r3, #4]
- 382:modbus/mb.c   ****                     break;
- 708              		.loc 1 382 34 view .LVU191
- 709 0088 1749     		ldr	r1, .L63+8
- 710 008a 9847     		blx	r3
- 711              	.LVL57:
- 382:modbus/mb.c   ****                     break;
- 712              		.loc 1 382 32 view .LVU192
- 713 008c 1B4B     		ldr	r3, .L63+28
- 714 008e 1870     		strb	r0, [r3]
- 383:modbus/mb.c   ****                 }
- 715              		.loc 1 383 21 is_stmt 1 view .LVU193
- 716              	.L54:
- 389:modbus/mb.c   ****             {
- 717              		.loc 1 389 13 view .LVU194
- 389:modbus/mb.c   ****             {
- 718              		.loc 1 389 30 is_stmt 0 view .LVU195
- 719 0090 174B     		ldr	r3, .L63+16
- 720 0092 1B78     		ldrb	r3, [r3]
- 389:modbus/mb.c   ****             {
- 721              		.loc 1 389 15 view .LVU196
- 722 0094 002B     		cmp	r3, #0
- 723 0096 21D0     		beq	.L61
- 391:modbus/mb.c   ****                 {
- 724              		.loc 1 391 17 is_stmt 1 view .LVU197
- 391:modbus/mb.c   ****                 {
- 725              		.loc 1 391 32 is_stmt 0 view .LVU198
- 726 0098 184B     		ldr	r3, .L63+28
- 727 009a 1B78     		ldrb	r3, [r3]
- 391:modbus/mb.c   ****                 {
- 728              		.loc 1 391 19 view .LVU199
- 729 009c 002B     		cmp	r3, #0
- 730 009e 0ED0     		beq	.L57
- 394:modbus/mb.c   ****                     ucMBFrame[usLength++] = ( UCHAR )( ucFunctionCode | MB_FUNC_ERROR );
- 731              		.loc 1 394 21 is_stmt 1 view .LVU200
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 732              		.loc 1 395 21 view .LVU201
-ARM GAS  /tmp/ccn5smZ1.s 			page 24
+ 392:modbus/mb.c   ****     /* Check if the protocol stack is ready. */
+ 393:modbus/mb.c   ****     if( eMBState != STATE_ENABLED )
+ 689              		.loc 1 393 5 view .LVU168
+ 690              		.loc 1 393 18 is_stmt 0 view .LVU169
+ 691 0004 364B     		ldr	r3, .L67
+ 692 0006 1B78     		ldrb	r3, [r3]
+ 693              		.loc 1 393 7 view .LVU170
+ 694 0008 002B     		cmp	r3, #0
+ 695 000a 63D1     		bne	.L62
+ 394:modbus/mb.c   ****     {
+ 395:modbus/mb.c   ****         return MB_EILLSTATE;
+ 396:modbus/mb.c   ****     }
+ 397:modbus/mb.c   **** 
+ 398:modbus/mb.c   ****     /* Check if there is a event available. If not return control to caller.
+ 399:modbus/mb.c   ****      * Otherwise we will handle the event. */
+ 400:modbus/mb.c   ****     if( xMBPortEventGet( &eEvent ) == TRUE )
+ 696              		.loc 1 400 5 is_stmt 1 view .LVU171
+ 697              		.loc 1 400 9 is_stmt 0 view .LVU172
+ 698 000c 6B46     		mov	r3, sp
+ 699 000e D81D     		adds	r0, r3, #7
+ 700 0010 FFF7FEFF 		bl	xMBPortEventGet
+ 701              	.LVL53:
+ 702              		.loc 1 400 7 view .LVU173
+ 703 0014 0128     		cmp	r0, #1
+ 704 0016 03D0     		beq	.L66
+ 401:modbus/mb.c   ****     {
+ 402:modbus/mb.c   ****         switch ( eEvent )
+ 403:modbus/mb.c   ****         {
+ 404:modbus/mb.c   ****         case EV_READY:
+ 405:modbus/mb.c   ****             break;
+ 406:modbus/mb.c   **** 
+ 407:modbus/mb.c   ****         case EV_FRAME_RECEIVED:
+ 408:modbus/mb.c   ****             eStatus = peMBFrameReceiveCur( &ucRcvAddress, &ucMBFrame, &usLength );
+ 409:modbus/mb.c   ****             if( eStatus == MB_ENOERR )
+ 410:modbus/mb.c   ****             {
+ 411:modbus/mb.c   ****                 /* Check if the frame is for us. If not ignore the frame. */
+ 412:modbus/mb.c   ****                 if( ( ucRcvAddress == ucMBAddress ) || ( ucRcvAddress == MB_ADDRESS_BROADCAST ) )
+ 413:modbus/mb.c   ****                 {
+ 414:modbus/mb.c   ****                     ( void )xMBPortEventPost( EV_EXECUTE );
+ 415:modbus/mb.c   ****                 }
+ 416:modbus/mb.c   ****             }
+ 417:modbus/mb.c   ****             break;
+ 418:modbus/mb.c   **** 
+ 419:modbus/mb.c   ****         case EV_EXECUTE:
+ 420:modbus/mb.c   ****             ucFunctionCode = ucMBFrame[MB_PDU_FUNC_OFF];
+ 421:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
+ 422:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
+ 423:modbus/mb.c   ****             {
+ 424:modbus/mb.c   ****                 /* No more function handlers registered. Abort. */
+ 425:modbus/mb.c   ****                 if( xFuncHandlers[i].ucFunctionCode == 0 )
+ 426:modbus/mb.c   ****                 {
+ 427:modbus/mb.c   ****                     break;
+ 428:modbus/mb.c   ****                 }
+ 429:modbus/mb.c   ****                 else if( xFuncHandlers[i].ucFunctionCode == ucFunctionCode )
+ 430:modbus/mb.c   ****                 {
+ 431:modbus/mb.c   ****                     eException = xFuncHandlers[i].pxHandler( ucMBFrame, &usLength );
+ 432:modbus/mb.c   ****                     break;
+ARM GAS  /tmp/ccrMcL7D.s 			page 23
 
 
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 733              		.loc 1 395 45 is_stmt 0 view .LVU202
- 734 00a0 154A     		ldr	r2, .L63+24
- 735 00a2 1478     		ldrb	r4, [r2]
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 736              		.loc 1 395 30 view .LVU203
- 737 00a4 1148     		ldr	r0, .L63+12
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 738              		.loc 1 395 39 view .LVU204
- 739 00a6 104A     		ldr	r2, .L63+8
- 740 00a8 0121     		movs	r1, #1
- 741 00aa 1180     		strh	r1, [r2]
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 742              		.loc 1 395 45 view .LVU205
- 743 00ac 8139     		subs	r1, r1, #129
- 744 00ae 2143     		orrs	r1, r4
- 395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
- 745              		.loc 1 395 43 view .LVU206
- 746 00b0 0468     		ldr	r4, [r0]
- 747 00b2 2170     		strb	r1, [r4]
- 396:modbus/mb.c   ****                 }
- 748              		.loc 1 396 21 is_stmt 1 view .LVU207
- 396:modbus/mb.c   ****                 }
- 749              		.loc 1 396 30 is_stmt 0 view .LVU208
- 750 00b4 0068     		ldr	r0, [r0]
- 396:modbus/mb.c   ****                 }
- 751              		.loc 1 396 39 view .LVU209
- 752 00b6 1188     		ldrh	r1, [r2]
- 753 00b8 4C1C     		adds	r4, r1, #1
- 754 00ba 1480     		strh	r4, [r2]
- 396:modbus/mb.c   ****                 }
- 755              		.loc 1 396 43 view .LVU210
- 756 00bc 4354     		strb	r3, [r0, r1]
- 757              	.L57:
- 398:modbus/mb.c   ****                 {
- 758              		.loc 1 398 17 is_stmt 1 view .LVU211
- 402:modbus/mb.c   ****             }
- 759              		.loc 1 402 17 view .LVU212
- 402:modbus/mb.c   ****             }
- 760              		.loc 1 402 27 is_stmt 0 view .LVU213
- 761 00be 0A4B     		ldr	r3, .L63+8
- 762 00c0 1A88     		ldrh	r2, [r3]
- 763 00c2 0A4B     		ldr	r3, .L63+12
- 764 00c4 1968     		ldr	r1, [r3]
- 765 00c6 0B4B     		ldr	r3, .L63+20
- 766 00c8 1878     		ldrb	r0, [r3]
- 767 00ca 0E4B     		ldr	r3, .L63+36
- 768 00cc 1B68     		ldr	r3, [r3]
- 769 00ce 9847     		blx	r3
- 770              	.LVL58:
- 410:modbus/mb.c   **** }
- 771              		.loc 1 410 12 view .LVU214
- 772 00d0 0024     		movs	r4, #0
- 773 00d2 A2E7     		b	.L49
- 774              	.LVL59:
- 775              	.L58:
- 346:modbus/mb.c   ****     }
-ARM GAS  /tmp/ccn5smZ1.s 			page 25
+ 433:modbus/mb.c   ****                 }
+ 434:modbus/mb.c   ****             }
+ 435:modbus/mb.c   **** 
+ 436:modbus/mb.c   ****             /* If the request was not sent to the broadcast address we
+ 437:modbus/mb.c   ****              * return a reply. */
+ 438:modbus/mb.c   ****             if( ucRcvAddress != MB_ADDRESS_BROADCAST )
+ 439:modbus/mb.c   ****             {
+ 440:modbus/mb.c   ****                 if( eException != MB_EX_NONE )
+ 441:modbus/mb.c   ****                 {
+ 442:modbus/mb.c   ****                     /* An exception occured. Build an error frame. */
+ 443:modbus/mb.c   ****                     usLength = 0;
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = ( UCHAR )( ucFunctionCode | MB_FUNC_ERROR );
+ 445:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 446:modbus/mb.c   ****                 }
+ 447:modbus/mb.c   ****                 if( ( eMBCurrentMode == MB_ASCII ) && MB_ASCII_TIMEOUT_WAIT_BEFORE_SEND_MS )
+ 448:modbus/mb.c   ****                 {
+ 449:modbus/mb.c   ****                     vMBPortTimersDelay( MB_ASCII_TIMEOUT_WAIT_BEFORE_SEND_MS );
+ 450:modbus/mb.c   ****                 }                
+ 451:modbus/mb.c   ****                 eStatus = peMBFrameSendCur( ucMBAddress, ucMBFrame, usLength );
+ 452:modbus/mb.c   ****             }
+ 453:modbus/mb.c   ****             break;
+ 454:modbus/mb.c   **** 
+ 455:modbus/mb.c   ****         case EV_FRAME_SENT:
+ 456:modbus/mb.c   ****             break;
+ 457:modbus/mb.c   ****         }
+ 458:modbus/mb.c   ****     }
+ 459:modbus/mb.c   ****     return MB_ENOERR;
+ 705              		.loc 1 459 12 view .LVU174
+ 706 0018 0024     		movs	r4, #0
+ 707              	.LVL54:
+ 708              	.L53:
+ 460:modbus/mb.c   **** }
+ 709              		.loc 1 460 1 view .LVU175
+ 710 001a 2000     		movs	r0, r4
+ 711 001c 02B0     		add	sp, sp, #8
+ 712              		@ sp needed
+ 713 001e 10BD     		pop	{r4, pc}
+ 714              	.LVL55:
+ 715              	.L66:
+ 402:modbus/mb.c   ****         {
+ 716              		.loc 1 402 9 is_stmt 1 view .LVU176
+ 717 0020 6B46     		mov	r3, sp
+ 718 0022 0733     		adds	r3, r3, #7
+ 719 0024 1B78     		ldrb	r3, [r3]
+ 720 0026 012B     		cmp	r3, #1
+ 721 0028 03D0     		beq	.L54
+ 722 002a 022B     		cmp	r3, #2
+ 723 002c 15D0     		beq	.L55
+ 459:modbus/mb.c   **** }
+ 724              		.loc 1 459 12 is_stmt 0 view .LVU177
+ 725 002e 0024     		movs	r4, #0
+ 726 0030 F3E7     		b	.L53
+ 727              	.L54:
+ 408:modbus/mb.c   ****             if( eStatus == MB_ENOERR )
+ 728              		.loc 1 408 13 is_stmt 1 view .LVU178
+ 408:modbus/mb.c   ****             if( eStatus == MB_ENOERR )
+ 729              		.loc 1 408 23 is_stmt 0 view .LVU179
+ARM GAS  /tmp/ccrMcL7D.s 			page 24
 
 
- 776              		.loc 1 346 16 view .LVU215
- 777 00d4 0624     		movs	r4, #6
- 778 00d6 A0E7     		b	.L49
- 779              	.LVL60:
- 780              	.L60:
- 410:modbus/mb.c   **** }
- 781              		.loc 1 410 12 view .LVU216
- 782 00d8 0024     		movs	r4, #0
- 783 00da 9EE7     		b	.L49
- 784              	.LVL61:
- 785              	.L61:
- 410:modbus/mb.c   **** }
- 786              		.loc 1 410 12 view .LVU217
- 787 00dc 0024     		movs	r4, #0
- 788 00de 9CE7     		b	.L49
- 789              	.L64:
- 790              		.align	2
- 791              	.L63:
- 792 00e0 00000000 		.word	.LANCHOR6
- 793 00e4 00000000 		.word	.LANCHOR4
- 794 00e8 00000000 		.word	.LANCHOR7
- 795 00ec 00000000 		.word	.LANCHOR8
- 796 00f0 00000000 		.word	.LANCHOR9
- 797 00f4 00000000 		.word	.LANCHOR0
- 798 00f8 00000000 		.word	.LANCHOR10
- 799 00fc 00000000 		.word	.LANCHOR11
- 800 0100 00000000 		.word	xFuncHandlers
- 801 0104 00000000 		.word	.LANCHOR3
- 802              		.cfi_endproc
- 803              	.LFE42:
- 805              		.comm	pxMBFrameCBTransmitFSMCur,4,4
- 806              		.comm	pxMBFrameCBReceiveFSMCur,4,4
- 807              		.comm	pxMBPortCBTimerExpired,4,4
- 808              		.comm	pxMBFrameCBTransmitterEmpty,4,4
- 809              		.comm	pxMBFrameCBByteReceived,4,4
- 810              		.section	.bss.eException.7936,"aw",%nobits
- 811              		.set	.LANCHOR11,. + 0
- 814              	eException.7936:
- 815 0000 00       		.space	1
- 816              		.section	.bss.peMBFrameReceiveCur,"aw",%nobits
- 817              		.align	2
- 818              		.set	.LANCHOR4,. + 0
- 821              	peMBFrameReceiveCur:
- 822 0000 00000000 		.space	4
- 823              		.section	.bss.peMBFrameSendCur,"aw",%nobits
- 824              		.align	2
- 825              		.set	.LANCHOR3,. + 0
- 828              	peMBFrameSendCur:
- 829 0000 00000000 		.space	4
- 830              		.section	.bss.pvMBFrameCloseCur,"aw",%nobits
- 831              		.align	2
- 832              		.set	.LANCHOR5,. + 0
- 835              	pvMBFrameCloseCur:
- 836 0000 00000000 		.space	4
- 837              		.section	.bss.pvMBFrameStartCur,"aw",%nobits
- 838              		.align	2
- 839              		.set	.LANCHOR1,. + 0
-ARM GAS  /tmp/ccn5smZ1.s 			page 26
+ 730 0032 2C4B     		ldr	r3, .L67+4
+ 731 0034 1B68     		ldr	r3, [r3]
+ 732 0036 2C4A     		ldr	r2, .L67+8
+ 733 0038 2C49     		ldr	r1, .L67+12
+ 734 003a 2D48     		ldr	r0, .L67+16
+ 735 003c 9847     		blx	r3
+ 736              	.LVL56:
+ 737 003e 041E     		subs	r4, r0, #0
+ 738              	.LVL57:
+ 409:modbus/mb.c   ****             {
+ 739              		.loc 1 409 13 is_stmt 1 view .LVU180
+ 409:modbus/mb.c   ****             {
+ 740              		.loc 1 409 15 is_stmt 0 view .LVU181
+ 741 0040 4AD1     		bne	.L64
+ 412:modbus/mb.c   ****                 {
+ 742              		.loc 1 412 17 is_stmt 1 view .LVU182
+ 412:modbus/mb.c   ****                 {
+ 743              		.loc 1 412 36 is_stmt 0 view .LVU183
+ 744 0042 2B4B     		ldr	r3, .L67+16
+ 745 0044 1B78     		ldrb	r3, [r3]
+ 746 0046 2B4A     		ldr	r2, .L67+20
+ 747 0048 1278     		ldrb	r2, [r2]
+ 412:modbus/mb.c   ****                 {
+ 748              		.loc 1 412 19 view .LVU184
+ 749 004a 9342     		cmp	r3, r2
+ 750 004c 01D0     		beq	.L56
+ 412:modbus/mb.c   ****                 {
+ 751              		.loc 1 412 53 discriminator 1 view .LVU185
+ 752 004e 002B     		cmp	r3, #0
+ 753 0050 E3D1     		bne	.L53
+ 754              	.L56:
+ 414:modbus/mb.c   ****                 }
+ 755              		.loc 1 414 21 is_stmt 1 view .LVU186
+ 414:modbus/mb.c   ****                 }
+ 756              		.loc 1 414 29 is_stmt 0 view .LVU187
+ 757 0052 0220     		movs	r0, #2
+ 758              	.LVL58:
+ 414:modbus/mb.c   ****                 }
+ 759              		.loc 1 414 29 view .LVU188
+ 760 0054 FFF7FEFF 		bl	xMBPortEventPost
+ 761              	.LVL59:
+ 762 0058 DFE7     		b	.L53
+ 763              	.LVL60:
+ 764              	.L55:
+ 420:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
+ 765              		.loc 1 420 13 is_stmt 1 view .LVU189
+ 420:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
+ 766              		.loc 1 420 39 is_stmt 0 view .LVU190
+ 767 005a 244B     		ldr	r3, .L67+12
+ 768 005c 1868     		ldr	r0, [r3]
+ 769 005e 0478     		ldrb	r4, [r0]
+ 420:modbus/mb.c   ****             eException = MB_EX_ILLEGAL_FUNCTION;
+ 770              		.loc 1 420 28 view .LVU191
+ 771 0060 254B     		ldr	r3, .L67+24
+ 772 0062 1C70     		strb	r4, [r3]
+ 421:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
+ 773              		.loc 1 421 13 is_stmt 1 view .LVU192
+ARM GAS  /tmp/ccrMcL7D.s 			page 25
 
 
- 842              	pvMBFrameStartCur:
- 843 0000 00000000 		.space	4
- 844              		.section	.bss.pvMBFrameStopCur,"aw",%nobits
- 845              		.align	2
- 846              		.set	.LANCHOR2,. + 0
- 849              	pvMBFrameStopCur:
- 850 0000 00000000 		.space	4
- 851              		.section	.bss.ucFunctionCode.7934,"aw",%nobits
- 852              		.set	.LANCHOR10,. + 0
- 855              	ucFunctionCode.7934:
- 856 0000 00       		.space	1
- 857              		.section	.bss.ucMBAddress,"aw",%nobits
- 858              		.set	.LANCHOR0,. + 0
- 861              	ucMBAddress:
- 862 0000 00       		.space	1
- 863              		.section	.bss.ucMBFrame.7932,"aw",%nobits
- 864              		.align	2
- 865              		.set	.LANCHOR8,. + 0
- 868              	ucMBFrame.7932:
- 869 0000 00000000 		.space	4
- 870              		.section	.bss.ucRcvAddress.7933,"aw",%nobits
- 871              		.set	.LANCHOR9,. + 0
- 874              	ucRcvAddress.7933:
- 875 0000 00       		.space	1
- 876              		.section	.bss.usLength.7935,"aw",%nobits
- 877              		.align	1
- 878              		.set	.LANCHOR7,. + 0
- 881              	usLength.7935:
- 882 0000 0000     		.space	2
- 883              		.section	.bss.xFuncHandlers,"aw",%nobits
- 884              		.align	2
- 887              	xFuncHandlers:
- 888 0000 00000000 		.space	128
- 888      00000000 
- 888      00000000 
- 888      00000000 
- 888      00000000 
- 889              		.section	.data.eMBState,"aw"
- 890              		.set	.LANCHOR6,. + 0
- 893              	eMBState:
- 894 0000 02       		.byte	2
- 895              		.text
- 896              	.Letext0:
- 897              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
- 898              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
- 899              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
- 900              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
- 901              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
- 902              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
- 903              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
- 904              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
- 905              		.file 11 "modbus/port/port.h"
- 906              		.file 12 "modbus/include/mbport.h"
- 907              		.file 13 "modbus/include/mbproto.h"
- 908              		.file 14 "modbus/include/mb.h"
- 909              		.file 15 "modbus/include/mbframe.h"
- 910              		.file 16 "modbus/rtu/mbrtu.h"
-ARM GAS  /tmp/ccn5smZ1.s 			page 27
+ 421:modbus/mb.c   ****             for( i = 0; i < MB_FUNC_HANDLERS_MAX; i++ )
+ 774              		.loc 1 421 24 is_stmt 0 view .LVU193
+ 775 0064 254B     		ldr	r3, .L67+28
+ 776 0066 0122     		movs	r2, #1
+ 777 0068 1A70     		strb	r2, [r3]
+ 422:modbus/mb.c   ****             {
+ 778              		.loc 1 422 13 is_stmt 1 view .LVU194
+ 779              	.LVL61:
+ 422:modbus/mb.c   ****             {
+ 780              		.loc 1 422 20 is_stmt 0 view .LVU195
+ 781 006a 0023     		movs	r3, #0
+ 422:modbus/mb.c   ****             {
+ 782              		.loc 1 422 13 view .LVU196
+ 783 006c 00E0     		b	.L57
+ 784              	.LVL62:
+ 785              	.L59:
+ 422:modbus/mb.c   ****             {
+ 786              		.loc 1 422 52 discriminator 2 view .LVU197
+ 787 006e 0133     		adds	r3, r3, #1
+ 788              	.LVL63:
+ 789              	.L57:
+ 422:modbus/mb.c   ****             {
+ 790              		.loc 1 422 13 discriminator 1 view .LVU198
+ 791 0070 0F2B     		cmp	r3, #15
+ 792 0072 0DDC     		bgt	.L58
+ 425:modbus/mb.c   ****                 {
+ 793              		.loc 1 425 17 is_stmt 1 view .LVU199
+ 425:modbus/mb.c   ****                 {
+ 794              		.loc 1 425 37 is_stmt 0 view .LVU200
+ 795 0074 DA00     		lsls	r2, r3, #3
+ 796 0076 2249     		ldr	r1, .L67+32
+ 797 0078 525C     		ldrb	r2, [r2, r1]
+ 425:modbus/mb.c   ****                 {
+ 798              		.loc 1 425 19 view .LVU201
+ 799 007a 002A     		cmp	r2, #0
+ 800 007c 08D0     		beq	.L58
+ 429:modbus/mb.c   ****                 {
+ 801              		.loc 1 429 22 is_stmt 1 view .LVU202
+ 429:modbus/mb.c   ****                 {
+ 802              		.loc 1 429 24 is_stmt 0 view .LVU203
+ 803 007e 9442     		cmp	r4, r2
+ 804 0080 F5D1     		bne	.L59
+ 431:modbus/mb.c   ****                     break;
+ 805              		.loc 1 431 21 is_stmt 1 view .LVU204
+ 431:modbus/mb.c   ****                     break;
+ 806              		.loc 1 431 50 is_stmt 0 view .LVU205
+ 807 0082 DB00     		lsls	r3, r3, #3
+ 808              	.LVL64:
+ 431:modbus/mb.c   ****                     break;
+ 809              		.loc 1 431 50 view .LVU206
+ 810 0084 CB18     		adds	r3, r1, r3
+ 811 0086 5B68     		ldr	r3, [r3, #4]
+ 431:modbus/mb.c   ****                     break;
+ 812              		.loc 1 431 34 view .LVU207
+ 813 0088 1749     		ldr	r1, .L67+8
+ 814 008a 9847     		blx	r3
+ 815              	.LVL65:
+ARM GAS  /tmp/ccrMcL7D.s 			page 26
 
 
-ARM GAS  /tmp/ccn5smZ1.s 			page 28
+ 431:modbus/mb.c   ****                     break;
+ 816              		.loc 1 431 32 view .LVU208
+ 817 008c 1B4B     		ldr	r3, .L67+28
+ 818 008e 1870     		strb	r0, [r3]
+ 432:modbus/mb.c   ****                 }
+ 819              		.loc 1 432 21 is_stmt 1 view .LVU209
+ 820              	.L58:
+ 438:modbus/mb.c   ****             {
+ 821              		.loc 1 438 13 view .LVU210
+ 438:modbus/mb.c   ****             {
+ 822              		.loc 1 438 30 is_stmt 0 view .LVU211
+ 823 0090 174B     		ldr	r3, .L67+16
+ 824 0092 1B78     		ldrb	r3, [r3]
+ 438:modbus/mb.c   ****             {
+ 825              		.loc 1 438 15 view .LVU212
+ 826 0094 002B     		cmp	r3, #0
+ 827 0096 21D0     		beq	.L65
+ 440:modbus/mb.c   ****                 {
+ 828              		.loc 1 440 17 is_stmt 1 view .LVU213
+ 440:modbus/mb.c   ****                 {
+ 829              		.loc 1 440 32 is_stmt 0 view .LVU214
+ 830 0098 184B     		ldr	r3, .L67+28
+ 831 009a 1B78     		ldrb	r3, [r3]
+ 440:modbus/mb.c   ****                 {
+ 832              		.loc 1 440 19 view .LVU215
+ 833 009c 002B     		cmp	r3, #0
+ 834 009e 0ED0     		beq	.L61
+ 443:modbus/mb.c   ****                     ucMBFrame[usLength++] = ( UCHAR )( ucFunctionCode | MB_FUNC_ERROR );
+ 835              		.loc 1 443 21 is_stmt 1 view .LVU216
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 836              		.loc 1 444 21 view .LVU217
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 837              		.loc 1 444 45 is_stmt 0 view .LVU218
+ 838 00a0 154A     		ldr	r2, .L67+24
+ 839 00a2 1478     		ldrb	r4, [r2]
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 840              		.loc 1 444 30 view .LVU219
+ 841 00a4 1148     		ldr	r0, .L67+12
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 842              		.loc 1 444 39 view .LVU220
+ 843 00a6 104A     		ldr	r2, .L67+8
+ 844 00a8 0121     		movs	r1, #1
+ 845 00aa 1180     		strh	r1, [r2]
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 846              		.loc 1 444 45 view .LVU221
+ 847 00ac 8139     		subs	r1, r1, #129
+ 848 00ae 2143     		orrs	r1, r4
+ 444:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
+ 849              		.loc 1 444 43 view .LVU222
+ 850 00b0 0468     		ldr	r4, [r0]
+ 851 00b2 2170     		strb	r1, [r4]
+ 445:modbus/mb.c   ****                 }
+ 852              		.loc 1 445 21 is_stmt 1 view .LVU223
+ 445:modbus/mb.c   ****                 }
+ 853              		.loc 1 445 30 is_stmt 0 view .LVU224
+ 854 00b4 0068     		ldr	r0, [r0]
+ 445:modbus/mb.c   ****                 }
+ARM GAS  /tmp/ccrMcL7D.s 			page 27
+
+
+ 855              		.loc 1 445 39 view .LVU225
+ 856 00b6 1188     		ldrh	r1, [r2]
+ 857 00b8 4C1C     		adds	r4, r1, #1
+ 858 00ba 1480     		strh	r4, [r2]
+ 445:modbus/mb.c   ****                 }
+ 859              		.loc 1 445 43 view .LVU226
+ 860 00bc 4354     		strb	r3, [r0, r1]
+ 861              	.L61:
+ 447:modbus/mb.c   ****                 {
+ 862              		.loc 1 447 17 is_stmt 1 view .LVU227
+ 451:modbus/mb.c   ****             }
+ 863              		.loc 1 451 17 view .LVU228
+ 451:modbus/mb.c   ****             }
+ 864              		.loc 1 451 27 is_stmt 0 view .LVU229
+ 865 00be 0A4B     		ldr	r3, .L67+8
+ 866 00c0 1A88     		ldrh	r2, [r3]
+ 867 00c2 0A4B     		ldr	r3, .L67+12
+ 868 00c4 1968     		ldr	r1, [r3]
+ 869 00c6 0B4B     		ldr	r3, .L67+20
+ 870 00c8 1878     		ldrb	r0, [r3]
+ 871 00ca 0E4B     		ldr	r3, .L67+36
+ 872 00cc 1B68     		ldr	r3, [r3]
+ 873 00ce 9847     		blx	r3
+ 874              	.LVL66:
+ 459:modbus/mb.c   **** }
+ 875              		.loc 1 459 12 view .LVU230
+ 876 00d0 0024     		movs	r4, #0
+ 877 00d2 A2E7     		b	.L53
+ 878              	.LVL67:
+ 879              	.L62:
+ 395:modbus/mb.c   ****     }
+ 880              		.loc 1 395 16 view .LVU231
+ 881 00d4 0624     		movs	r4, #6
+ 882 00d6 A0E7     		b	.L53
+ 883              	.LVL68:
+ 884              	.L64:
+ 459:modbus/mb.c   **** }
+ 885              		.loc 1 459 12 view .LVU232
+ 886 00d8 0024     		movs	r4, #0
+ 887 00da 9EE7     		b	.L53
+ 888              	.LVL69:
+ 889              	.L65:
+ 459:modbus/mb.c   **** }
+ 890              		.loc 1 459 12 view .LVU233
+ 891 00dc 0024     		movs	r4, #0
+ 892 00de 9CE7     		b	.L53
+ 893              	.L68:
+ 894              		.align	2
+ 895              	.L67:
+ 896 00e0 00000000 		.word	.LANCHOR6
+ 897 00e4 00000000 		.word	.LANCHOR4
+ 898 00e8 00000000 		.word	.LANCHOR7
+ 899 00ec 00000000 		.word	.LANCHOR8
+ 900 00f0 00000000 		.word	.LANCHOR9
+ 901 00f4 00000000 		.word	.LANCHOR0
+ 902 00f8 00000000 		.word	.LANCHOR10
+ 903 00fc 00000000 		.word	.LANCHOR11
+ARM GAS  /tmp/ccrMcL7D.s 			page 28
+
+
+ 904 0100 00000000 		.word	xFuncHandlers
+ 905 0104 00000000 		.word	.LANCHOR3
+ 906              		.cfi_endproc
+ 907              	.LFE46:
+ 909              		.comm	pxMBFrameCBTransmitFSMCur,4,4
+ 910              		.comm	pxMBFrameCBReceiveFSMCur,4,4
+ 911              		.comm	pxMBPortCBTimerExpired,4,4
+ 912              		.comm	pxMBFrameCBTransmitterEmpty,4,4
+ 913              		.comm	pxMBFrameCBByteReceived,4,4
+ 914              		.section	.bss.eException.7985,"aw",%nobits
+ 915              		.set	.LANCHOR11,. + 0
+ 918              	eException.7985:
+ 919 0000 00       		.space	1
+ 920              		.section	.bss.peMBFrameReceiveCur,"aw",%nobits
+ 921              		.align	2
+ 922              		.set	.LANCHOR4,. + 0
+ 925              	peMBFrameReceiveCur:
+ 926 0000 00000000 		.space	4
+ 927              		.section	.bss.peMBFrameSendCur,"aw",%nobits
+ 928              		.align	2
+ 929              		.set	.LANCHOR3,. + 0
+ 932              	peMBFrameSendCur:
+ 933 0000 00000000 		.space	4
+ 934              		.section	.bss.pvMBFrameCloseCur,"aw",%nobits
+ 935              		.align	2
+ 936              		.set	.LANCHOR5,. + 0
+ 939              	pvMBFrameCloseCur:
+ 940 0000 00000000 		.space	4
+ 941              		.section	.bss.pvMBFrameStartCur,"aw",%nobits
+ 942              		.align	2
+ 943              		.set	.LANCHOR1,. + 0
+ 946              	pvMBFrameStartCur:
+ 947 0000 00000000 		.space	4
+ 948              		.section	.bss.pvMBFrameStopCur,"aw",%nobits
+ 949              		.align	2
+ 950              		.set	.LANCHOR2,. + 0
+ 953              	pvMBFrameStopCur:
+ 954 0000 00000000 		.space	4
+ 955              		.section	.bss.ucFunctionCode.7983,"aw",%nobits
+ 956              		.set	.LANCHOR10,. + 0
+ 959              	ucFunctionCode.7983:
+ 960 0000 00       		.space	1
+ 961              		.section	.bss.ucMBAddress,"aw",%nobits
+ 962              		.set	.LANCHOR0,. + 0
+ 965              	ucMBAddress:
+ 966 0000 00       		.space	1
+ 967              		.section	.bss.ucMBFrame.7981,"aw",%nobits
+ 968              		.align	2
+ 969              		.set	.LANCHOR8,. + 0
+ 972              	ucMBFrame.7981:
+ 973 0000 00000000 		.space	4
+ 974              		.section	.bss.ucRcvAddress.7982,"aw",%nobits
+ 975              		.set	.LANCHOR9,. + 0
+ 978              	ucRcvAddress.7982:
+ 979 0000 00       		.space	1
+ 980              		.section	.bss.usLength.7984,"aw",%nobits
+ 981              		.align	1
+ARM GAS  /tmp/ccrMcL7D.s 			page 29
+
+
+ 982              		.set	.LANCHOR7,. + 0
+ 985              	usLength.7984:
+ 986 0000 0000     		.space	2
+ 987              		.section	.data.eMBState,"aw"
+ 988              		.set	.LANCHOR6,. + 0
+ 991              	eMBState:
+ 992 0000 02       		.byte	2
+ 993              		.section	.data.xFuncHandlers,"aw"
+ 994              		.align	2
+ 997              	xFuncHandlers:
+ 998 0000 11       		.byte	17
+ 999 0001 000000   		.space	3
+ 1000 0004 00000000 		.word	eMBFuncReportSlaveID
+ 1001 0008 04       		.byte	4
+ 1002 0009 000000   		.space	3
+ 1003 000c 00000000 		.word	eMBFuncReadInputRegister
+ 1004 0010 03       		.byte	3
+ 1005 0011 000000   		.space	3
+ 1006 0014 00000000 		.word	eMBFuncReadHoldingRegister
+ 1007 0018 10       		.byte	16
+ 1008 0019 000000   		.space	3
+ 1009 001c 00000000 		.word	eMBFuncWriteMultipleHoldingRegister
+ 1010 0020 06       		.byte	6
+ 1011 0021 000000   		.space	3
+ 1012 0024 00000000 		.word	eMBFuncWriteHoldingRegister
+ 1013 0028 17       		.byte	23
+ 1014 0029 000000   		.space	3
+ 1015 002c 00000000 		.word	eMBFuncReadWriteMultipleHoldingRegister
+ 1016 0030 01       		.byte	1
+ 1017 0031 000000   		.space	3
+ 1018 0034 00000000 		.word	eMBFuncReadCoils
+ 1019 0038 05       		.byte	5
+ 1020 0039 000000   		.space	3
+ 1021 003c 00000000 		.word	eMBFuncWriteCoil
+ 1022 0040 0F       		.byte	15
+ 1023 0041 000000   		.space	3
+ 1024 0044 00000000 		.word	eMBFuncWriteMultipleCoils
+ 1025 0048 02       		.byte	2
+ 1026 0049 000000   		.space	3
+ 1027 004c 00000000 		.word	eMBFuncReadDiscreteInputs
+ 1028 0050 00000000 		.space	48
+ 1028      00000000 
+ 1028      00000000 
+ 1028      00000000 
+ 1028      00000000 
+ 1029              		.text
+ 1030              	.Letext0:
+ 1031              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 1032              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 1033              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 1034              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 1035              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 1036              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 1037              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 1038              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 1039              		.file 11 "modbus/port/port.h"
+ 1040              		.file 12 "modbus/include/mbport.h"
+ARM GAS  /tmp/ccrMcL7D.s 			page 30
+
+
+ 1041              		.file 13 "modbus/include/mbproto.h"
+ 1042              		.file 14 "modbus/include/mb.h"
+ 1043              		.file 15 "modbus/include/mbframe.h"
+ 1044              		.file 16 "modbus/rtu/mbrtu.h"
+ARM GAS  /tmp/ccrMcL7D.s 			page 31
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mb.c
-     /tmp/ccn5smZ1.s:16     .text.eMBInit:0000000000000000 $t
-     /tmp/ccn5smZ1.s:24     .text.eMBInit:0000000000000000 eMBInit
-     /tmp/ccn5smZ1.s:162    .text.eMBInit:0000000000000074 $d
+     /tmp/ccrMcL7D.s:16     .text.eMBInit:0000000000000000 $t
+     /tmp/ccrMcL7D.s:24     .text.eMBInit:0000000000000000 eMBInit
+     /tmp/ccrMcL7D.s:162    .text.eMBInit:0000000000000074 $d
                             *COM*:0000000000000004 pxMBFrameCBByteReceived
                             *COM*:0000000000000004 pxMBFrameCBTransmitterEmpty
                             *COM*:0000000000000004 pxMBPortCBTimerExpired
-     /tmp/ccn5smZ1.s:183    .text.eMBRegisterCB:0000000000000000 $t
-     /tmp/ccn5smZ1.s:190    .text.eMBRegisterCB:0000000000000000 eMBRegisterCB
-     /tmp/ccn5smZ1.s:361    .text.eMBRegisterCB:000000000000006c $d
-     /tmp/ccn5smZ1.s:887    .bss.xFuncHandlers:0000000000000000 xFuncHandlers
-     /tmp/ccn5smZ1.s:366    .text.eMBClose:0000000000000000 $t
-     /tmp/ccn5smZ1.s:373    .text.eMBClose:0000000000000000 eMBClose
-     /tmp/ccn5smZ1.s:422    .text.eMBClose:0000000000000020 $d
-     /tmp/ccn5smZ1.s:428    .text.eMBEnable:0000000000000000 $t
-     /tmp/ccn5smZ1.s:435    .text.eMBEnable:0000000000000000 eMBEnable
-     /tmp/ccn5smZ1.s:481    .text.eMBEnable:0000000000000020 $d
-     /tmp/ccn5smZ1.s:487    .text.eMBDisable:0000000000000000 $t
-     /tmp/ccn5smZ1.s:494    .text.eMBDisable:0000000000000000 eMBDisable
-     /tmp/ccn5smZ1.s:549    .text.eMBDisable:0000000000000028 $d
-     /tmp/ccn5smZ1.s:555    .text.eMBPoll:0000000000000000 $t
-     /tmp/ccn5smZ1.s:562    .text.eMBPoll:0000000000000000 eMBPoll
-     /tmp/ccn5smZ1.s:792    .text.eMBPoll:00000000000000e0 $d
+     /tmp/ccrMcL7D.s:183    .text.eMBRegCoilsCB:0000000000000000 $t
+     /tmp/ccrMcL7D.s:190    .text.eMBRegCoilsCB:0000000000000000 eMBRegCoilsCB
+     /tmp/ccrMcL7D.s:209    .text.eMBRegHoldingCB:0000000000000000 $t
+     /tmp/ccrMcL7D.s:216    .text.eMBRegHoldingCB:0000000000000000 eMBRegHoldingCB
+     /tmp/ccrMcL7D.s:235    .text.eMBRegDiscreteCB:0000000000000000 $t
+     /tmp/ccrMcL7D.s:242    .text.eMBRegDiscreteCB:0000000000000000 eMBRegDiscreteCB
+     /tmp/ccrMcL7D.s:261    .text.eMBRegInputCB:0000000000000000 $t
+     /tmp/ccrMcL7D.s:268    .text.eMBRegInputCB:0000000000000000 eMBRegInputCB
+     /tmp/ccrMcL7D.s:287    .text.eMBRegisterCB:0000000000000000 $t
+     /tmp/ccrMcL7D.s:294    .text.eMBRegisterCB:0000000000000000 eMBRegisterCB
+     /tmp/ccrMcL7D.s:465    .text.eMBRegisterCB:000000000000006c $d
+     /tmp/ccrMcL7D.s:997    .data.xFuncHandlers:0000000000000000 xFuncHandlers
+     /tmp/ccrMcL7D.s:470    .text.eMBClose:0000000000000000 $t
+     /tmp/ccrMcL7D.s:477    .text.eMBClose:0000000000000000 eMBClose
+     /tmp/ccrMcL7D.s:526    .text.eMBClose:0000000000000020 $d
+     /tmp/ccrMcL7D.s:532    .text.eMBEnable:0000000000000000 $t
+     /tmp/ccrMcL7D.s:539    .text.eMBEnable:0000000000000000 eMBEnable
+     /tmp/ccrMcL7D.s:585    .text.eMBEnable:0000000000000020 $d
+     /tmp/ccrMcL7D.s:591    .text.eMBDisable:0000000000000000 $t
+     /tmp/ccrMcL7D.s:598    .text.eMBDisable:0000000000000000 eMBDisable
+     /tmp/ccrMcL7D.s:653    .text.eMBDisable:0000000000000028 $d
+     /tmp/ccrMcL7D.s:659    .text.eMBPoll:0000000000000000 $t
+     /tmp/ccrMcL7D.s:666    .text.eMBPoll:0000000000000000 eMBPoll
+     /tmp/ccrMcL7D.s:896    .text.eMBPoll:00000000000000e0 $d
                             *COM*:0000000000000004 pxMBFrameCBTransmitFSMCur
                             *COM*:0000000000000004 pxMBFrameCBReceiveFSMCur
-     /tmp/ccn5smZ1.s:814    .bss.eException.7936:0000000000000000 eException.7936
-     /tmp/ccn5smZ1.s:815    .bss.eException.7936:0000000000000000 $d
-     /tmp/ccn5smZ1.s:817    .bss.peMBFrameReceiveCur:0000000000000000 $d
-     /tmp/ccn5smZ1.s:821    .bss.peMBFrameReceiveCur:0000000000000000 peMBFrameReceiveCur
-     /tmp/ccn5smZ1.s:824    .bss.peMBFrameSendCur:0000000000000000 $d
-     /tmp/ccn5smZ1.s:828    .bss.peMBFrameSendCur:0000000000000000 peMBFrameSendCur
-     /tmp/ccn5smZ1.s:831    .bss.pvMBFrameCloseCur:0000000000000000 $d
-     /tmp/ccn5smZ1.s:835    .bss.pvMBFrameCloseCur:0000000000000000 pvMBFrameCloseCur
-     /tmp/ccn5smZ1.s:838    .bss.pvMBFrameStartCur:0000000000000000 $d
-     /tmp/ccn5smZ1.s:842    .bss.pvMBFrameStartCur:0000000000000000 pvMBFrameStartCur
-     /tmp/ccn5smZ1.s:845    .bss.pvMBFrameStopCur:0000000000000000 $d
-     /tmp/ccn5smZ1.s:849    .bss.pvMBFrameStopCur:0000000000000000 pvMBFrameStopCur
-     /tmp/ccn5smZ1.s:855    .bss.ucFunctionCode.7934:0000000000000000 ucFunctionCode.7934
-     /tmp/ccn5smZ1.s:856    .bss.ucFunctionCode.7934:0000000000000000 $d
-     /tmp/ccn5smZ1.s:861    .bss.ucMBAddress:0000000000000000 ucMBAddress
-     /tmp/ccn5smZ1.s:862    .bss.ucMBAddress:0000000000000000 $d
-     /tmp/ccn5smZ1.s:864    .bss.ucMBFrame.7932:0000000000000000 $d
-     /tmp/ccn5smZ1.s:868    .bss.ucMBFrame.7932:0000000000000000 ucMBFrame.7932
-     /tmp/ccn5smZ1.s:874    .bss.ucRcvAddress.7933:0000000000000000 ucRcvAddress.7933
-     /tmp/ccn5smZ1.s:875    .bss.ucRcvAddress.7933:0000000000000000 $d
-     /tmp/ccn5smZ1.s:877    .bss.usLength.7935:0000000000000000 $d
-     /tmp/ccn5smZ1.s:881    .bss.usLength.7935:0000000000000000 usLength.7935
-     /tmp/ccn5smZ1.s:884    .bss.xFuncHandlers:0000000000000000 $d
-     /tmp/ccn5smZ1.s:893    .data.eMBState:0000000000000000 eMBState
+     /tmp/ccrMcL7D.s:918    .bss.eException.7985:0000000000000000 eException.7985
+     /tmp/ccrMcL7D.s:919    .bss.eException.7985:0000000000000000 $d
+     /tmp/ccrMcL7D.s:921    .bss.peMBFrameReceiveCur:0000000000000000 $d
+     /tmp/ccrMcL7D.s:925    .bss.peMBFrameReceiveCur:0000000000000000 peMBFrameReceiveCur
+     /tmp/ccrMcL7D.s:928    .bss.peMBFrameSendCur:0000000000000000 $d
+     /tmp/ccrMcL7D.s:932    .bss.peMBFrameSendCur:0000000000000000 peMBFrameSendCur
+     /tmp/ccrMcL7D.s:935    .bss.pvMBFrameCloseCur:0000000000000000 $d
+     /tmp/ccrMcL7D.s:939    .bss.pvMBFrameCloseCur:0000000000000000 pvMBFrameCloseCur
+     /tmp/ccrMcL7D.s:942    .bss.pvMBFrameStartCur:0000000000000000 $d
+     /tmp/ccrMcL7D.s:946    .bss.pvMBFrameStartCur:0000000000000000 pvMBFrameStartCur
+     /tmp/ccrMcL7D.s:949    .bss.pvMBFrameStopCur:0000000000000000 $d
+     /tmp/ccrMcL7D.s:953    .bss.pvMBFrameStopCur:0000000000000000 pvMBFrameStopCur
+     /tmp/ccrMcL7D.s:959    .bss.ucFunctionCode.7983:0000000000000000 ucFunctionCode.7983
+     /tmp/ccrMcL7D.s:960    .bss.ucFunctionCode.7983:0000000000000000 $d
+     /tmp/ccrMcL7D.s:965    .bss.ucMBAddress:0000000000000000 ucMBAddress
+     /tmp/ccrMcL7D.s:966    .bss.ucMBAddress:0000000000000000 $d
+     /tmp/ccrMcL7D.s:968    .bss.ucMBFrame.7981:0000000000000000 $d
+     /tmp/ccrMcL7D.s:972    .bss.ucMBFrame.7981:0000000000000000 ucMBFrame.7981
+     /tmp/ccrMcL7D.s:978    .bss.ucRcvAddress.7982:0000000000000000 ucRcvAddress.7982
+     /tmp/ccrMcL7D.s:979    .bss.ucRcvAddress.7982:0000000000000000 $d
+     /tmp/ccrMcL7D.s:981    .bss.usLength.7984:0000000000000000 $d
+     /tmp/ccrMcL7D.s:985    .bss.usLength.7984:0000000000000000 usLength.7984
+     /tmp/ccrMcL7D.s:991    .data.eMBState:0000000000000000 eMBState
+ARM GAS  /tmp/ccrMcL7D.s 			page 32
+
+
+     /tmp/ccrMcL7D.s:994    .data.xFuncHandlers:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 eMBRTUInit
@@ -1621,12 +1816,19 @@ xMBPortEventInit
 eMBRTUStart
 eMBRTUStop
 eMBRTUSend
-ARM GAS  /tmp/ccn5smZ1.s 			page 29
-
-
 eMBRTUReceive
 xMBRTUReceiveFSM
 xMBRTUTransmitFSM
 xMBRTUTimerT35Expired
 xMBPortEventGet
 xMBPortEventPost
+eMBFuncReportSlaveID
+eMBFuncReadInputRegister
+eMBFuncReadHoldingRegister
+eMBFuncWriteMultipleHoldingRegister
+eMBFuncWriteHoldingRegister
+eMBFuncReadWriteMultipleHoldingRegister
+eMBFuncReadCoils
+eMBFuncWriteCoil
+eMBFuncWriteMultipleCoils
+eMBFuncReadDiscreteInputs

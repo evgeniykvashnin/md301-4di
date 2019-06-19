@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccgq2qTh.s 			page 1
+ARM GAS  /tmp/ccQy2Pzw.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -15,21 +15,1148 @@ ARM GAS  /tmp/ccgq2qTh.s 			page 1
   12              		.text
   13              	.Ltext0:
   14              		.cfi_sections	.debug_frame
-  15              	.Letext0:
-  16              		.file 1 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
-  17              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
-  18              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
-  19              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
-  20              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
-  21              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
-  22              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
-  23              		.file 8 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
-  24              		.file 9 "modbus/port/port.h"
-  25              		.file 10 "modbus/include/mbport.h"
-ARM GAS  /tmp/ccgq2qTh.s 			page 2
+  15              		.section	.text.eMBFuncWriteHoldingRegister,"ax",%progbits
+  16              		.align	1
+  17              		.global	eMBFuncWriteHoldingRegister
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	eMBFuncWriteHoldingRegister:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "modbus/functions/mbfuncholding.c"
+   1:modbus/functions/mbfuncholding.c **** /* 
+   2:modbus/functions/mbfuncholding.c ****  * FreeModbus Libary: A portable Modbus implementation for Modbus ASCII/RTU.
+   3:modbus/functions/mbfuncholding.c ****  * Copyright (c) 2006-2018 Christian Walter <cwalter@embedded-solutions.at>
+   4:modbus/functions/mbfuncholding.c ****  * All rights reserved.
+   5:modbus/functions/mbfuncholding.c ****  *
+   6:modbus/functions/mbfuncholding.c ****  * Redistribution and use in source and binary forms, with or without
+   7:modbus/functions/mbfuncholding.c ****  * modification, are permitted provided that the following conditions
+   8:modbus/functions/mbfuncholding.c ****  * are met:
+   9:modbus/functions/mbfuncholding.c ****  * 1. Redistributions of source code must retain the above copyright
+  10:modbus/functions/mbfuncholding.c ****  *    notice, this list of conditions and the following disclaimer.
+  11:modbus/functions/mbfuncholding.c ****  * 2. Redistributions in binary form must reproduce the above copyright
+  12:modbus/functions/mbfuncholding.c ****  *    notice, this list of conditions and the following disclaimer in the
+  13:modbus/functions/mbfuncholding.c ****  *    documentation and/or other materials provided with the distribution.
+  14:modbus/functions/mbfuncholding.c ****  * 3. The name of the author may not be used to endorse or promote products
+  15:modbus/functions/mbfuncholding.c ****  *    derived from this software without specific prior written permission.
+  16:modbus/functions/mbfuncholding.c ****  *
+  17:modbus/functions/mbfuncholding.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  18:modbus/functions/mbfuncholding.c ****  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  19:modbus/functions/mbfuncholding.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  20:modbus/functions/mbfuncholding.c ****  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  21:modbus/functions/mbfuncholding.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  22:modbus/functions/mbfuncholding.c ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  23:modbus/functions/mbfuncholding.c ****  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  24:modbus/functions/mbfuncholding.c ****  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  25:modbus/functions/mbfuncholding.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  26:modbus/functions/mbfuncholding.c ****  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  27:modbus/functions/mbfuncholding.c ****  *
+  28:modbus/functions/mbfuncholding.c ****  */
+  29:modbus/functions/mbfuncholding.c **** 
+  30:modbus/functions/mbfuncholding.c **** /* ----------------------- System includes ----------------------------------*/
+  31:modbus/functions/mbfuncholding.c **** #include "stdlib.h"
+ARM GAS  /tmp/ccQy2Pzw.s 			page 2
+
+
+  32:modbus/functions/mbfuncholding.c **** #include "string.h"
+  33:modbus/functions/mbfuncholding.c **** 
+  34:modbus/functions/mbfuncholding.c **** /* ----------------------- Platform includes --------------------------------*/
+  35:modbus/functions/mbfuncholding.c **** #include "port.h"
+  36:modbus/functions/mbfuncholding.c **** 
+  37:modbus/functions/mbfuncholding.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  38:modbus/functions/mbfuncholding.c **** #include "mb.h"
+  39:modbus/functions/mbfuncholding.c **** #include "mbframe.h"
+  40:modbus/functions/mbfuncholding.c **** #include "mbproto.h"
+  41:modbus/functions/mbfuncholding.c **** #include "mbconfig.h"
+  42:modbus/functions/mbfuncholding.c **** 
+  43:modbus/functions/mbfuncholding.c **** /* ----------------------- Defines ------------------------------------------*/
+  44:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READ_ADDR_OFF               ( MB_PDU_DATA_OFF + 0)
+  45:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READ_REGCNT_OFF             ( MB_PDU_DATA_OFF + 2 )
+  46:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READ_SIZE                   ( 4 )
+  47:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READ_REGCNT_MAX             ( 0x007D )
+  48:modbus/functions/mbfuncholding.c **** 
+  49:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_ADDR_OFF              ( MB_PDU_DATA_OFF + 0)
+  50:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_VALUE_OFF             ( MB_PDU_DATA_OFF + 2 )
+  51:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_SIZE                  ( 4 )
+  52:modbus/functions/mbfuncholding.c **** 
+  53:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_MUL_ADDR_OFF          ( MB_PDU_DATA_OFF + 0 )
+  54:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_MUL_REGCNT_OFF        ( MB_PDU_DATA_OFF + 2 )
+  55:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_MUL_BYTECNT_OFF       ( MB_PDU_DATA_OFF + 4 )
+  56:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_MUL_VALUES_OFF        ( MB_PDU_DATA_OFF + 5 )
+  57:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_MUL_SIZE_MIN          ( 5 )
+  58:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_WRITE_MUL_REGCNT_MAX        ( 0x0078 )
+  59:modbus/functions/mbfuncholding.c **** 
+  60:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_READ_ADDR_OFF     ( MB_PDU_DATA_OFF + 0 )
+  61:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_READ_REGCNT_OFF   ( MB_PDU_DATA_OFF + 2 )
+  62:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_WRITE_ADDR_OFF    ( MB_PDU_DATA_OFF + 4 )
+  63:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_WRITE_REGCNT_OFF  ( MB_PDU_DATA_OFF + 6 )
+  64:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_BYTECNT_OFF       ( MB_PDU_DATA_OFF + 8 )
+  65:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_WRITE_VALUES_OFF  ( MB_PDU_DATA_OFF + 9 )
+  66:modbus/functions/mbfuncholding.c **** #define MB_PDU_FUNC_READWRITE_SIZE_MIN          ( 9 )
+  67:modbus/functions/mbfuncholding.c **** 
+  68:modbus/functions/mbfuncholding.c **** /* ----------------------- Static functions ---------------------------------*/
+  69:modbus/functions/mbfuncholding.c **** eMBException    prveMBError2Exception( eMBErrorCode eErrorCode );
+  70:modbus/functions/mbfuncholding.c **** 
+  71:modbus/functions/mbfuncholding.c **** /* ----------------------- Start implementation -----------------------------*/
+  72:modbus/functions/mbfuncholding.c **** 
+  73:modbus/functions/mbfuncholding.c **** #if MB_FUNC_WRITE_HOLDING_ENABLED > 0
+  74:modbus/functions/mbfuncholding.c **** 
+  75:modbus/functions/mbfuncholding.c **** eMBException
+  76:modbus/functions/mbfuncholding.c **** eMBFuncWriteHoldingRegister( UCHAR * pucFrame, USHORT * usLen )
+  77:modbus/functions/mbfuncholding.c **** {
+  28              		.loc 1 77 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 77 1 is_stmt 0 view .LVU1
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  78:modbus/functions/mbfuncholding.c ****     USHORT          usRegAddress;
+ARM GAS  /tmp/ccQy2Pzw.s 			page 3
+
+
+  38              		.loc 1 78 5 is_stmt 1 view .LVU2
+  79:modbus/functions/mbfuncholding.c ****     eMBException    eStatus = MB_EX_NONE;
+  39              		.loc 1 79 5 view .LVU3
+  40              	.LVL1:
+  80:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+  41              		.loc 1 80 5 view .LVU4
+  81:modbus/functions/mbfuncholding.c **** 
+  82:modbus/functions/mbfuncholding.c ****     if( *usLen == ( MB_PDU_FUNC_WRITE_SIZE + MB_PDU_SIZE_MIN ) )
+  42              		.loc 1 82 5 view .LVU5
+  43              		.loc 1 82 9 is_stmt 0 view .LVU6
+  44 0002 0B88     		ldrh	r3, [r1]
+  45              		.loc 1 82 7 view .LVU7
+  46 0004 052B     		cmp	r3, #5
+  47 0006 01D0     		beq	.L5
+  83:modbus/functions/mbfuncholding.c ****     {
+  84:modbus/functions/mbfuncholding.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF] << 8 );
+  85:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+  86:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+  87:modbus/functions/mbfuncholding.c **** 
+  88:modbus/functions/mbfuncholding.c ****         /* Make callback to update the value. */
+  89:modbus/functions/mbfuncholding.c ****         eRegStatus = eMBRegHoldingCB( &pucFrame[MB_PDU_FUNC_WRITE_VALUE_OFF],
+  90:modbus/functions/mbfuncholding.c ****                                       usRegAddress, 1, MB_REG_WRITE );
+  91:modbus/functions/mbfuncholding.c **** 
+  92:modbus/functions/mbfuncholding.c ****         /* If an error occured convert it into a Modbus exception. */
+  93:modbus/functions/mbfuncholding.c ****         if( eRegStatus != MB_ENOERR )
+  94:modbus/functions/mbfuncholding.c ****         {
+  95:modbus/functions/mbfuncholding.c ****             eStatus = prveMBError2Exception( eRegStatus );
+  96:modbus/functions/mbfuncholding.c ****         }
+  97:modbus/functions/mbfuncholding.c ****     }
+  98:modbus/functions/mbfuncholding.c ****     else
+  99:modbus/functions/mbfuncholding.c ****     {
+ 100:modbus/functions/mbfuncholding.c ****         /* Can't be a valid request because the length is incorrect. */
+ 101:modbus/functions/mbfuncholding.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+  48              		.loc 1 101 17 view .LVU8
+  49 0008 0320     		movs	r0, #3
+  50              	.LVL2:
+  51              	.L2:
+ 102:modbus/functions/mbfuncholding.c ****     }
+ 103:modbus/functions/mbfuncholding.c ****     return eStatus;
+  52              		.loc 1 103 5 is_stmt 1 view .LVU9
+ 104:modbus/functions/mbfuncholding.c **** }
+  53              		.loc 1 104 1 is_stmt 0 view .LVU10
+  54              		@ sp needed
+  55 000a 10BD     		pop	{r4, pc}
+  56              	.LVL3:
+  57              	.L5:
+  84:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+  58              		.loc 1 84 9 is_stmt 1 view .LVU11
+  84:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+  59              		.loc 1 84 44 is_stmt 0 view .LVU12
+  60 000c 4378     		ldrb	r3, [r0, #1]
+  84:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_ADDR_OFF + 1] );
+  61              		.loc 1 84 22 view .LVU13
+  62 000e 1B02     		lsls	r3, r3, #8
+  63              	.LVL4:
+  85:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+  64              		.loc 1 85 9 is_stmt 1 view .LVU14
+ARM GAS  /tmp/ccQy2Pzw.s 			page 4
+
+
+  85:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+  65              		.loc 1 85 45 is_stmt 0 view .LVU15
+  66 0010 8178     		ldrb	r1, [r0, #2]
+  67              	.LVL5:
+  85:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+  68              		.loc 1 85 22 view .LVU16
+  69 0012 1943     		orrs	r1, r3
+  70              	.LVL6:
+  86:modbus/functions/mbfuncholding.c **** 
+  71              		.loc 1 86 9 is_stmt 1 view .LVU17
+  86:modbus/functions/mbfuncholding.c **** 
+  72              		.loc 1 86 21 is_stmt 0 view .LVU18
+  73 0014 0131     		adds	r1, r1, #1
+  74              	.LVL7:
+  86:modbus/functions/mbfuncholding.c **** 
+  75              		.loc 1 86 21 view .LVU19
+  76 0016 89B2     		uxth	r1, r1
+  77              	.LVL8:
+  89:modbus/functions/mbfuncholding.c ****                                       usRegAddress, 1, MB_REG_WRITE );
+  78              		.loc 1 89 9 is_stmt 1 view .LVU20
+  89:modbus/functions/mbfuncholding.c ****                                       usRegAddress, 1, MB_REG_WRITE );
+  79              		.loc 1 89 22 is_stmt 0 view .LVU21
+  80 0018 0330     		adds	r0, r0, #3
+  81              	.LVL9:
+  89:modbus/functions/mbfuncholding.c ****                                       usRegAddress, 1, MB_REG_WRITE );
+  82              		.loc 1 89 22 view .LVU22
+  83 001a 0123     		movs	r3, #1
+  84 001c 0122     		movs	r2, #1
+  85 001e FFF7FEFF 		bl	eMBRegHoldingCB
+  86              	.LVL10:
+  93:modbus/functions/mbfuncholding.c ****         {
+  87              		.loc 1 93 9 is_stmt 1 view .LVU23
+  93:modbus/functions/mbfuncholding.c ****         {
+  88              		.loc 1 93 11 is_stmt 0 view .LVU24
+  89 0022 0028     		cmp	r0, #0
+  90 0024 01D1     		bne	.L6
+  79:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+  91              		.loc 1 79 21 view .LVU25
+  92 0026 0020     		movs	r0, #0
+  93              	.LVL11:
+  79:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+  94              		.loc 1 79 21 view .LVU26
+  95 0028 EFE7     		b	.L2
+  96              	.LVL12:
+  97              	.L6:
+  95:modbus/functions/mbfuncholding.c ****         }
+  98              		.loc 1 95 13 is_stmt 1 view .LVU27
+  95:modbus/functions/mbfuncholding.c ****         }
+  99              		.loc 1 95 23 is_stmt 0 view .LVU28
+ 100 002a FFF7FEFF 		bl	prveMBError2Exception
+ 101              	.LVL13:
+  95:modbus/functions/mbfuncholding.c ****         }
+ 102              		.loc 1 95 23 view .LVU29
+ 103 002e ECE7     		b	.L2
+ 104              		.cfi_endproc
+ 105              	.LFE37:
+ 107              		.section	.text.eMBFuncWriteMultipleHoldingRegister,"ax",%progbits
+ARM GAS  /tmp/ccQy2Pzw.s 			page 5
+
+
+ 108              		.align	1
+ 109              		.global	eMBFuncWriteMultipleHoldingRegister
+ 110              		.syntax unified
+ 111              		.code	16
+ 112              		.thumb_func
+ 113              		.fpu softvfp
+ 115              	eMBFuncWriteMultipleHoldingRegister:
+ 116              	.LVL14:
+ 117              	.LFB38:
+ 105:modbus/functions/mbfuncholding.c **** #endif
+ 106:modbus/functions/mbfuncholding.c **** 
+ 107:modbus/functions/mbfuncholding.c **** #if MB_FUNC_WRITE_MULTIPLE_HOLDING_ENABLED > 0
+ 108:modbus/functions/mbfuncholding.c **** eMBException
+ 109:modbus/functions/mbfuncholding.c **** eMBFuncWriteMultipleHoldingRegister( UCHAR * pucFrame, USHORT * usLen )
+ 110:modbus/functions/mbfuncholding.c **** {
+ 118              		.loc 1 110 1 is_stmt 1 view -0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 0, uses_anonymous_args = 0
+ 122              		.loc 1 110 1 is_stmt 0 view .LVU31
+ 123 0000 70B5     		push	{r4, r5, r6, lr}
+ 124              	.LCFI1:
+ 125              		.cfi_def_cfa_offset 16
+ 126              		.cfi_offset 4, -16
+ 127              		.cfi_offset 5, -12
+ 128              		.cfi_offset 6, -8
+ 129              		.cfi_offset 14, -4
+ 130 0002 0C00     		movs	r4, r1
+ 111:modbus/functions/mbfuncholding.c ****     USHORT          usRegAddress;
+ 131              		.loc 1 111 5 is_stmt 1 view .LVU32
+ 112:modbus/functions/mbfuncholding.c ****     USHORT          usRegCount;
+ 132              		.loc 1 112 5 view .LVU33
+ 113:modbus/functions/mbfuncholding.c ****     UCHAR           ucRegByteCount;
+ 133              		.loc 1 113 5 view .LVU34
+ 114:modbus/functions/mbfuncholding.c **** 
+ 115:modbus/functions/mbfuncholding.c ****     eMBException    eStatus = MB_EX_NONE;
+ 134              		.loc 1 115 5 view .LVU35
+ 135              	.LVL15:
+ 116:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 136              		.loc 1 116 5 view .LVU36
+ 117:modbus/functions/mbfuncholding.c **** 
+ 118:modbus/functions/mbfuncholding.c ****     if( *usLen >= ( MB_PDU_FUNC_WRITE_MUL_SIZE_MIN + MB_PDU_SIZE_MIN ) )
+ 137              		.loc 1 118 5 view .LVU37
+ 138              		.loc 1 118 9 is_stmt 0 view .LVU38
+ 139 0004 0B88     		ldrh	r3, [r1]
+ 140              		.loc 1 118 7 view .LVU39
+ 141 0006 052B     		cmp	r3, #5
+ 142 0008 21D9     		bls	.L10
+ 119:modbus/functions/mbfuncholding.c ****     {
+ 120:modbus/functions/mbfuncholding.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_ADDR_OFF] << 8 );
+ 143              		.loc 1 120 9 is_stmt 1 view .LVU40
+ 144              		.loc 1 120 44 is_stmt 0 view .LVU41
+ 145 000a 4378     		ldrb	r3, [r0, #1]
+ 146              		.loc 1 120 22 view .LVU42
+ 147 000c 1B02     		lsls	r3, r3, #8
+ 148              	.LVL16:
+ 121:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_ADDR_OFF + 1] );
+ARM GAS  /tmp/ccQy2Pzw.s 			page 6
+
+
+ 149              		.loc 1 121 9 is_stmt 1 view .LVU43
+ 150              		.loc 1 121 45 is_stmt 0 view .LVU44
+ 151 000e 8178     		ldrb	r1, [r0, #2]
+ 152              	.LVL17:
+ 153              		.loc 1 121 22 view .LVU45
+ 154 0010 1943     		orrs	r1, r3
+ 155              	.LVL18:
+ 122:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+ 156              		.loc 1 122 9 is_stmt 1 view .LVU46
+ 157              		.loc 1 122 21 is_stmt 0 view .LVU47
+ 158 0012 0131     		adds	r1, r1, #1
+ 159              	.LVL19:
+ 160              		.loc 1 122 21 view .LVU48
+ 161 0014 89B2     		uxth	r1, r1
+ 162              	.LVL20:
+ 123:modbus/functions/mbfuncholding.c **** 
+ 124:modbus/functions/mbfuncholding.c ****         usRegCount = ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_REGCNT_OFF] << 8 );
+ 163              		.loc 1 124 9 is_stmt 1 view .LVU49
+ 164              		.loc 1 124 42 is_stmt 0 view .LVU50
+ 165 0016 C378     		ldrb	r3, [r0, #3]
+ 166              		.loc 1 124 20 view .LVU51
+ 167 0018 1B02     		lsls	r3, r3, #8
+ 168              	.LVL21:
+ 125:modbus/functions/mbfuncholding.c ****         usRegCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_WRITE_MUL_REGCNT_OFF + 1] );
+ 169              		.loc 1 125 9 is_stmt 1 view .LVU52
+ 170              		.loc 1 125 43 is_stmt 0 view .LVU53
+ 171 001a 0279     		ldrb	r2, [r0, #4]
+ 172              		.loc 1 125 20 view .LVU54
+ 173 001c 1A43     		orrs	r2, r3
+ 174              	.LVL22:
+ 126:modbus/functions/mbfuncholding.c **** 
+ 127:modbus/functions/mbfuncholding.c ****         ucRegByteCount = pucFrame[MB_PDU_FUNC_WRITE_MUL_BYTECNT_OFF];
+ 175              		.loc 1 127 9 is_stmt 1 view .LVU55
+ 176              		.loc 1 127 24 is_stmt 0 view .LVU56
+ 177 001e 4579     		ldrb	r5, [r0, #5]
+ 178              	.LVL23:
+ 128:modbus/functions/mbfuncholding.c **** 
+ 129:modbus/functions/mbfuncholding.c ****         if( ( usRegCount >= 1 ) &&
+ 179              		.loc 1 129 9 is_stmt 1 view .LVU57
+ 180              		.loc 1 129 33 is_stmt 0 view .LVU58
+ 181 0020 531E     		subs	r3, r2, #1
+ 182 0022 9BB2     		uxth	r3, r3
+ 183              		.loc 1 129 11 view .LVU59
+ 184 0024 772B     		cmp	r3, #119
+ 185 0026 14D8     		bhi	.L11
+ 130:modbus/functions/mbfuncholding.c ****             ( usRegCount <= MB_PDU_FUNC_WRITE_MUL_REGCNT_MAX ) &&
+ 131:modbus/functions/mbfuncholding.c ****             ( ucRegByteCount == ( UCHAR ) ( 2 * usRegCount ) ) )
+ 186              		.loc 1 131 33 view .LVU60
+ 187 0028 5300     		lsls	r3, r2, #1
+ 188 002a DBB2     		uxtb	r3, r3
+ 130:modbus/functions/mbfuncholding.c ****             ( usRegCount <= MB_PDU_FUNC_WRITE_MUL_REGCNT_MAX ) &&
+ 189              		.loc 1 130 64 view .LVU61
+ 190 002c AB42     		cmp	r3, r5
+ 191 002e 01D0     		beq	.L13
+ 132:modbus/functions/mbfuncholding.c ****         {
+ 133:modbus/functions/mbfuncholding.c ****             /* Make callback to update the register values. */
+ 134:modbus/functions/mbfuncholding.c ****             eRegStatus =
+ARM GAS  /tmp/ccQy2Pzw.s 			page 7
+
+
+ 135:modbus/functions/mbfuncholding.c ****                 eMBRegHoldingCB( &pucFrame[MB_PDU_FUNC_WRITE_MUL_VALUES_OFF],
+ 136:modbus/functions/mbfuncholding.c ****                                  usRegAddress, usRegCount, MB_REG_WRITE );
+ 137:modbus/functions/mbfuncholding.c **** 
+ 138:modbus/functions/mbfuncholding.c ****             /* If an error occured convert it into a Modbus exception. */
+ 139:modbus/functions/mbfuncholding.c ****             if( eRegStatus != MB_ENOERR )
+ 140:modbus/functions/mbfuncholding.c ****             {
+ 141:modbus/functions/mbfuncholding.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 142:modbus/functions/mbfuncholding.c ****             }
+ 143:modbus/functions/mbfuncholding.c ****             else
+ 144:modbus/functions/mbfuncholding.c ****             {
+ 145:modbus/functions/mbfuncholding.c ****                 /* The response contains the function code, the starting
+ 146:modbus/functions/mbfuncholding.c ****                  * address and the quantity of registers. We reuse the
+ 147:modbus/functions/mbfuncholding.c ****                  * old values in the buffer because they are still valid.
+ 148:modbus/functions/mbfuncholding.c ****                  */
+ 149:modbus/functions/mbfuncholding.c ****                 *usLen = MB_PDU_FUNC_WRITE_MUL_BYTECNT_OFF;
+ 150:modbus/functions/mbfuncholding.c ****             }
+ 151:modbus/functions/mbfuncholding.c ****         }
+ 152:modbus/functions/mbfuncholding.c ****         else
+ 153:modbus/functions/mbfuncholding.c ****         {
+ 154:modbus/functions/mbfuncholding.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 192              		.loc 1 154 21 view .LVU62
+ 193 0030 0320     		movs	r0, #3
+ 194              	.LVL24:
+ 195              		.loc 1 154 21 view .LVU63
+ 196 0032 0DE0     		b	.L8
+ 197              	.LVL25:
+ 198              	.L13:
+ 134:modbus/functions/mbfuncholding.c ****                 eMBRegHoldingCB( &pucFrame[MB_PDU_FUNC_WRITE_MUL_VALUES_OFF],
+ 199              		.loc 1 134 13 is_stmt 1 view .LVU64
+ 135:modbus/functions/mbfuncholding.c ****                                  usRegAddress, usRegCount, MB_REG_WRITE );
+ 200              		.loc 1 135 17 is_stmt 0 view .LVU65
+ 201 0034 0630     		adds	r0, r0, #6
+ 202              	.LVL26:
+ 135:modbus/functions/mbfuncholding.c ****                                  usRegAddress, usRegCount, MB_REG_WRITE );
+ 203              		.loc 1 135 17 view .LVU66
+ 204 0036 0123     		movs	r3, #1
+ 205 0038 FFF7FEFF 		bl	eMBRegHoldingCB
+ 206              	.LVL27:
+ 139:modbus/functions/mbfuncholding.c ****             {
+ 207              		.loc 1 139 13 is_stmt 1 view .LVU67
+ 139:modbus/functions/mbfuncholding.c ****             {
+ 208              		.loc 1 139 15 is_stmt 0 view .LVU68
+ 209 003c 0028     		cmp	r0, #0
+ 210 003e 03D1     		bne	.L14
+ 149:modbus/functions/mbfuncholding.c ****             }
+ 211              		.loc 1 149 17 is_stmt 1 view .LVU69
+ 149:modbus/functions/mbfuncholding.c ****             }
+ 212              		.loc 1 149 24 is_stmt 0 view .LVU70
+ 213 0040 0523     		movs	r3, #5
+ 214 0042 2380     		strh	r3, [r4]
+ 115:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 215              		.loc 1 115 21 view .LVU71
+ 216 0044 0020     		movs	r0, #0
+ 217              	.LVL28:
+ 115:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 218              		.loc 1 115 21 view .LVU72
+ 219 0046 03E0     		b	.L8
+ARM GAS  /tmp/ccQy2Pzw.s 			page 8
+
+
+ 220              	.LVL29:
+ 221              	.L14:
+ 141:modbus/functions/mbfuncholding.c ****             }
+ 222              		.loc 1 141 17 is_stmt 1 view .LVU73
+ 141:modbus/functions/mbfuncholding.c ****             }
+ 223              		.loc 1 141 27 is_stmt 0 view .LVU74
+ 224 0048 FFF7FEFF 		bl	prveMBError2Exception
+ 225              	.LVL30:
+ 141:modbus/functions/mbfuncholding.c ****             }
+ 226              		.loc 1 141 27 view .LVU75
+ 227 004c 00E0     		b	.L8
+ 228              	.LVL31:
+ 229              	.L10:
+ 155:modbus/functions/mbfuncholding.c ****         }
+ 156:modbus/functions/mbfuncholding.c ****     }
+ 157:modbus/functions/mbfuncholding.c ****     else
+ 158:modbus/functions/mbfuncholding.c ****     {
+ 159:modbus/functions/mbfuncholding.c ****         /* Can't be a valid request because the length is incorrect. */
+ 160:modbus/functions/mbfuncholding.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 230              		.loc 1 160 17 view .LVU76
+ 231 004e 0320     		movs	r0, #3
+ 232              	.LVL32:
+ 233              	.L8:
+ 161:modbus/functions/mbfuncholding.c ****     }
+ 162:modbus/functions/mbfuncholding.c ****     return eStatus;
+ 234              		.loc 1 162 5 is_stmt 1 view .LVU77
+ 163:modbus/functions/mbfuncholding.c **** }
+ 235              		.loc 1 163 1 is_stmt 0 view .LVU78
+ 236              		@ sp needed
+ 237              	.LVL33:
+ 238              		.loc 1 163 1 view .LVU79
+ 239 0050 70BD     		pop	{r4, r5, r6, pc}
+ 240              	.LVL34:
+ 241              	.L11:
+ 154:modbus/functions/mbfuncholding.c ****         }
+ 242              		.loc 1 154 21 view .LVU80
+ 243 0052 0320     		movs	r0, #3
+ 244              	.LVL35:
+ 154:modbus/functions/mbfuncholding.c ****         }
+ 245              		.loc 1 154 21 view .LVU81
+ 246 0054 FCE7     		b	.L8
+ 247              		.cfi_endproc
+ 248              	.LFE38:
+ 250              		.section	.text.eMBFuncReadHoldingRegister,"ax",%progbits
+ 251              		.align	1
+ 252              		.global	eMBFuncReadHoldingRegister
+ 253              		.syntax unified
+ 254              		.code	16
+ 255              		.thumb_func
+ 256              		.fpu softvfp
+ 258              	eMBFuncReadHoldingRegister:
+ 259              	.LVL36:
+ 260              	.LFB39:
+ 164:modbus/functions/mbfuncholding.c **** #endif
+ 165:modbus/functions/mbfuncholding.c **** 
+ 166:modbus/functions/mbfuncholding.c **** #if MB_FUNC_READ_HOLDING_ENABLED > 0
+ 167:modbus/functions/mbfuncholding.c **** 
+ARM GAS  /tmp/ccQy2Pzw.s 			page 9
+
+
+ 168:modbus/functions/mbfuncholding.c **** eMBException
+ 169:modbus/functions/mbfuncholding.c **** eMBFuncReadHoldingRegister( UCHAR * pucFrame, USHORT * usLen )
+ 170:modbus/functions/mbfuncholding.c **** {
+ 261              		.loc 1 170 1 is_stmt 1 view -0
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+ 265              		.loc 1 170 1 is_stmt 0 view .LVU83
+ 266 0000 70B5     		push	{r4, r5, r6, lr}
+ 267              	.LCFI2:
+ 268              		.cfi_def_cfa_offset 16
+ 269              		.cfi_offset 4, -16
+ 270              		.cfi_offset 5, -12
+ 271              		.cfi_offset 6, -8
+ 272              		.cfi_offset 14, -4
+ 273 0002 0C00     		movs	r4, r1
+ 171:modbus/functions/mbfuncholding.c ****     USHORT          usRegAddress;
+ 274              		.loc 1 171 5 is_stmt 1 view .LVU84
+ 172:modbus/functions/mbfuncholding.c ****     USHORT          usRegCount;
+ 275              		.loc 1 172 5 view .LVU85
+ 173:modbus/functions/mbfuncholding.c ****     UCHAR          *pucFrameCur;
+ 276              		.loc 1 173 5 view .LVU86
+ 174:modbus/functions/mbfuncholding.c **** 
+ 175:modbus/functions/mbfuncholding.c ****     eMBException    eStatus = MB_EX_NONE;
+ 277              		.loc 1 175 5 view .LVU87
+ 278              	.LVL37:
+ 176:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 279              		.loc 1 176 5 view .LVU88
+ 177:modbus/functions/mbfuncholding.c **** 
+ 178:modbus/functions/mbfuncholding.c ****     if( *usLen == ( MB_PDU_FUNC_READ_SIZE + MB_PDU_SIZE_MIN ) )
+ 280              		.loc 1 178 5 view .LVU89
+ 281              		.loc 1 178 9 is_stmt 0 view .LVU90
+ 282 0004 0B88     		ldrh	r3, [r1]
+ 283              		.loc 1 178 7 view .LVU91
+ 284 0006 052B     		cmp	r3, #5
+ 285 0008 01D0     		beq	.L20
+ 179:modbus/functions/mbfuncholding.c ****     {
+ 180:modbus/functions/mbfuncholding.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF] << 8 );
+ 181:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+ 182:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+ 183:modbus/functions/mbfuncholding.c **** 
+ 184:modbus/functions/mbfuncholding.c ****         usRegCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF] << 8 );
+ 185:modbus/functions/mbfuncholding.c ****         usRegCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF + 1] );
+ 186:modbus/functions/mbfuncholding.c **** 
+ 187:modbus/functions/mbfuncholding.c ****         /* Check if the number of registers to read is valid. If not
+ 188:modbus/functions/mbfuncholding.c ****          * return Modbus illegal data value exception. 
+ 189:modbus/functions/mbfuncholding.c ****          */
+ 190:modbus/functions/mbfuncholding.c ****         if( ( usRegCount >= 1 ) && ( usRegCount <= MB_PDU_FUNC_READ_REGCNT_MAX ) )
+ 191:modbus/functions/mbfuncholding.c ****         {
+ 192:modbus/functions/mbfuncholding.c ****             /* Set the current PDU data pointer to the beginning. */
+ 193:modbus/functions/mbfuncholding.c ****             pucFrameCur = &pucFrame[MB_PDU_FUNC_OFF];
+ 194:modbus/functions/mbfuncholding.c ****             *usLen = MB_PDU_FUNC_OFF;
+ 195:modbus/functions/mbfuncholding.c **** 
+ 196:modbus/functions/mbfuncholding.c ****             /* First byte contains the function code. */
+ 197:modbus/functions/mbfuncholding.c ****             *pucFrameCur++ = MB_FUNC_READ_HOLDING_REGISTER;
+ 198:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 199:modbus/functions/mbfuncholding.c **** 
+ARM GAS  /tmp/ccQy2Pzw.s 			page 10
+
+
+ 200:modbus/functions/mbfuncholding.c ****             /* Second byte in the response contain the number of bytes. */
+ 201:modbus/functions/mbfuncholding.c ****             *pucFrameCur++ = ( UCHAR ) ( usRegCount * 2 );
+ 202:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 203:modbus/functions/mbfuncholding.c **** 
+ 204:modbus/functions/mbfuncholding.c ****             /* Make callback to fill the buffer. */
+ 205:modbus/functions/mbfuncholding.c ****             eRegStatus = eMBRegHoldingCB( pucFrameCur, usRegAddress, usRegCount, MB_REG_READ );
+ 206:modbus/functions/mbfuncholding.c ****             /* If an error occured convert it into a Modbus exception. */
+ 207:modbus/functions/mbfuncholding.c ****             if( eRegStatus != MB_ENOERR )
+ 208:modbus/functions/mbfuncholding.c ****             {
+ 209:modbus/functions/mbfuncholding.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 210:modbus/functions/mbfuncholding.c ****             }
+ 211:modbus/functions/mbfuncholding.c ****             else
+ 212:modbus/functions/mbfuncholding.c ****             {
+ 213:modbus/functions/mbfuncholding.c ****                 *usLen += usRegCount * 2;
+ 214:modbus/functions/mbfuncholding.c ****             }
+ 215:modbus/functions/mbfuncholding.c ****         }
+ 216:modbus/functions/mbfuncholding.c ****         else
+ 217:modbus/functions/mbfuncholding.c ****         {
+ 218:modbus/functions/mbfuncholding.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 219:modbus/functions/mbfuncholding.c ****         }
+ 220:modbus/functions/mbfuncholding.c ****     }
+ 221:modbus/functions/mbfuncholding.c ****     else
+ 222:modbus/functions/mbfuncholding.c ****     {
+ 223:modbus/functions/mbfuncholding.c ****         /* Can't be a valid request because the length is incorrect. */
+ 224:modbus/functions/mbfuncholding.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 286              		.loc 1 224 17 view .LVU92
+ 287 000a 0320     		movs	r0, #3
+ 288              	.LVL38:
+ 289              	.L16:
+ 225:modbus/functions/mbfuncholding.c ****     }
+ 226:modbus/functions/mbfuncholding.c ****     return eStatus;
+ 290              		.loc 1 226 5 is_stmt 1 view .LVU93
+ 227:modbus/functions/mbfuncholding.c **** }
+ 291              		.loc 1 227 1 is_stmt 0 view .LVU94
+ 292              		@ sp needed
+ 293              	.LVL39:
+ 294              		.loc 1 227 1 view .LVU95
+ 295 000c 70BD     		pop	{r4, r5, r6, pc}
+ 296              	.LVL40:
+ 297              	.L20:
+ 180:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+ 298              		.loc 1 180 9 is_stmt 1 view .LVU96
+ 180:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+ 299              		.loc 1 180 44 is_stmt 0 view .LVU97
+ 300 000e 4378     		ldrb	r3, [r0, #1]
+ 180:modbus/functions/mbfuncholding.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+ 301              		.loc 1 180 22 view .LVU98
+ 302 0010 1B02     		lsls	r3, r3, #8
+ 303              	.LVL41:
+ 181:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+ 304              		.loc 1 181 9 is_stmt 1 view .LVU99
+ 181:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+ 305              		.loc 1 181 45 is_stmt 0 view .LVU100
+ 306 0012 8178     		ldrb	r1, [r0, #2]
+ 307              	.LVL42:
+ 181:modbus/functions/mbfuncholding.c ****         usRegAddress++;
+ 308              		.loc 1 181 22 view .LVU101
+ARM GAS  /tmp/ccQy2Pzw.s 			page 11
+
+
+ 309 0014 1943     		orrs	r1, r3
+ 310              	.LVL43:
+ 182:modbus/functions/mbfuncholding.c **** 
+ 311              		.loc 1 182 9 is_stmt 1 view .LVU102
+ 182:modbus/functions/mbfuncholding.c **** 
+ 312              		.loc 1 182 21 is_stmt 0 view .LVU103
+ 313 0016 0131     		adds	r1, r1, #1
+ 314              	.LVL44:
+ 182:modbus/functions/mbfuncholding.c **** 
+ 315              		.loc 1 182 21 view .LVU104
+ 316 0018 89B2     		uxth	r1, r1
+ 317              	.LVL45:
+ 184:modbus/functions/mbfuncholding.c ****         usRegCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF + 1] );
+ 318              		.loc 1 184 9 is_stmt 1 view .LVU105
+ 185:modbus/functions/mbfuncholding.c **** 
+ 319              		.loc 1 185 9 view .LVU106
+ 185:modbus/functions/mbfuncholding.c **** 
+ 320              		.loc 1 185 42 is_stmt 0 view .LVU107
+ 321 001a 0279     		ldrb	r2, [r0, #4]
+ 185:modbus/functions/mbfuncholding.c **** 
+ 322              		.loc 1 185 20 view .LVU108
+ 323 001c 95B2     		uxth	r5, r2
+ 324              	.LVL46:
+ 190:modbus/functions/mbfuncholding.c ****         {
+ 325              		.loc 1 190 9 is_stmt 1 view .LVU109
+ 190:modbus/functions/mbfuncholding.c ****         {
+ 326              		.loc 1 190 33 is_stmt 0 view .LVU110
+ 327 001e 6B1E     		subs	r3, r5, #1
+ 328 0020 9BB2     		uxth	r3, r3
+ 190:modbus/functions/mbfuncholding.c ****         {
+ 329              		.loc 1 190 11 view .LVU111
+ 330 0022 7C2B     		cmp	r3, #124
+ 331 0024 01D9     		bls	.L21
+ 218:modbus/functions/mbfuncholding.c ****         }
+ 332              		.loc 1 218 21 view .LVU112
+ 333 0026 0320     		movs	r0, #3
+ 334              	.LVL47:
+ 218:modbus/functions/mbfuncholding.c ****         }
+ 335              		.loc 1 218 21 view .LVU113
+ 336 0028 F0E7     		b	.L16
+ 337              	.LVL48:
+ 338              	.L21:
+ 193:modbus/functions/mbfuncholding.c ****             *usLen = MB_PDU_FUNC_OFF;
+ 339              		.loc 1 193 13 is_stmt 1 view .LVU114
+ 194:modbus/functions/mbfuncholding.c **** 
+ 340              		.loc 1 194 13 view .LVU115
+ 194:modbus/functions/mbfuncholding.c **** 
+ 341              		.loc 1 194 20 is_stmt 0 view .LVU116
+ 342 002a 0023     		movs	r3, #0
+ 343 002c 2380     		strh	r3, [r4]
+ 197:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 344              		.loc 1 197 13 is_stmt 1 view .LVU117
+ 345              	.LVL49:
+ 197:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 346              		.loc 1 197 28 is_stmt 0 view .LVU118
+ 347 002e 0333     		adds	r3, r3, #3
+ 348 0030 0370     		strb	r3, [r0]
+ARM GAS  /tmp/ccQy2Pzw.s 			page 12
+
+
+ 198:modbus/functions/mbfuncholding.c **** 
+ 349              		.loc 1 198 13 is_stmt 1 view .LVU119
+ 198:modbus/functions/mbfuncholding.c **** 
+ 350              		.loc 1 198 20 is_stmt 0 view .LVU120
+ 351 0032 2388     		ldrh	r3, [r4]
+ 352 0034 0133     		adds	r3, r3, #1
+ 353 0036 2380     		strh	r3, [r4]
+ 201:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 354              		.loc 1 201 13 is_stmt 1 view .LVU121
+ 201:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 355              		.loc 1 201 25 is_stmt 0 view .LVU122
+ 356 0038 861C     		adds	r6, r0, #2
+ 357              	.LVL50:
+ 201:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 358              		.loc 1 201 30 view .LVU123
+ 359 003a 5200     		lsls	r2, r2, #1
+ 201:modbus/functions/mbfuncholding.c ****             *usLen += 1;
+ 360              		.loc 1 201 28 view .LVU124
+ 361 003c 4270     		strb	r2, [r0, #1]
+ 202:modbus/functions/mbfuncholding.c **** 
+ 362              		.loc 1 202 13 is_stmt 1 view .LVU125
+ 202:modbus/functions/mbfuncholding.c **** 
+ 363              		.loc 1 202 20 is_stmt 0 view .LVU126
+ 364 003e 2388     		ldrh	r3, [r4]
+ 365 0040 0133     		adds	r3, r3, #1
+ 366 0042 2380     		strh	r3, [r4]
+ 205:modbus/functions/mbfuncholding.c ****             /* If an error occured convert it into a Modbus exception. */
+ 367              		.loc 1 205 13 is_stmt 1 view .LVU127
+ 205:modbus/functions/mbfuncholding.c ****             /* If an error occured convert it into a Modbus exception. */
+ 368              		.loc 1 205 26 is_stmt 0 view .LVU128
+ 369 0044 0023     		movs	r3, #0
+ 370 0046 2A00     		movs	r2, r5
+ 371 0048 3000     		movs	r0, r6
+ 372              	.LVL51:
+ 205:modbus/functions/mbfuncholding.c ****             /* If an error occured convert it into a Modbus exception. */
+ 373              		.loc 1 205 26 view .LVU129
+ 374 004a FFF7FEFF 		bl	eMBRegHoldingCB
+ 375              	.LVL52:
+ 207:modbus/functions/mbfuncholding.c ****             {
+ 376              		.loc 1 207 13 is_stmt 1 view .LVU130
+ 207:modbus/functions/mbfuncholding.c ****             {
+ 377              		.loc 1 207 15 is_stmt 0 view .LVU131
+ 378 004e 0028     		cmp	r0, #0
+ 379 0050 05D1     		bne	.L22
+ 213:modbus/functions/mbfuncholding.c ****             }
+ 380              		.loc 1 213 17 is_stmt 1 view .LVU132
+ 213:modbus/functions/mbfuncholding.c ****             }
+ 381              		.loc 1 213 24 is_stmt 0 view .LVU133
+ 382 0052 6D00     		lsls	r5, r5, #1
+ 383              	.LVL53:
+ 213:modbus/functions/mbfuncholding.c ****             }
+ 384              		.loc 1 213 24 view .LVU134
+ 385 0054 2388     		ldrh	r3, [r4]
+ 386 0056 5D19     		adds	r5, r3, r5
+ 387 0058 2580     		strh	r5, [r4]
+ 175:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 388              		.loc 1 175 21 view .LVU135
+ARM GAS  /tmp/ccQy2Pzw.s 			page 13
+
+
+ 389 005a 0020     		movs	r0, #0
+ 390              	.LVL54:
+ 175:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 391              		.loc 1 175 21 view .LVU136
+ 392 005c D6E7     		b	.L16
+ 393              	.LVL55:
+ 394              	.L22:
+ 209:modbus/functions/mbfuncholding.c ****             }
+ 395              		.loc 1 209 17 is_stmt 1 view .LVU137
+ 209:modbus/functions/mbfuncholding.c ****             }
+ 396              		.loc 1 209 27 is_stmt 0 view .LVU138
+ 397 005e FFF7FEFF 		bl	prveMBError2Exception
+ 398              	.LVL56:
+ 209:modbus/functions/mbfuncholding.c ****             }
+ 399              		.loc 1 209 27 view .LVU139
+ 400 0062 D3E7     		b	.L16
+ 401              		.cfi_endproc
+ 402              	.LFE39:
+ 404              		.section	.text.eMBFuncReadWriteMultipleHoldingRegister,"ax",%progbits
+ 405              		.align	1
+ 406              		.global	eMBFuncReadWriteMultipleHoldingRegister
+ 407              		.syntax unified
+ 408              		.code	16
+ 409              		.thumb_func
+ 410              		.fpu softvfp
+ 412              	eMBFuncReadWriteMultipleHoldingRegister:
+ 413              	.LVL57:
+ 414              	.LFB40:
+ 228:modbus/functions/mbfuncholding.c **** 
+ 229:modbus/functions/mbfuncholding.c **** #endif
+ 230:modbus/functions/mbfuncholding.c **** 
+ 231:modbus/functions/mbfuncholding.c **** #if MB_FUNC_READWRITE_HOLDING_ENABLED > 0
+ 232:modbus/functions/mbfuncholding.c **** 
+ 233:modbus/functions/mbfuncholding.c **** eMBException
+ 234:modbus/functions/mbfuncholding.c **** eMBFuncReadWriteMultipleHoldingRegister( UCHAR * pucFrame, USHORT * usLen )
+ 235:modbus/functions/mbfuncholding.c **** {
+ 415              		.loc 1 235 1 is_stmt 1 view -0
+ 416              		.cfi_startproc
+ 417              		@ args = 0, pretend = 0, frame = 0
+ 418              		@ frame_needed = 0, uses_anonymous_args = 0
+ 419              		.loc 1 235 1 is_stmt 0 view .LVU141
+ 420 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 421              	.LCFI3:
+ 422              		.cfi_def_cfa_offset 24
+ 423              		.cfi_offset 3, -24
+ 424              		.cfi_offset 4, -20
+ 425              		.cfi_offset 5, -16
+ 426              		.cfi_offset 6, -12
+ 427              		.cfi_offset 7, -8
+ 428              		.cfi_offset 14, -4
+ 429 0002 0400     		movs	r4, r0
+ 430 0004 0D00     		movs	r5, r1
+ 236:modbus/functions/mbfuncholding.c ****     USHORT          usRegReadAddress;
+ 431              		.loc 1 236 5 is_stmt 1 view .LVU142
+ 237:modbus/functions/mbfuncholding.c ****     USHORT          usRegReadCount;
+ 432              		.loc 1 237 5 view .LVU143
+ 238:modbus/functions/mbfuncholding.c ****     USHORT          usRegWriteAddress;
+ARM GAS  /tmp/ccQy2Pzw.s 			page 14
+
+
+ 433              		.loc 1 238 5 view .LVU144
+ 239:modbus/functions/mbfuncholding.c ****     USHORT          usRegWriteCount;
+ 434              		.loc 1 239 5 view .LVU145
+ 240:modbus/functions/mbfuncholding.c ****     UCHAR           ucRegWriteByteCount;
+ 435              		.loc 1 240 5 view .LVU146
+ 241:modbus/functions/mbfuncholding.c ****     UCHAR          *pucFrameCur;
+ 436              		.loc 1 241 5 view .LVU147
+ 242:modbus/functions/mbfuncholding.c **** 
+ 243:modbus/functions/mbfuncholding.c ****     eMBException    eStatus = MB_EX_NONE;
+ 437              		.loc 1 243 5 view .LVU148
+ 438              	.LVL58:
+ 244:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 439              		.loc 1 244 5 view .LVU149
+ 245:modbus/functions/mbfuncholding.c **** 
+ 246:modbus/functions/mbfuncholding.c ****     if( *usLen >= ( MB_PDU_FUNC_READWRITE_SIZE_MIN + MB_PDU_SIZE_MIN ) )
+ 440              		.loc 1 246 5 view .LVU150
+ 441              		.loc 1 246 9 is_stmt 0 view .LVU151
+ 442 0006 0B88     		ldrh	r3, [r1]
+ 443              		.loc 1 246 7 view .LVU152
+ 444 0008 092B     		cmp	r3, #9
+ 445 000a 48D9     		bls	.L26
+ 247:modbus/functions/mbfuncholding.c ****     {
+ 248:modbus/functions/mbfuncholding.c ****         usRegReadAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_READ_ADDR_OFF] << 8U );
+ 446              		.loc 1 248 9 is_stmt 1 view .LVU153
+ 447              		.loc 1 248 48 is_stmt 0 view .LVU154
+ 448 000c 4378     		ldrb	r3, [r0, #1]
+ 449              		.loc 1 248 26 view .LVU155
+ 450 000e 1B02     		lsls	r3, r3, #8
+ 451              	.LVL59:
+ 249:modbus/functions/mbfuncholding.c ****         usRegReadAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_READ_ADDR_OFF + 1] );
+ 452              		.loc 1 249 9 is_stmt 1 view .LVU156
+ 453              		.loc 1 249 49 is_stmt 0 view .LVU157
+ 454 0010 8178     		ldrb	r1, [r0, #2]
+ 455              	.LVL60:
+ 456              		.loc 1 249 26 view .LVU158
+ 457 0012 1943     		orrs	r1, r3
+ 458              	.LVL61:
+ 250:modbus/functions/mbfuncholding.c ****         usRegReadAddress++;
+ 459              		.loc 1 250 9 is_stmt 1 view .LVU159
+ 460              		.loc 1 250 25 is_stmt 0 view .LVU160
+ 461 0014 0131     		adds	r1, r1, #1
+ 462              	.LVL62:
+ 463              		.loc 1 250 25 view .LVU161
+ 464 0016 8EB2     		uxth	r6, r1
+ 465              	.LVL63:
+ 251:modbus/functions/mbfuncholding.c **** 
+ 252:modbus/functions/mbfuncholding.c ****         usRegReadCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_READ_REGCNT_OFF] << 8U );
+ 466              		.loc 1 252 9 is_stmt 1 view .LVU162
+ 467              		.loc 1 252 46 is_stmt 0 view .LVU163
+ 468 0018 C778     		ldrb	r7, [r0, #3]
+ 469              		.loc 1 252 24 view .LVU164
+ 470 001a 3F02     		lsls	r7, r7, #8
+ 471              	.LVL64:
+ 253:modbus/functions/mbfuncholding.c ****         usRegReadCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_READ_REGCNT_OFF + 1] );
+ 472              		.loc 1 253 9 is_stmt 1 view .LVU165
+ 473              		.loc 1 253 47 is_stmt 0 view .LVU166
+ 474 001c 0379     		ldrb	r3, [r0, #4]
+ARM GAS  /tmp/ccQy2Pzw.s 			page 15
+
+
+ 475              		.loc 1 253 24 view .LVU167
+ 476 001e 1F43     		orrs	r7, r3
+ 477              	.LVL65:
+ 254:modbus/functions/mbfuncholding.c **** 
+ 255:modbus/functions/mbfuncholding.c ****         usRegWriteAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_WRITE_ADDR_OFF] << 8U );
+ 478              		.loc 1 255 9 is_stmt 1 view .LVU168
+ 479              		.loc 1 255 49 is_stmt 0 view .LVU169
+ 480 0020 4379     		ldrb	r3, [r0, #5]
+ 481              		.loc 1 255 27 view .LVU170
+ 482 0022 1B02     		lsls	r3, r3, #8
+ 483              	.LVL66:
+ 256:modbus/functions/mbfuncholding.c ****         usRegWriteAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_WRITE_ADDR_OFF + 1] );
+ 484              		.loc 1 256 9 is_stmt 1 view .LVU171
+ 485              		.loc 1 256 50 is_stmt 0 view .LVU172
+ 486 0024 8179     		ldrb	r1, [r0, #6]
+ 487              		.loc 1 256 27 view .LVU173
+ 488 0026 1943     		orrs	r1, r3
+ 489              	.LVL67:
+ 257:modbus/functions/mbfuncholding.c ****         usRegWriteAddress++;
+ 490              		.loc 1 257 9 is_stmt 1 view .LVU174
+ 491              		.loc 1 257 26 is_stmt 0 view .LVU175
+ 492 0028 0131     		adds	r1, r1, #1
+ 493              	.LVL68:
+ 494              		.loc 1 257 26 view .LVU176
+ 495 002a 89B2     		uxth	r1, r1
+ 496              	.LVL69:
+ 258:modbus/functions/mbfuncholding.c **** 
+ 259:modbus/functions/mbfuncholding.c ****         usRegWriteCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_WRITE_REGCNT_OFF] << 8U );
+ 497              		.loc 1 259 9 is_stmt 1 view .LVU177
+ 498              		.loc 1 259 47 is_stmt 0 view .LVU178
+ 499 002c C379     		ldrb	r3, [r0, #7]
+ 500              		.loc 1 259 25 view .LVU179
+ 501 002e 1B02     		lsls	r3, r3, #8
+ 502              	.LVL70:
+ 260:modbus/functions/mbfuncholding.c ****         usRegWriteCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READWRITE_WRITE_REGCNT_OFF + 1] );
+ 503              		.loc 1 260 9 is_stmt 1 view .LVU180
+ 504              		.loc 1 260 48 is_stmt 0 view .LVU181
+ 505 0030 027A     		ldrb	r2, [r0, #8]
+ 506              		.loc 1 260 25 view .LVU182
+ 507 0032 1A43     		orrs	r2, r3
+ 508              	.LVL71:
+ 261:modbus/functions/mbfuncholding.c **** 
+ 262:modbus/functions/mbfuncholding.c ****         ucRegWriteByteCount = pucFrame[MB_PDU_FUNC_READWRITE_BYTECNT_OFF];
+ 509              		.loc 1 262 9 is_stmt 1 view .LVU183
+ 510              		.loc 1 262 29 is_stmt 0 view .LVU184
+ 511 0034 407A     		ldrb	r0, [r0, #9]
+ 512              	.LVL72:
+ 263:modbus/functions/mbfuncholding.c **** 
+ 264:modbus/functions/mbfuncholding.c ****         if( ( usRegReadCount >= 1 ) && ( usRegReadCount <= 0x7D ) &&
+ 513              		.loc 1 264 9 is_stmt 1 view .LVU185
+ 514              		.loc 1 264 37 is_stmt 0 view .LVU186
+ 515 0036 7B1E     		subs	r3, r7, #1
+ 516 0038 9BB2     		uxth	r3, r3
+ 517              		.loc 1 264 11 view .LVU187
+ 518 003a 7C2B     		cmp	r3, #124
+ 519 003c 31D8     		bhi	.L27
+ 520              		.loc 1 264 67 discriminator 1 view .LVU188
+ARM GAS  /tmp/ccQy2Pzw.s 			page 16
+
+
+ 521 003e 002A     		cmp	r2, #0
+ 522 0040 31D0     		beq	.L28
+ 265:modbus/functions/mbfuncholding.c ****             ( usRegWriteCount >= 1 ) && ( usRegWriteCount <= 0x79 ) &&
+ 523              		.loc 1 265 38 view .LVU189
+ 524 0042 792A     		cmp	r2, #121
+ 525 0044 31D8     		bhi	.L29
+ 266:modbus/functions/mbfuncholding.c ****             ( ( 2 * usRegWriteCount ) == ucRegWriteByteCount ) )
+ 526              		.loc 1 266 19 discriminator 1 view .LVU190
+ 527 0046 5300     		lsls	r3, r2, #1
+ 265:modbus/functions/mbfuncholding.c ****             ( usRegWriteCount >= 1 ) && ( usRegWriteCount <= 0x79 ) &&
+ 528              		.loc 1 265 69 discriminator 1 view .LVU191
+ 529 0048 8342     		cmp	r3, r0
+ 530 004a 01D0     		beq	.L32
+ 267:modbus/functions/mbfuncholding.c ****         {
+ 268:modbus/functions/mbfuncholding.c ****             /* Make callback to update the register values. */
+ 269:modbus/functions/mbfuncholding.c ****             eRegStatus = eMBRegHoldingCB( &pucFrame[MB_PDU_FUNC_READWRITE_WRITE_VALUES_OFF],
+ 270:modbus/functions/mbfuncholding.c ****                                           usRegWriteAddress, usRegWriteCount, MB_REG_WRITE );
+ 271:modbus/functions/mbfuncholding.c **** 
+ 272:modbus/functions/mbfuncholding.c ****             if( eRegStatus == MB_ENOERR )
+ 273:modbus/functions/mbfuncholding.c ****             {
+ 274:modbus/functions/mbfuncholding.c ****                 /* Set the current PDU data pointer to the beginning. */
+ 275:modbus/functions/mbfuncholding.c ****                 pucFrameCur = &pucFrame[MB_PDU_FUNC_OFF];
+ 276:modbus/functions/mbfuncholding.c ****                 *usLen = MB_PDU_FUNC_OFF;
+ 277:modbus/functions/mbfuncholding.c **** 
+ 278:modbus/functions/mbfuncholding.c ****                 /* First byte contains the function code. */
+ 279:modbus/functions/mbfuncholding.c ****                 *pucFrameCur++ = MB_FUNC_READWRITE_MULTIPLE_REGISTERS;
+ 280:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 281:modbus/functions/mbfuncholding.c **** 
+ 282:modbus/functions/mbfuncholding.c ****                 /* Second byte in the response contain the number of bytes. */
+ 283:modbus/functions/mbfuncholding.c ****                 *pucFrameCur++ = ( UCHAR ) ( usRegReadCount * 2 );
+ 284:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 285:modbus/functions/mbfuncholding.c **** 
+ 286:modbus/functions/mbfuncholding.c ****                 /* Make the read callback. */
+ 287:modbus/functions/mbfuncholding.c ****                 eRegStatus =
+ 288:modbus/functions/mbfuncholding.c ****                     eMBRegHoldingCB( pucFrameCur, usRegReadAddress, usRegReadCount, MB_REG_READ );
+ 289:modbus/functions/mbfuncholding.c ****                 if( eRegStatus == MB_ENOERR )
+ 290:modbus/functions/mbfuncholding.c ****                 {
+ 291:modbus/functions/mbfuncholding.c ****                     *usLen += 2 * usRegReadCount;
+ 292:modbus/functions/mbfuncholding.c ****                 }
+ 293:modbus/functions/mbfuncholding.c ****             }
+ 294:modbus/functions/mbfuncholding.c ****             if( eRegStatus != MB_ENOERR )
+ 295:modbus/functions/mbfuncholding.c ****             {
+ 296:modbus/functions/mbfuncholding.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 297:modbus/functions/mbfuncholding.c ****             }
+ 298:modbus/functions/mbfuncholding.c ****         }
+ 299:modbus/functions/mbfuncholding.c ****         else
+ 300:modbus/functions/mbfuncholding.c ****         {
+ 301:modbus/functions/mbfuncholding.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 531              		.loc 1 301 21 view .LVU192
+ 532 004c 0320     		movs	r0, #3
+ 533              	.LVL73:
+ 534              		.loc 1 301 21 view .LVU193
+ 535 004e 27E0     		b	.L24
+ 536              	.LVL74:
+ 537              	.L32:
+ 269:modbus/functions/mbfuncholding.c ****                                           usRegWriteAddress, usRegWriteCount, MB_REG_WRITE );
+ 538              		.loc 1 269 13 is_stmt 1 view .LVU194
+ARM GAS  /tmp/ccQy2Pzw.s 			page 17
+
+
+ 269:modbus/functions/mbfuncholding.c ****                                           usRegWriteAddress, usRegWriteCount, MB_REG_WRITE );
+ 539              		.loc 1 269 26 is_stmt 0 view .LVU195
+ 540 0050 0123     		movs	r3, #1
+ 541 0052 2000     		movs	r0, r4
+ 542              	.LVL75:
+ 269:modbus/functions/mbfuncholding.c ****                                           usRegWriteAddress, usRegWriteCount, MB_REG_WRITE );
+ 543              		.loc 1 269 26 view .LVU196
+ 544 0054 0A30     		adds	r0, r0, #10
+ 545 0056 FFF7FEFF 		bl	eMBRegHoldingCB
+ 546              	.LVL76:
+ 272:modbus/functions/mbfuncholding.c ****             {
+ 547              		.loc 1 272 13 is_stmt 1 view .LVU197
+ 272:modbus/functions/mbfuncholding.c ****             {
+ 548              		.loc 1 272 15 is_stmt 0 view .LVU198
+ 549 005a 0028     		cmp	r0, #0
+ 550 005c 03D0     		beq	.L33
+ 551              	.LVL77:
+ 552              	.L25:
+ 294:modbus/functions/mbfuncholding.c ****             {
+ 553              		.loc 1 294 13 is_stmt 1 view .LVU199
+ 294:modbus/functions/mbfuncholding.c ****             {
+ 554              		.loc 1 294 15 is_stmt 0 view .LVU200
+ 555 005e 0028     		cmp	r0, #0
+ 556 0060 1AD1     		bne	.L34
+ 243:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 557              		.loc 1 243 21 view .LVU201
+ 558 0062 0020     		movs	r0, #0
+ 559              	.LVL78:
+ 243:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 560              		.loc 1 243 21 view .LVU202
+ 561 0064 1CE0     		b	.L24
+ 562              	.LVL79:
+ 563              	.L33:
+ 275:modbus/functions/mbfuncholding.c ****                 *usLen = MB_PDU_FUNC_OFF;
+ 564              		.loc 1 275 17 is_stmt 1 view .LVU203
+ 276:modbus/functions/mbfuncholding.c **** 
+ 565              		.loc 1 276 17 view .LVU204
+ 276:modbus/functions/mbfuncholding.c **** 
+ 566              		.loc 1 276 24 is_stmt 0 view .LVU205
+ 567 0066 0023     		movs	r3, #0
+ 568 0068 2B80     		strh	r3, [r5]
+ 279:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 569              		.loc 1 279 17 is_stmt 1 view .LVU206
+ 570              	.LVL80:
+ 279:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 571              		.loc 1 279 32 is_stmt 0 view .LVU207
+ 572 006a 1733     		adds	r3, r3, #23
+ 573 006c 2370     		strb	r3, [r4]
+ 280:modbus/functions/mbfuncholding.c **** 
+ 574              		.loc 1 280 17 is_stmt 1 view .LVU208
+ 280:modbus/functions/mbfuncholding.c **** 
+ 575              		.loc 1 280 24 is_stmt 0 view .LVU209
+ 576 006e 2B88     		ldrh	r3, [r5]
+ 577 0070 0133     		adds	r3, r3, #1
+ 578 0072 2B80     		strh	r3, [r5]
+ 283:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 579              		.loc 1 283 17 is_stmt 1 view .LVU210
+ARM GAS  /tmp/ccQy2Pzw.s 			page 18
+
+
+ 283:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 580              		.loc 1 283 29 is_stmt 0 view .LVU211
+ 581 0074 A01C     		adds	r0, r4, #2
+ 582              	.LVL81:
+ 283:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 583              		.loc 1 283 34 view .LVU212
+ 584 0076 7B00     		lsls	r3, r7, #1
+ 283:modbus/functions/mbfuncholding.c ****                 *usLen += 1;
+ 585              		.loc 1 283 32 view .LVU213
+ 586 0078 6370     		strb	r3, [r4, #1]
+ 284:modbus/functions/mbfuncholding.c **** 
+ 587              		.loc 1 284 17 is_stmt 1 view .LVU214
+ 284:modbus/functions/mbfuncholding.c **** 
+ 588              		.loc 1 284 24 is_stmt 0 view .LVU215
+ 589 007a 2B88     		ldrh	r3, [r5]
+ 590 007c 0133     		adds	r3, r3, #1
+ 591 007e 2B80     		strh	r3, [r5]
+ 287:modbus/functions/mbfuncholding.c ****                     eMBRegHoldingCB( pucFrameCur, usRegReadAddress, usRegReadCount, MB_REG_READ );
+ 592              		.loc 1 287 17 is_stmt 1 view .LVU216
+ 288:modbus/functions/mbfuncholding.c ****                 if( eRegStatus == MB_ENOERR )
+ 593              		.loc 1 288 21 is_stmt 0 view .LVU217
+ 594 0080 0023     		movs	r3, #0
+ 595 0082 3A00     		movs	r2, r7
+ 596 0084 3100     		movs	r1, r6
+ 597 0086 FFF7FEFF 		bl	eMBRegHoldingCB
+ 598              	.LVL82:
+ 289:modbus/functions/mbfuncholding.c ****                 {
+ 599              		.loc 1 289 17 is_stmt 1 view .LVU218
+ 289:modbus/functions/mbfuncholding.c ****                 {
+ 600              		.loc 1 289 19 is_stmt 0 view .LVU219
+ 601 008a 0028     		cmp	r0, #0
+ 602 008c E7D1     		bne	.L25
+ 291:modbus/functions/mbfuncholding.c ****                 }
+ 603              		.loc 1 291 21 is_stmt 1 view .LVU220
+ 291:modbus/functions/mbfuncholding.c ****                 }
+ 604              		.loc 1 291 28 is_stmt 0 view .LVU221
+ 605 008e 7F00     		lsls	r7, r7, #1
+ 606              	.LVL83:
+ 291:modbus/functions/mbfuncholding.c ****                 }
+ 607              		.loc 1 291 28 view .LVU222
+ 608 0090 2B88     		ldrh	r3, [r5]
+ 609 0092 DF19     		adds	r7, r3, r7
+ 610 0094 2F80     		strh	r7, [r5]
+ 611 0096 E2E7     		b	.L25
+ 612              	.LVL84:
+ 613              	.L34:
+ 296:modbus/functions/mbfuncholding.c ****             }
+ 614              		.loc 1 296 17 is_stmt 1 view .LVU223
+ 296:modbus/functions/mbfuncholding.c ****             }
+ 615              		.loc 1 296 27 is_stmt 0 view .LVU224
+ 616 0098 FFF7FEFF 		bl	prveMBError2Exception
+ 617              	.LVL85:
+ 296:modbus/functions/mbfuncholding.c ****             }
+ 618              		.loc 1 296 27 view .LVU225
+ 619 009c 00E0     		b	.L24
+ 620              	.LVL86:
+ 621              	.L26:
+ARM GAS  /tmp/ccQy2Pzw.s 			page 19
+
+
+ 243:modbus/functions/mbfuncholding.c ****     eMBErrorCode    eRegStatus;
+ 622              		.loc 1 243 21 view .LVU226
+ 623 009e 0020     		movs	r0, #0
+ 624              	.LVL87:
+ 625              	.L24:
+ 302:modbus/functions/mbfuncholding.c ****         }
+ 303:modbus/functions/mbfuncholding.c ****     }
+ 304:modbus/functions/mbfuncholding.c ****     return eStatus;
+ 626              		.loc 1 304 5 is_stmt 1 view .LVU227
+ 305:modbus/functions/mbfuncholding.c **** }
+ 627              		.loc 1 305 1 is_stmt 0 view .LVU228
+ 628              		@ sp needed
+ 629              	.LVL88:
+ 630              	.LVL89:
+ 631              		.loc 1 305 1 view .LVU229
+ 632 00a0 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 633              	.LVL90:
+ 634              	.L27:
+ 301:modbus/functions/mbfuncholding.c ****         }
+ 635              		.loc 1 301 21 view .LVU230
+ 636 00a2 0320     		movs	r0, #3
+ 637              	.LVL91:
+ 301:modbus/functions/mbfuncholding.c ****         }
+ 638              		.loc 1 301 21 view .LVU231
+ 639 00a4 FCE7     		b	.L24
+ 640              	.LVL92:
+ 641              	.L28:
+ 301:modbus/functions/mbfuncholding.c ****         }
+ 642              		.loc 1 301 21 view .LVU232
+ 643 00a6 0320     		movs	r0, #3
+ 644              	.LVL93:
+ 301:modbus/functions/mbfuncholding.c ****         }
+ 645              		.loc 1 301 21 view .LVU233
+ 646 00a8 FAE7     		b	.L24
+ 647              	.LVL94:
+ 648              	.L29:
+ 301:modbus/functions/mbfuncholding.c ****         }
+ 649              		.loc 1 301 21 view .LVU234
+ 650 00aa 0320     		movs	r0, #3
+ 651              	.LVL95:
+ 301:modbus/functions/mbfuncholding.c ****         }
+ 652              		.loc 1 301 21 view .LVU235
+ 653 00ac F8E7     		b	.L24
+ 654              		.cfi_endproc
+ 655              	.LFE40:
+ 657              		.text
+ 658              	.Letext0:
+ 659              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 660              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 661              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 662              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 663              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 664              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 665              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 666              		.file 9 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 667              		.file 10 "modbus/port/port.h"
+ 668              		.file 11 "modbus/include/mbport.h"
+ARM GAS  /tmp/ccQy2Pzw.s 			page 20
+
+
+ 669              		.file 12 "modbus/include/mbproto.h"
+ 670              		.file 13 "modbus/include/mb.h"
+ARM GAS  /tmp/ccQy2Pzw.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mbfuncholding.c
+     /tmp/ccQy2Pzw.s:16     .text.eMBFuncWriteHoldingRegister:0000000000000000 $t
+     /tmp/ccQy2Pzw.s:24     .text.eMBFuncWriteHoldingRegister:0000000000000000 eMBFuncWriteHoldingRegister
+     /tmp/ccQy2Pzw.s:108    .text.eMBFuncWriteMultipleHoldingRegister:0000000000000000 $t
+     /tmp/ccQy2Pzw.s:115    .text.eMBFuncWriteMultipleHoldingRegister:0000000000000000 eMBFuncWriteMultipleHoldingRegister
+     /tmp/ccQy2Pzw.s:251    .text.eMBFuncReadHoldingRegister:0000000000000000 $t
+     /tmp/ccQy2Pzw.s:258    .text.eMBFuncReadHoldingRegister:0000000000000000 eMBFuncReadHoldingRegister
+     /tmp/ccQy2Pzw.s:405    .text.eMBFuncReadWriteMultipleHoldingRegister:0000000000000000 $t
+     /tmp/ccQy2Pzw.s:412    .text.eMBFuncReadWriteMultipleHoldingRegister:0000000000000000 eMBFuncReadWriteMultipleHoldingRegister
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+eMBRegHoldingCB
+prveMBError2Exception

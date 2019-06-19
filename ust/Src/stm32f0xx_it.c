@@ -148,7 +148,7 @@ void SysTick_Handler(void)
 void TIM14_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM14_IRQn 0 */
-
+  TIM14_DAC1_IRQHandler(&htim14);
   /* USER CODE END TIM14_IRQn 0 */
   HAL_TIM_IRQHandler(&htim14);
   /* USER CODE BEGIN TIM14_IRQn 1 */

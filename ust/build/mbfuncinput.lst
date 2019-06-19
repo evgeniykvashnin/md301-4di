@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccgSkNUq.s 			page 1
+ARM GAS  /tmp/ccq4X9XF.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -15,21 +15,369 @@ ARM GAS  /tmp/ccgSkNUq.s 			page 1
   12              		.text
   13              	.Ltext0:
   14              		.cfi_sections	.debug_frame
-  15              	.Letext0:
-  16              		.file 1 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
-  17              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
-  18              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
-  19              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
-  20              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
-  21              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
-  22              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
-  23              		.file 8 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
-  24              		.file 9 "modbus/port/port.h"
-  25              		.file 10 "modbus/include/mbport.h"
-ARM GAS  /tmp/ccgSkNUq.s 			page 2
+  15              		.section	.text.eMBFuncReadInputRegister,"ax",%progbits
+  16              		.align	1
+  17              		.global	eMBFuncReadInputRegister
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	eMBFuncReadInputRegister:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "modbus/functions/mbfuncinput.c"
+   1:modbus/functions/mbfuncinput.c **** /* 
+   2:modbus/functions/mbfuncinput.c ****  * FreeModbus Libary: A portable Modbus implementation for Modbus ASCII/RTU.
+   3:modbus/functions/mbfuncinput.c ****  * Copyright (c) 2006-2018 Christian Walter <cwalter@embedded-solutions.at>
+   4:modbus/functions/mbfuncinput.c ****  * All rights reserved.
+   5:modbus/functions/mbfuncinput.c ****  *
+   6:modbus/functions/mbfuncinput.c ****  * Redistribution and use in source and binary forms, with or without
+   7:modbus/functions/mbfuncinput.c ****  * modification, are permitted provided that the following conditions
+   8:modbus/functions/mbfuncinput.c ****  * are met:
+   9:modbus/functions/mbfuncinput.c ****  * 1. Redistributions of source code must retain the above copyright
+  10:modbus/functions/mbfuncinput.c ****  *    notice, this list of conditions and the following disclaimer.
+  11:modbus/functions/mbfuncinput.c ****  * 2. Redistributions in binary form must reproduce the above copyright
+  12:modbus/functions/mbfuncinput.c ****  *    notice, this list of conditions and the following disclaimer in the
+  13:modbus/functions/mbfuncinput.c ****  *    documentation and/or other materials provided with the distribution.
+  14:modbus/functions/mbfuncinput.c ****  * 3. The name of the author may not be used to endorse or promote products
+  15:modbus/functions/mbfuncinput.c ****  *    derived from this software without specific prior written permission.
+  16:modbus/functions/mbfuncinput.c ****  *
+  17:modbus/functions/mbfuncinput.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  18:modbus/functions/mbfuncinput.c ****  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  19:modbus/functions/mbfuncinput.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  20:modbus/functions/mbfuncinput.c ****  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  21:modbus/functions/mbfuncinput.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  22:modbus/functions/mbfuncinput.c ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  23:modbus/functions/mbfuncinput.c ****  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  24:modbus/functions/mbfuncinput.c ****  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  25:modbus/functions/mbfuncinput.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  26:modbus/functions/mbfuncinput.c ****  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  27:modbus/functions/mbfuncinput.c ****  *
+  28:modbus/functions/mbfuncinput.c ****  */
+  29:modbus/functions/mbfuncinput.c **** 
+  30:modbus/functions/mbfuncinput.c **** /* ----------------------- System includes ----------------------------------*/
+  31:modbus/functions/mbfuncinput.c **** #include "stdlib.h"
+ARM GAS  /tmp/ccq4X9XF.s 			page 2
+
+
+  32:modbus/functions/mbfuncinput.c **** #include "string.h"
+  33:modbus/functions/mbfuncinput.c **** 
+  34:modbus/functions/mbfuncinput.c **** /* ----------------------- Platform includes --------------------------------*/
+  35:modbus/functions/mbfuncinput.c **** #include "port.h"
+  36:modbus/functions/mbfuncinput.c **** 
+  37:modbus/functions/mbfuncinput.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  38:modbus/functions/mbfuncinput.c **** #include "mb.h"
+  39:modbus/functions/mbfuncinput.c **** #include "mbframe.h"
+  40:modbus/functions/mbfuncinput.c **** #include "mbproto.h"
+  41:modbus/functions/mbfuncinput.c **** #include "mbconfig.h"
+  42:modbus/functions/mbfuncinput.c **** 
+  43:modbus/functions/mbfuncinput.c **** /* ----------------------- Defines ------------------------------------------*/
+  44:modbus/functions/mbfuncinput.c **** #define MB_PDU_FUNC_READ_ADDR_OFF           ( MB_PDU_DATA_OFF )
+  45:modbus/functions/mbfuncinput.c **** #define MB_PDU_FUNC_READ_REGCNT_OFF         ( MB_PDU_DATA_OFF + 2 )
+  46:modbus/functions/mbfuncinput.c **** #define MB_PDU_FUNC_READ_SIZE               ( 4 )
+  47:modbus/functions/mbfuncinput.c **** #define MB_PDU_FUNC_READ_REGCNT_MAX         ( 0x007D )
+  48:modbus/functions/mbfuncinput.c **** 
+  49:modbus/functions/mbfuncinput.c **** #define MB_PDU_FUNC_READ_RSP_BYTECNT_OFF    ( MB_PDU_DATA_OFF )
+  50:modbus/functions/mbfuncinput.c **** 
+  51:modbus/functions/mbfuncinput.c **** /* ----------------------- Static functions ---------------------------------*/
+  52:modbus/functions/mbfuncinput.c **** eMBException    prveMBError2Exception( eMBErrorCode eErrorCode );
+  53:modbus/functions/mbfuncinput.c **** 
+  54:modbus/functions/mbfuncinput.c **** /* ----------------------- Start implementation -----------------------------*/
+  55:modbus/functions/mbfuncinput.c **** #if MB_FUNC_READ_INPUT_ENABLED > 0
+  56:modbus/functions/mbfuncinput.c **** 
+  57:modbus/functions/mbfuncinput.c **** eMBException
+  58:modbus/functions/mbfuncinput.c **** eMBFuncReadInputRegister( UCHAR * pucFrame, USHORT * usLen )
+  59:modbus/functions/mbfuncinput.c **** {
+  28              		.loc 1 59 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 59 1 is_stmt 0 view .LVU1
+  33 0000 70B5     		push	{r4, r5, r6, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 4, -16
+  37              		.cfi_offset 5, -12
+  38              		.cfi_offset 6, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0C00     		movs	r4, r1
+  60:modbus/functions/mbfuncinput.c ****     USHORT          usRegAddress;
+  41              		.loc 1 60 5 is_stmt 1 view .LVU2
+  61:modbus/functions/mbfuncinput.c ****     USHORT          usRegCount;
+  42              		.loc 1 61 5 view .LVU3
+  62:modbus/functions/mbfuncinput.c ****     UCHAR          *pucFrameCur;
+  43              		.loc 1 62 5 view .LVU4
+  63:modbus/functions/mbfuncinput.c **** 
+  64:modbus/functions/mbfuncinput.c ****     eMBException    eStatus = MB_EX_NONE;
+  44              		.loc 1 64 5 view .LVU5
+  45              	.LVL1:
+  65:modbus/functions/mbfuncinput.c ****     eMBErrorCode    eRegStatus;
+  46              		.loc 1 65 5 view .LVU6
+  66:modbus/functions/mbfuncinput.c **** 
+  67:modbus/functions/mbfuncinput.c ****     if( *usLen == ( MB_PDU_FUNC_READ_SIZE + MB_PDU_SIZE_MIN ) )
+  47              		.loc 1 67 5 view .LVU7
+  48              		.loc 1 67 9 is_stmt 0 view .LVU8
+ARM GAS  /tmp/ccq4X9XF.s 			page 3
+
+
+  49 0004 0B88     		ldrh	r3, [r1]
+  50              		.loc 1 67 7 view .LVU9
+  51 0006 052B     		cmp	r3, #5
+  52 0008 01D0     		beq	.L6
+  68:modbus/functions/mbfuncinput.c ****     {
+  69:modbus/functions/mbfuncinput.c ****         usRegAddress = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF] << 8 );
+  70:modbus/functions/mbfuncinput.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  71:modbus/functions/mbfuncinput.c ****         usRegAddress++;
+  72:modbus/functions/mbfuncinput.c **** 
+  73:modbus/functions/mbfuncinput.c ****         usRegCount = ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF] << 8 );
+  74:modbus/functions/mbfuncinput.c ****         usRegCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF + 1] );
+  75:modbus/functions/mbfuncinput.c **** 
+  76:modbus/functions/mbfuncinput.c ****         /* Check if the number of registers to read is valid. If not
+  77:modbus/functions/mbfuncinput.c ****          * return Modbus illegal data value exception. 
+  78:modbus/functions/mbfuncinput.c ****          */
+  79:modbus/functions/mbfuncinput.c ****         if( ( usRegCount >= 1 )
+  80:modbus/functions/mbfuncinput.c ****             && ( usRegCount < MB_PDU_FUNC_READ_REGCNT_MAX ) )
+  81:modbus/functions/mbfuncinput.c ****         {
+  82:modbus/functions/mbfuncinput.c ****             /* Set the current PDU data pointer to the beginning. */
+  83:modbus/functions/mbfuncinput.c ****             pucFrameCur = &pucFrame[MB_PDU_FUNC_OFF];
+  84:modbus/functions/mbfuncinput.c ****             *usLen = MB_PDU_FUNC_OFF;
+  85:modbus/functions/mbfuncinput.c **** 
+  86:modbus/functions/mbfuncinput.c ****             /* First byte contains the function code. */
+  87:modbus/functions/mbfuncinput.c ****             *pucFrameCur++ = MB_FUNC_READ_INPUT_REGISTER;
+  88:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+  89:modbus/functions/mbfuncinput.c **** 
+  90:modbus/functions/mbfuncinput.c ****             /* Second byte in the response contain the number of bytes. */
+  91:modbus/functions/mbfuncinput.c ****             *pucFrameCur++ = ( UCHAR )( usRegCount * 2 );
+  92:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+  93:modbus/functions/mbfuncinput.c **** 
+  94:modbus/functions/mbfuncinput.c ****             eRegStatus =
+  95:modbus/functions/mbfuncinput.c ****                 eMBRegInputCB( pucFrameCur, usRegAddress, usRegCount );
+  96:modbus/functions/mbfuncinput.c **** 
+  97:modbus/functions/mbfuncinput.c ****             /* If an error occured convert it into a Modbus exception. */
+  98:modbus/functions/mbfuncinput.c ****             if( eRegStatus != MB_ENOERR )
+  99:modbus/functions/mbfuncinput.c ****             {
+ 100:modbus/functions/mbfuncinput.c ****                 eStatus = prveMBError2Exception( eRegStatus );
+ 101:modbus/functions/mbfuncinput.c ****             }
+ 102:modbus/functions/mbfuncinput.c ****             else
+ 103:modbus/functions/mbfuncinput.c ****             {
+ 104:modbus/functions/mbfuncinput.c ****                 *usLen += usRegCount * 2;
+ 105:modbus/functions/mbfuncinput.c ****             }
+ 106:modbus/functions/mbfuncinput.c ****         }
+ 107:modbus/functions/mbfuncinput.c ****         else
+ 108:modbus/functions/mbfuncinput.c ****         {
+ 109:modbus/functions/mbfuncinput.c ****             eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+ 110:modbus/functions/mbfuncinput.c ****         }
+ 111:modbus/functions/mbfuncinput.c ****     }
+ 112:modbus/functions/mbfuncinput.c ****     else
+ 113:modbus/functions/mbfuncinput.c ****     {
+ 114:modbus/functions/mbfuncinput.c ****         /* Can't be a valid read input register request because the length
+ 115:modbus/functions/mbfuncinput.c ****          * is incorrect. */
+ 116:modbus/functions/mbfuncinput.c ****         eStatus = MB_EX_ILLEGAL_DATA_VALUE;
+  53              		.loc 1 116 17 view .LVU10
+  54 000a 0320     		movs	r0, #3
+  55              	.LVL2:
+  56              	.L2:
+ARM GAS  /tmp/ccq4X9XF.s 			page 4
+
+
+ 117:modbus/functions/mbfuncinput.c ****     }
+ 118:modbus/functions/mbfuncinput.c ****     return eStatus;
+  57              		.loc 1 118 5 is_stmt 1 view .LVU11
+ 119:modbus/functions/mbfuncinput.c **** }
+  58              		.loc 1 119 1 is_stmt 0 view .LVU12
+  59              		@ sp needed
+  60              	.LVL3:
+  61              		.loc 1 119 1 view .LVU13
+  62 000c 70BD     		pop	{r4, r5, r6, pc}
+  63              	.LVL4:
+  64              	.L6:
+  69:modbus/functions/mbfuncinput.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  65              		.loc 1 69 9 is_stmt 1 view .LVU14
+  69:modbus/functions/mbfuncinput.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  66              		.loc 1 69 44 is_stmt 0 view .LVU15
+  67 000e 4378     		ldrb	r3, [r0, #1]
+  69:modbus/functions/mbfuncinput.c ****         usRegAddress |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_ADDR_OFF + 1] );
+  68              		.loc 1 69 22 view .LVU16
+  69 0010 1B02     		lsls	r3, r3, #8
+  70              	.LVL5:
+  70:modbus/functions/mbfuncinput.c ****         usRegAddress++;
+  71              		.loc 1 70 9 is_stmt 1 view .LVU17
+  70:modbus/functions/mbfuncinput.c ****         usRegAddress++;
+  72              		.loc 1 70 45 is_stmt 0 view .LVU18
+  73 0012 8178     		ldrb	r1, [r0, #2]
+  74              	.LVL6:
+  70:modbus/functions/mbfuncinput.c ****         usRegAddress++;
+  75              		.loc 1 70 22 view .LVU19
+  76 0014 1943     		orrs	r1, r3
+  77              	.LVL7:
+  71:modbus/functions/mbfuncinput.c **** 
+  78              		.loc 1 71 9 is_stmt 1 view .LVU20
+  71:modbus/functions/mbfuncinput.c **** 
+  79              		.loc 1 71 21 is_stmt 0 view .LVU21
+  80 0016 0131     		adds	r1, r1, #1
+  81              	.LVL8:
+  71:modbus/functions/mbfuncinput.c **** 
+  82              		.loc 1 71 21 view .LVU22
+  83 0018 89B2     		uxth	r1, r1
+  84              	.LVL9:
+  73:modbus/functions/mbfuncinput.c ****         usRegCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF + 1] );
+  85              		.loc 1 73 9 is_stmt 1 view .LVU23
+  73:modbus/functions/mbfuncinput.c ****         usRegCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF + 1] );
+  86              		.loc 1 73 42 is_stmt 0 view .LVU24
+  87 001a C578     		ldrb	r5, [r0, #3]
+  73:modbus/functions/mbfuncinput.c ****         usRegCount |= ( USHORT )( pucFrame[MB_PDU_FUNC_READ_REGCNT_OFF + 1] );
+  88              		.loc 1 73 20 view .LVU25
+  89 001c 2D02     		lsls	r5, r5, #8
+  90              	.LVL10:
+  74:modbus/functions/mbfuncinput.c **** 
+  91              		.loc 1 74 9 is_stmt 1 view .LVU26
+  74:modbus/functions/mbfuncinput.c **** 
+  92              		.loc 1 74 43 is_stmt 0 view .LVU27
+  93 001e 0379     		ldrb	r3, [r0, #4]
+  74:modbus/functions/mbfuncinput.c **** 
+  94              		.loc 1 74 20 view .LVU28
+  95 0020 1D43     		orrs	r5, r3
+ARM GAS  /tmp/ccq4X9XF.s 			page 5
+
+
+  96              	.LVL11:
+  79:modbus/functions/mbfuncinput.c ****             && ( usRegCount < MB_PDU_FUNC_READ_REGCNT_MAX ) )
+  97              		.loc 1 79 9 is_stmt 1 view .LVU29
+  80:modbus/functions/mbfuncinput.c ****         {
+  98              		.loc 1 80 13 is_stmt 0 view .LVU30
+  99 0022 6B1E     		subs	r3, r5, #1
+ 100 0024 9BB2     		uxth	r3, r3
+  79:modbus/functions/mbfuncinput.c ****             && ( usRegCount < MB_PDU_FUNC_READ_REGCNT_MAX ) )
+ 101              		.loc 1 79 11 view .LVU31
+ 102 0026 7B2B     		cmp	r3, #123
+ 103 0028 01D9     		bls	.L7
+ 109:modbus/functions/mbfuncinput.c ****         }
+ 104              		.loc 1 109 21 view .LVU32
+ 105 002a 0320     		movs	r0, #3
+ 106              	.LVL12:
+ 109:modbus/functions/mbfuncinput.c ****         }
+ 107              		.loc 1 109 21 view .LVU33
+ 108 002c EEE7     		b	.L2
+ 109              	.LVL13:
+ 110              	.L7:
+  83:modbus/functions/mbfuncinput.c ****             *usLen = MB_PDU_FUNC_OFF;
+ 111              		.loc 1 83 13 is_stmt 1 view .LVU34
+  84:modbus/functions/mbfuncinput.c **** 
+ 112              		.loc 1 84 13 view .LVU35
+  84:modbus/functions/mbfuncinput.c **** 
+ 113              		.loc 1 84 20 is_stmt 0 view .LVU36
+ 114 002e 0023     		movs	r3, #0
+ 115 0030 2380     		strh	r3, [r4]
+  87:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+ 116              		.loc 1 87 13 is_stmt 1 view .LVU37
+ 117              	.LVL14:
+  87:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+ 118              		.loc 1 87 28 is_stmt 0 view .LVU38
+ 119 0032 0433     		adds	r3, r3, #4
+ 120 0034 0370     		strb	r3, [r0]
+  88:modbus/functions/mbfuncinput.c **** 
+ 121              		.loc 1 88 13 is_stmt 1 view .LVU39
+  88:modbus/functions/mbfuncinput.c **** 
+ 122              		.loc 1 88 20 is_stmt 0 view .LVU40
+ 123 0036 2388     		ldrh	r3, [r4]
+ 124 0038 0133     		adds	r3, r3, #1
+ 125 003a 2380     		strh	r3, [r4]
+  91:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+ 126              		.loc 1 91 13 is_stmt 1 view .LVU41
+  91:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+ 127              		.loc 1 91 25 is_stmt 0 view .LVU42
+ 128 003c 861C     		adds	r6, r0, #2
+ 129              	.LVL15:
+  91:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+ 130              		.loc 1 91 30 view .LVU43
+ 131 003e 6B00     		lsls	r3, r5, #1
+  91:modbus/functions/mbfuncinput.c ****             *usLen += 1;
+ 132              		.loc 1 91 28 view .LVU44
+ 133 0040 4370     		strb	r3, [r0, #1]
+  92:modbus/functions/mbfuncinput.c **** 
+ 134              		.loc 1 92 13 is_stmt 1 view .LVU45
+  92:modbus/functions/mbfuncinput.c **** 
+ARM GAS  /tmp/ccq4X9XF.s 			page 6
+
+
+ 135              		.loc 1 92 20 is_stmt 0 view .LVU46
+ 136 0042 2388     		ldrh	r3, [r4]
+ 137 0044 0133     		adds	r3, r3, #1
+ 138 0046 2380     		strh	r3, [r4]
+  94:modbus/functions/mbfuncinput.c ****                 eMBRegInputCB( pucFrameCur, usRegAddress, usRegCount );
+ 139              		.loc 1 94 13 is_stmt 1 view .LVU47
+  95:modbus/functions/mbfuncinput.c **** 
+ 140              		.loc 1 95 17 is_stmt 0 view .LVU48
+ 141 0048 2A00     		movs	r2, r5
+ 142 004a 3000     		movs	r0, r6
+ 143              	.LVL16:
+  95:modbus/functions/mbfuncinput.c **** 
+ 144              		.loc 1 95 17 view .LVU49
+ 145 004c FFF7FEFF 		bl	eMBRegInputCB
+ 146              	.LVL17:
+  98:modbus/functions/mbfuncinput.c ****             {
+ 147              		.loc 1 98 13 is_stmt 1 view .LVU50
+  98:modbus/functions/mbfuncinput.c ****             {
+ 148              		.loc 1 98 15 is_stmt 0 view .LVU51
+ 149 0050 0028     		cmp	r0, #0
+ 150 0052 05D1     		bne	.L8
+ 104:modbus/functions/mbfuncinput.c ****             }
+ 151              		.loc 1 104 17 is_stmt 1 view .LVU52
+ 104:modbus/functions/mbfuncinput.c ****             }
+ 152              		.loc 1 104 24 is_stmt 0 view .LVU53
+ 153 0054 6D00     		lsls	r5, r5, #1
+ 154              	.LVL18:
+ 104:modbus/functions/mbfuncinput.c ****             }
+ 155              		.loc 1 104 24 view .LVU54
+ 156 0056 2388     		ldrh	r3, [r4]
+ 157 0058 5D19     		adds	r5, r3, r5
+ 158 005a 2580     		strh	r5, [r4]
+  64:modbus/functions/mbfuncinput.c ****     eMBErrorCode    eRegStatus;
+ 159              		.loc 1 64 21 view .LVU55
+ 160 005c 0020     		movs	r0, #0
+ 161              	.LVL19:
+  64:modbus/functions/mbfuncinput.c ****     eMBErrorCode    eRegStatus;
+ 162              		.loc 1 64 21 view .LVU56
+ 163 005e D5E7     		b	.L2
+ 164              	.LVL20:
+ 165              	.L8:
+ 100:modbus/functions/mbfuncinput.c ****             }
+ 166              		.loc 1 100 17 is_stmt 1 view .LVU57
+ 100:modbus/functions/mbfuncinput.c ****             }
+ 167              		.loc 1 100 27 is_stmt 0 view .LVU58
+ 168 0060 FFF7FEFF 		bl	prveMBError2Exception
+ 169              	.LVL21:
+ 100:modbus/functions/mbfuncinput.c ****             }
+ 170              		.loc 1 100 27 view .LVU59
+ 171 0064 D2E7     		b	.L2
+ 172              		.cfi_endproc
+ 173              	.LFE37:
+ 175              		.text
+ 176              	.Letext0:
+ 177              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 178              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 179              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ARM GAS  /tmp/ccq4X9XF.s 			page 7
+
+
+ 180              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 181              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 182              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 183              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 184              		.file 9 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 185              		.file 10 "modbus/port/port.h"
+ 186              		.file 11 "modbus/include/mbport.h"
+ 187              		.file 12 "modbus/include/mbproto.h"
+ 188              		.file 13 "modbus/include/mb.h"
+ARM GAS  /tmp/ccq4X9XF.s 			page 8
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mbfuncinput.c
+     /tmp/ccq4X9XF.s:16     .text.eMBFuncReadInputRegister:0000000000000000 $t
+     /tmp/ccq4X9XF.s:24     .text.eMBFuncReadInputRegister:0000000000000000 eMBFuncReadInputRegister
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+eMBRegInputCB
+prveMBError2Exception
