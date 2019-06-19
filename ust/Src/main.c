@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "mb.h"
+#include "mbport.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -163,15 +164,16 @@ int main(void)
 //  HAL_UART_Receive_IT(&huart1, received, sizeof(received));
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
-  xMBPortTimersInit(20);
-  vMBPortTimersEnable();
+  eMBInit(MB_RTU,0x0A, 1,9600, MB_PAR_NONE);
+  eMBEnable();
+ 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+     eMBPoll();
      /*  if(status==1 && received[0]=='t'){
         test();
         received[0]=0;
@@ -190,6 +192,55 @@ int main(void)
   /* USER CODE END 3 */
 }
 
+
+eMBErrorCode
+eMBRegInputCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs )
+{
+    eMBErrorCode    eStatus = MB_ENOERR;
+    int             iRegIndex;
+
+    if( ( usAddress >= REG_INPUT_START )
+        && ( usAddress + usNRegs <= REG_INPUT_START + REG_INPUT_NREGS ) )
+    {
+        iRegIndex = ( int )( usAddress - usRegInputStart );
+        while( usNRegs > 0 )
+        {
+            *pucRegBuffer++ =
+                ( unsigned char )( usRegInputBuf[iRegIndex] >> 8 );
+            *pucRegBuffer++ =
+                ( unsigned char )( usRegInputBuf[iRegIndex] & 0xFF );
+            iRegIndex++;
+            usNRegs--;
+        }
+    }
+    else
+    {
+        eStatus = MB_ENOREG;
+    }
+
+    return eStatus;
+}
+
+eMBErrorCode
+eMBRegHoldingCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs,
+                 eMBRegisterMode eMode )
+{
+    return MB_ENOREG;
+}
+
+
+eMBErrorCode
+eMBRegCoilsCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNCoils,
+               eMBRegisterMode eMode )
+{
+    return MB_ENOREG;
+}
+
+eMBErrorCode
+eMBRegDiscreteCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNDiscrete )
+{
+    return MB_ENOREG;
+}
 /**
   * @brief System Clock Configuration
   * @retval None

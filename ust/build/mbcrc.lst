@@ -1,0 +1,788 @@
+ARM GAS  /tmp/cc9vyPBb.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"mbcrc.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.usMBCRC16,"ax",%progbits
+  16              		.align	1
+  17              		.global	usMBCRC16
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	usMBCRC16:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "modbus/rtu/mbcrc.c"
+   1:modbus/rtu/mbcrc.c **** /* 
+   2:modbus/rtu/mbcrc.c ****  * FreeModbus Libary: A portable Modbus implementation for Modbus ASCII/RTU.
+   3:modbus/rtu/mbcrc.c ****  * Copyright (c) 2006-2018 Christian Walter <cwalter@embedded-solutions.at>
+   4:modbus/rtu/mbcrc.c ****  * All rights reserved.
+   5:modbus/rtu/mbcrc.c ****  *
+   6:modbus/rtu/mbcrc.c ****  * Redistribution and use in source and binary forms, with or without
+   7:modbus/rtu/mbcrc.c ****  * modification, are permitted provided that the following conditions
+   8:modbus/rtu/mbcrc.c ****  * are met:
+   9:modbus/rtu/mbcrc.c ****  * 1. Redistributions of source code must retain the above copyright
+  10:modbus/rtu/mbcrc.c ****  *    notice, this list of conditions and the following disclaimer.
+  11:modbus/rtu/mbcrc.c ****  * 2. Redistributions in binary form must reproduce the above copyright
+  12:modbus/rtu/mbcrc.c ****  *    notice, this list of conditions and the following disclaimer in the
+  13:modbus/rtu/mbcrc.c ****  *    documentation and/or other materials provided with the distribution.
+  14:modbus/rtu/mbcrc.c ****  * 3. The name of the author may not be used to endorse or promote products
+  15:modbus/rtu/mbcrc.c ****  *    derived from this software without specific prior written permission.
+  16:modbus/rtu/mbcrc.c ****  *
+  17:modbus/rtu/mbcrc.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  18:modbus/rtu/mbcrc.c ****  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  19:modbus/rtu/mbcrc.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  20:modbus/rtu/mbcrc.c ****  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  21:modbus/rtu/mbcrc.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  22:modbus/rtu/mbcrc.c ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  23:modbus/rtu/mbcrc.c ****  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  24:modbus/rtu/mbcrc.c ****  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  25:modbus/rtu/mbcrc.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  26:modbus/rtu/mbcrc.c ****  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  27:modbus/rtu/mbcrc.c ****  *
+  28:modbus/rtu/mbcrc.c ****  */
+  29:modbus/rtu/mbcrc.c **** 
+  30:modbus/rtu/mbcrc.c **** /* ----------------------- Platform includes --------------------------------*/
+  31:modbus/rtu/mbcrc.c **** #include "../port/port.h"
+ARM GAS  /tmp/cc9vyPBb.s 			page 2
+
+
+  32:modbus/rtu/mbcrc.c **** 
+  33:modbus/rtu/mbcrc.c **** static const UCHAR aucCRCHi[] = {
+  34:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  35:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
+  36:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  37:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
+  38:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  39:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
+  40:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
+  41:modbus/rtu/mbcrc.c ****     0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
+  42:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  43:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
+  44:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  45:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 
+  46:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  47:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 
+  48:modbus/rtu/mbcrc.c ****     0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
+  49:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
+  50:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 
+  51:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40,
+  52:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  53:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
+  54:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41,
+  55:modbus/rtu/mbcrc.c ****     0x00, 0xC1, 0x81, 0x40
+  56:modbus/rtu/mbcrc.c **** };
+  57:modbus/rtu/mbcrc.c **** 
+  58:modbus/rtu/mbcrc.c **** static const UCHAR aucCRCLo[] = {
+  59:modbus/rtu/mbcrc.c ****     0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7,
+  60:modbus/rtu/mbcrc.c ****     0x05, 0xC5, 0xC4, 0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E,
+  61:modbus/rtu/mbcrc.c ****     0x0A, 0xCA, 0xCB, 0x0B, 0xC9, 0x09, 0x08, 0xC8, 0xD8, 0x18, 0x19, 0xD9,
+  62:modbus/rtu/mbcrc.c ****     0x1B, 0xDB, 0xDA, 0x1A, 0x1E, 0xDE, 0xDF, 0x1F, 0xDD, 0x1D, 0x1C, 0xDC,
+  63:modbus/rtu/mbcrc.c ****     0x14, 0xD4, 0xD5, 0x15, 0xD7, 0x17, 0x16, 0xD6, 0xD2, 0x12, 0x13, 0xD3,
+  64:modbus/rtu/mbcrc.c ****     0x11, 0xD1, 0xD0, 0x10, 0xF0, 0x30, 0x31, 0xF1, 0x33, 0xF3, 0xF2, 0x32,
+  65:modbus/rtu/mbcrc.c ****     0x36, 0xF6, 0xF7, 0x37, 0xF5, 0x35, 0x34, 0xF4, 0x3C, 0xFC, 0xFD, 0x3D,
+  66:modbus/rtu/mbcrc.c ****     0xFF, 0x3F, 0x3E, 0xFE, 0xFA, 0x3A, 0x3B, 0xFB, 0x39, 0xF9, 0xF8, 0x38, 
+  67:modbus/rtu/mbcrc.c ****     0x28, 0xE8, 0xE9, 0x29, 0xEB, 0x2B, 0x2A, 0xEA, 0xEE, 0x2E, 0x2F, 0xEF,
+  68:modbus/rtu/mbcrc.c ****     0x2D, 0xED, 0xEC, 0x2C, 0xE4, 0x24, 0x25, 0xE5, 0x27, 0xE7, 0xE6, 0x26,
+  69:modbus/rtu/mbcrc.c ****     0x22, 0xE2, 0xE3, 0x23, 0xE1, 0x21, 0x20, 0xE0, 0xA0, 0x60, 0x61, 0xA1,
+  70:modbus/rtu/mbcrc.c ****     0x63, 0xA3, 0xA2, 0x62, 0x66, 0xA6, 0xA7, 0x67, 0xA5, 0x65, 0x64, 0xA4,
+  71:modbus/rtu/mbcrc.c ****     0x6C, 0xAC, 0xAD, 0x6D, 0xAF, 0x6F, 0x6E, 0xAE, 0xAA, 0x6A, 0x6B, 0xAB, 
+  72:modbus/rtu/mbcrc.c ****     0x69, 0xA9, 0xA8, 0x68, 0x78, 0xB8, 0xB9, 0x79, 0xBB, 0x7B, 0x7A, 0xBA,
+  73:modbus/rtu/mbcrc.c ****     0xBE, 0x7E, 0x7F, 0xBF, 0x7D, 0xBD, 0xBC, 0x7C, 0xB4, 0x74, 0x75, 0xB5,
+  74:modbus/rtu/mbcrc.c ****     0x77, 0xB7, 0xB6, 0x76, 0x72, 0xB2, 0xB3, 0x73, 0xB1, 0x71, 0x70, 0xB0,
+  75:modbus/rtu/mbcrc.c ****     0x50, 0x90, 0x91, 0x51, 0x93, 0x53, 0x52, 0x92, 0x96, 0x56, 0x57, 0x97,
+  76:modbus/rtu/mbcrc.c ****     0x55, 0x95, 0x94, 0x54, 0x9C, 0x5C, 0x5D, 0x9D, 0x5F, 0x9F, 0x9E, 0x5E,
+  77:modbus/rtu/mbcrc.c ****     0x5A, 0x9A, 0x9B, 0x5B, 0x99, 0x59, 0x58, 0x98, 0x88, 0x48, 0x49, 0x89,
+  78:modbus/rtu/mbcrc.c ****     0x4B, 0x8B, 0x8A, 0x4A, 0x4E, 0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C,
+  79:modbus/rtu/mbcrc.c ****     0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83,
+  80:modbus/rtu/mbcrc.c ****     0x41, 0x81, 0x80, 0x40
+  81:modbus/rtu/mbcrc.c **** };
+  82:modbus/rtu/mbcrc.c **** 
+  83:modbus/rtu/mbcrc.c **** USHORT
+  84:modbus/rtu/mbcrc.c **** usMBCRC16( UCHAR * pucFrame, USHORT usLen )
+  85:modbus/rtu/mbcrc.c **** {
+  28              		.loc 1 85 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/cc9vyPBb.s 			page 3
+
+
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 85 1 is_stmt 0 view .LVU1
+  33 0000 30B5     		push	{r4, r5, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 12
+  36              		.cfi_offset 4, -12
+  37              		.cfi_offset 5, -8
+  38              		.cfi_offset 14, -4
+  86:modbus/rtu/mbcrc.c ****     UCHAR           ucCRCHi = 0xFF;
+  39              		.loc 1 86 5 is_stmt 1 view .LVU2
+  40              	.LVL1:
+  87:modbus/rtu/mbcrc.c ****     UCHAR           ucCRCLo = 0xFF;
+  41              		.loc 1 87 5 view .LVU3
+  88:modbus/rtu/mbcrc.c ****     int             iIndex;
+  42              		.loc 1 88 5 view .LVU4
+  89:modbus/rtu/mbcrc.c **** 
+  90:modbus/rtu/mbcrc.c ****     while( usLen-- )
+  43              		.loc 1 90 5 view .LVU5
+  87:modbus/rtu/mbcrc.c ****     int             iIndex;
+  44              		.loc 1 87 21 is_stmt 0 view .LVU6
+  45 0002 FF24     		movs	r4, #255
+  86:modbus/rtu/mbcrc.c ****     UCHAR           ucCRCLo = 0xFF;
+  46              		.loc 1 86 21 view .LVU7
+  47 0004 FF25     		movs	r5, #255
+  48              	.LVL2:
+  49              	.L2:
+  50              		.loc 1 90 17 view .LVU8
+  51 0006 4A1E     		subs	r2, r1, #1
+  52 0008 92B2     		uxth	r2, r2
+  53              	.LVL3:
+  54              		.loc 1 90 10 view .LVU9
+  55 000a 0029     		cmp	r1, #0
+  56 000c 09D0     		beq	.L4
+  91:modbus/rtu/mbcrc.c ****     {
+  92:modbus/rtu/mbcrc.c ****         iIndex = ucCRCLo ^ *( pucFrame++ );
+  57              		.loc 1 92 9 is_stmt 1 view .LVU10
+  58              	.LVL4:
+  59              		.loc 1 92 28 is_stmt 0 view .LVU11
+  60 000e 0378     		ldrb	r3, [r0]
+  61              		.loc 1 92 26 view .LVU12
+  62 0010 6340     		eors	r3, r4
+  63              	.LVL5:
+  93:modbus/rtu/mbcrc.c ****         ucCRCLo = ( UCHAR )( ucCRCHi ^ aucCRCHi[iIndex] );
+  64              		.loc 1 93 9 is_stmt 1 view .LVU13
+  65              		.loc 1 93 48 is_stmt 0 view .LVU14
+  66 0012 0649     		ldr	r1, .L5
+  67 0014 CC5C     		ldrb	r4, [r1, r3]
+  68              	.LVL6:
+  69              		.loc 1 93 17 view .LVU15
+  70 0016 6C40     		eors	r4, r5
+  71              	.LVL7:
+  94:modbus/rtu/mbcrc.c ****         ucCRCHi = aucCRCLo[iIndex];
+  72              		.loc 1 94 9 is_stmt 1 view .LVU16
+  73              		.loc 1 94 17 is_stmt 0 view .LVU17
+  74 0018 0549     		ldr	r1, .L5+4
+  75 001a CD5C     		ldrb	r5, [r1, r3]
+  76              	.LVL8:
+ARM GAS  /tmp/cc9vyPBb.s 			page 4
+
+
+  90:modbus/rtu/mbcrc.c ****     {
+  77              		.loc 1 90 17 view .LVU18
+  78 001c 1100     		movs	r1, r2
+  92:modbus/rtu/mbcrc.c ****         ucCRCLo = ( UCHAR )( ucCRCHi ^ aucCRCHi[iIndex] );
+  79              		.loc 1 92 39 view .LVU19
+  80 001e 0130     		adds	r0, r0, #1
+  81              	.LVL9:
+  92:modbus/rtu/mbcrc.c ****         ucCRCLo = ( UCHAR )( ucCRCHi ^ aucCRCHi[iIndex] );
+  82              		.loc 1 92 39 view .LVU20
+  83 0020 F1E7     		b	.L2
+  84              	.LVL10:
+  85              	.L4:
+  95:modbus/rtu/mbcrc.c ****     }
+  96:modbus/rtu/mbcrc.c ****     return ( USHORT )( ucCRCHi << 8 | ucCRCLo );
+  86              		.loc 1 96 5 is_stmt 1 view .LVU21
+  87              		.loc 1 96 32 is_stmt 0 view .LVU22
+  88 0022 2802     		lsls	r0, r5, #8
+  89              	.LVL11:
+  90              		.loc 1 96 37 view .LVU23
+  91 0024 2043     		orrs	r0, r4
+  92              		.loc 1 96 12 view .LVU24
+  93 0026 80B2     		uxth	r0, r0
+  97:modbus/rtu/mbcrc.c **** }
+  94              		.loc 1 97 1 view .LVU25
+  95              		@ sp needed
+  96              	.LVL12:
+  97              	.LVL13:
+  98              		.loc 1 97 1 view .LVU26
+  99 0028 30BD     		pop	{r4, r5, pc}
+ 100              	.L6:
+ 101 002a C046     		.align	2
+ 102              	.L5:
+ 103 002c 00000000 		.word	aucCRCHi
+ 104 0030 00000000 		.word	aucCRCLo
+ 105              		.cfi_endproc
+ 106              	.LFE37:
+ 108              		.section	.rodata.aucCRCHi,"a"
+ 109              		.align	2
+ 112              	aucCRCHi:
+ 113 0000 00       		.byte	0
+ 114 0001 C1       		.byte	-63
+ 115 0002 81       		.byte	-127
+ 116 0003 40       		.byte	64
+ 117 0004 01       		.byte	1
+ 118 0005 C0       		.byte	-64
+ 119 0006 80       		.byte	-128
+ 120 0007 41       		.byte	65
+ 121 0008 01       		.byte	1
+ 122 0009 C0       		.byte	-64
+ 123 000a 80       		.byte	-128
+ 124 000b 41       		.byte	65
+ 125 000c 00       		.byte	0
+ 126 000d C1       		.byte	-63
+ 127 000e 81       		.byte	-127
+ 128 000f 40       		.byte	64
+ 129 0010 01       		.byte	1
+ 130 0011 C0       		.byte	-64
+ARM GAS  /tmp/cc9vyPBb.s 			page 5
+
+
+ 131 0012 80       		.byte	-128
+ 132 0013 41       		.byte	65
+ 133 0014 00       		.byte	0
+ 134 0015 C1       		.byte	-63
+ 135 0016 81       		.byte	-127
+ 136 0017 40       		.byte	64
+ 137 0018 00       		.byte	0
+ 138 0019 C1       		.byte	-63
+ 139 001a 81       		.byte	-127
+ 140 001b 40       		.byte	64
+ 141 001c 01       		.byte	1
+ 142 001d C0       		.byte	-64
+ 143 001e 80       		.byte	-128
+ 144 001f 41       		.byte	65
+ 145 0020 01       		.byte	1
+ 146 0021 C0       		.byte	-64
+ 147 0022 80       		.byte	-128
+ 148 0023 41       		.byte	65
+ 149 0024 00       		.byte	0
+ 150 0025 C1       		.byte	-63
+ 151 0026 81       		.byte	-127
+ 152 0027 40       		.byte	64
+ 153 0028 00       		.byte	0
+ 154 0029 C1       		.byte	-63
+ 155 002a 81       		.byte	-127
+ 156 002b 40       		.byte	64
+ 157 002c 01       		.byte	1
+ 158 002d C0       		.byte	-64
+ 159 002e 80       		.byte	-128
+ 160 002f 41       		.byte	65
+ 161 0030 00       		.byte	0
+ 162 0031 C1       		.byte	-63
+ 163 0032 81       		.byte	-127
+ 164 0033 40       		.byte	64
+ 165 0034 01       		.byte	1
+ 166 0035 C0       		.byte	-64
+ 167 0036 80       		.byte	-128
+ 168 0037 41       		.byte	65
+ 169 0038 01       		.byte	1
+ 170 0039 C0       		.byte	-64
+ 171 003a 80       		.byte	-128
+ 172 003b 41       		.byte	65
+ 173 003c 00       		.byte	0
+ 174 003d C1       		.byte	-63
+ 175 003e 81       		.byte	-127
+ 176 003f 40       		.byte	64
+ 177 0040 01       		.byte	1
+ 178 0041 C0       		.byte	-64
+ 179 0042 80       		.byte	-128
+ 180 0043 41       		.byte	65
+ 181 0044 00       		.byte	0
+ 182 0045 C1       		.byte	-63
+ 183 0046 81       		.byte	-127
+ 184 0047 40       		.byte	64
+ 185 0048 00       		.byte	0
+ 186 0049 C1       		.byte	-63
+ 187 004a 81       		.byte	-127
+ARM GAS  /tmp/cc9vyPBb.s 			page 6
+
+
+ 188 004b 40       		.byte	64
+ 189 004c 01       		.byte	1
+ 190 004d C0       		.byte	-64
+ 191 004e 80       		.byte	-128
+ 192 004f 41       		.byte	65
+ 193 0050 00       		.byte	0
+ 194 0051 C1       		.byte	-63
+ 195 0052 81       		.byte	-127
+ 196 0053 40       		.byte	64
+ 197 0054 01       		.byte	1
+ 198 0055 C0       		.byte	-64
+ 199 0056 80       		.byte	-128
+ 200 0057 41       		.byte	65
+ 201 0058 01       		.byte	1
+ 202 0059 C0       		.byte	-64
+ 203 005a 80       		.byte	-128
+ 204 005b 41       		.byte	65
+ 205 005c 00       		.byte	0
+ 206 005d C1       		.byte	-63
+ 207 005e 81       		.byte	-127
+ 208 005f 40       		.byte	64
+ 209 0060 00       		.byte	0
+ 210 0061 C1       		.byte	-63
+ 211 0062 81       		.byte	-127
+ 212 0063 40       		.byte	64
+ 213 0064 01       		.byte	1
+ 214 0065 C0       		.byte	-64
+ 215 0066 80       		.byte	-128
+ 216 0067 41       		.byte	65
+ 217 0068 01       		.byte	1
+ 218 0069 C0       		.byte	-64
+ 219 006a 80       		.byte	-128
+ 220 006b 41       		.byte	65
+ 221 006c 00       		.byte	0
+ 222 006d C1       		.byte	-63
+ 223 006e 81       		.byte	-127
+ 224 006f 40       		.byte	64
+ 225 0070 01       		.byte	1
+ 226 0071 C0       		.byte	-64
+ 227 0072 80       		.byte	-128
+ 228 0073 41       		.byte	65
+ 229 0074 00       		.byte	0
+ 230 0075 C1       		.byte	-63
+ 231 0076 81       		.byte	-127
+ 232 0077 40       		.byte	64
+ 233 0078 00       		.byte	0
+ 234 0079 C1       		.byte	-63
+ 235 007a 81       		.byte	-127
+ 236 007b 40       		.byte	64
+ 237 007c 01       		.byte	1
+ 238 007d C0       		.byte	-64
+ 239 007e 80       		.byte	-128
+ 240 007f 41       		.byte	65
+ 241 0080 01       		.byte	1
+ 242 0081 C0       		.byte	-64
+ 243 0082 80       		.byte	-128
+ 244 0083 41       		.byte	65
+ARM GAS  /tmp/cc9vyPBb.s 			page 7
+
+
+ 245 0084 00       		.byte	0
+ 246 0085 C1       		.byte	-63
+ 247 0086 81       		.byte	-127
+ 248 0087 40       		.byte	64
+ 249 0088 00       		.byte	0
+ 250 0089 C1       		.byte	-63
+ 251 008a 81       		.byte	-127
+ 252 008b 40       		.byte	64
+ 253 008c 01       		.byte	1
+ 254 008d C0       		.byte	-64
+ 255 008e 80       		.byte	-128
+ 256 008f 41       		.byte	65
+ 257 0090 00       		.byte	0
+ 258 0091 C1       		.byte	-63
+ 259 0092 81       		.byte	-127
+ 260 0093 40       		.byte	64
+ 261 0094 01       		.byte	1
+ 262 0095 C0       		.byte	-64
+ 263 0096 80       		.byte	-128
+ 264 0097 41       		.byte	65
+ 265 0098 01       		.byte	1
+ 266 0099 C0       		.byte	-64
+ 267 009a 80       		.byte	-128
+ 268 009b 41       		.byte	65
+ 269 009c 00       		.byte	0
+ 270 009d C1       		.byte	-63
+ 271 009e 81       		.byte	-127
+ 272 009f 40       		.byte	64
+ 273 00a0 00       		.byte	0
+ 274 00a1 C1       		.byte	-63
+ 275 00a2 81       		.byte	-127
+ 276 00a3 40       		.byte	64
+ 277 00a4 01       		.byte	1
+ 278 00a5 C0       		.byte	-64
+ 279 00a6 80       		.byte	-128
+ 280 00a7 41       		.byte	65
+ 281 00a8 01       		.byte	1
+ 282 00a9 C0       		.byte	-64
+ 283 00aa 80       		.byte	-128
+ 284 00ab 41       		.byte	65
+ 285 00ac 00       		.byte	0
+ 286 00ad C1       		.byte	-63
+ 287 00ae 81       		.byte	-127
+ 288 00af 40       		.byte	64
+ 289 00b0 01       		.byte	1
+ 290 00b1 C0       		.byte	-64
+ 291 00b2 80       		.byte	-128
+ 292 00b3 41       		.byte	65
+ 293 00b4 00       		.byte	0
+ 294 00b5 C1       		.byte	-63
+ 295 00b6 81       		.byte	-127
+ 296 00b7 40       		.byte	64
+ 297 00b8 00       		.byte	0
+ 298 00b9 C1       		.byte	-63
+ 299 00ba 81       		.byte	-127
+ 300 00bb 40       		.byte	64
+ 301 00bc 01       		.byte	1
+ARM GAS  /tmp/cc9vyPBb.s 			page 8
+
+
+ 302 00bd C0       		.byte	-64
+ 303 00be 80       		.byte	-128
+ 304 00bf 41       		.byte	65
+ 305 00c0 00       		.byte	0
+ 306 00c1 C1       		.byte	-63
+ 307 00c2 81       		.byte	-127
+ 308 00c3 40       		.byte	64
+ 309 00c4 01       		.byte	1
+ 310 00c5 C0       		.byte	-64
+ 311 00c6 80       		.byte	-128
+ 312 00c7 41       		.byte	65
+ 313 00c8 01       		.byte	1
+ 314 00c9 C0       		.byte	-64
+ 315 00ca 80       		.byte	-128
+ 316 00cb 41       		.byte	65
+ 317 00cc 00       		.byte	0
+ 318 00cd C1       		.byte	-63
+ 319 00ce 81       		.byte	-127
+ 320 00cf 40       		.byte	64
+ 321 00d0 01       		.byte	1
+ 322 00d1 C0       		.byte	-64
+ 323 00d2 80       		.byte	-128
+ 324 00d3 41       		.byte	65
+ 325 00d4 00       		.byte	0
+ 326 00d5 C1       		.byte	-63
+ 327 00d6 81       		.byte	-127
+ 328 00d7 40       		.byte	64
+ 329 00d8 00       		.byte	0
+ 330 00d9 C1       		.byte	-63
+ 331 00da 81       		.byte	-127
+ 332 00db 40       		.byte	64
+ 333 00dc 01       		.byte	1
+ 334 00dd C0       		.byte	-64
+ 335 00de 80       		.byte	-128
+ 336 00df 41       		.byte	65
+ 337 00e0 01       		.byte	1
+ 338 00e1 C0       		.byte	-64
+ 339 00e2 80       		.byte	-128
+ 340 00e3 41       		.byte	65
+ 341 00e4 00       		.byte	0
+ 342 00e5 C1       		.byte	-63
+ 343 00e6 81       		.byte	-127
+ 344 00e7 40       		.byte	64
+ 345 00e8 00       		.byte	0
+ 346 00e9 C1       		.byte	-63
+ 347 00ea 81       		.byte	-127
+ 348 00eb 40       		.byte	64
+ 349 00ec 01       		.byte	1
+ 350 00ed C0       		.byte	-64
+ 351 00ee 80       		.byte	-128
+ 352 00ef 41       		.byte	65
+ 353 00f0 00       		.byte	0
+ 354 00f1 C1       		.byte	-63
+ 355 00f2 81       		.byte	-127
+ 356 00f3 40       		.byte	64
+ 357 00f4 01       		.byte	1
+ 358 00f5 C0       		.byte	-64
+ARM GAS  /tmp/cc9vyPBb.s 			page 9
+
+
+ 359 00f6 80       		.byte	-128
+ 360 00f7 41       		.byte	65
+ 361 00f8 01       		.byte	1
+ 362 00f9 C0       		.byte	-64
+ 363 00fa 80       		.byte	-128
+ 364 00fb 41       		.byte	65
+ 365 00fc 00       		.byte	0
+ 366 00fd C1       		.byte	-63
+ 367 00fe 81       		.byte	-127
+ 368 00ff 40       		.byte	64
+ 369              		.section	.rodata.aucCRCLo,"a"
+ 370              		.align	2
+ 373              	aucCRCLo:
+ 374 0000 00       		.byte	0
+ 375 0001 C0       		.byte	-64
+ 376 0002 C1       		.byte	-63
+ 377 0003 01       		.byte	1
+ 378 0004 C3       		.byte	-61
+ 379 0005 03       		.byte	3
+ 380 0006 02       		.byte	2
+ 381 0007 C2       		.byte	-62
+ 382 0008 C6       		.byte	-58
+ 383 0009 06       		.byte	6
+ 384 000a 07       		.byte	7
+ 385 000b C7       		.byte	-57
+ 386 000c 05       		.byte	5
+ 387 000d C5       		.byte	-59
+ 388 000e C4       		.byte	-60
+ 389 000f 04       		.byte	4
+ 390 0010 CC       		.byte	-52
+ 391 0011 0C       		.byte	12
+ 392 0012 0D       		.byte	13
+ 393 0013 CD       		.byte	-51
+ 394 0014 0F       		.byte	15
+ 395 0015 CF       		.byte	-49
+ 396 0016 CE       		.byte	-50
+ 397 0017 0E       		.byte	14
+ 398 0018 0A       		.byte	10
+ 399 0019 CA       		.byte	-54
+ 400 001a CB       		.byte	-53
+ 401 001b 0B       		.byte	11
+ 402 001c C9       		.byte	-55
+ 403 001d 09       		.byte	9
+ 404 001e 08       		.byte	8
+ 405 001f C8       		.byte	-56
+ 406 0020 D8       		.byte	-40
+ 407 0021 18       		.byte	24
+ 408 0022 19       		.byte	25
+ 409 0023 D9       		.byte	-39
+ 410 0024 1B       		.byte	27
+ 411 0025 DB       		.byte	-37
+ 412 0026 DA       		.byte	-38
+ 413 0027 1A       		.byte	26
+ 414 0028 1E       		.byte	30
+ 415 0029 DE       		.byte	-34
+ 416 002a DF       		.byte	-33
+ 417 002b 1F       		.byte	31
+ARM GAS  /tmp/cc9vyPBb.s 			page 10
+
+
+ 418 002c DD       		.byte	-35
+ 419 002d 1D       		.byte	29
+ 420 002e 1C       		.byte	28
+ 421 002f DC       		.byte	-36
+ 422 0030 14       		.byte	20
+ 423 0031 D4       		.byte	-44
+ 424 0032 D5       		.byte	-43
+ 425 0033 15       		.byte	21
+ 426 0034 D7       		.byte	-41
+ 427 0035 17       		.byte	23
+ 428 0036 16       		.byte	22
+ 429 0037 D6       		.byte	-42
+ 430 0038 D2       		.byte	-46
+ 431 0039 12       		.byte	18
+ 432 003a 13       		.byte	19
+ 433 003b D3       		.byte	-45
+ 434 003c 11       		.byte	17
+ 435 003d D1       		.byte	-47
+ 436 003e D0       		.byte	-48
+ 437 003f 10       		.byte	16
+ 438 0040 F0       		.byte	-16
+ 439 0041 30       		.byte	48
+ 440 0042 31       		.byte	49
+ 441 0043 F1       		.byte	-15
+ 442 0044 33       		.byte	51
+ 443 0045 F3       		.byte	-13
+ 444 0046 F2       		.byte	-14
+ 445 0047 32       		.byte	50
+ 446 0048 36       		.byte	54
+ 447 0049 F6       		.byte	-10
+ 448 004a F7       		.byte	-9
+ 449 004b 37       		.byte	55
+ 450 004c F5       		.byte	-11
+ 451 004d 35       		.byte	53
+ 452 004e 34       		.byte	52
+ 453 004f F4       		.byte	-12
+ 454 0050 3C       		.byte	60
+ 455 0051 FC       		.byte	-4
+ 456 0052 FD       		.byte	-3
+ 457 0053 3D       		.byte	61
+ 458 0054 FF       		.byte	-1
+ 459 0055 3F       		.byte	63
+ 460 0056 3E       		.byte	62
+ 461 0057 FE       		.byte	-2
+ 462 0058 FA       		.byte	-6
+ 463 0059 3A       		.byte	58
+ 464 005a 3B       		.byte	59
+ 465 005b FB       		.byte	-5
+ 466 005c 39       		.byte	57
+ 467 005d F9       		.byte	-7
+ 468 005e F8       		.byte	-8
+ 469 005f 38       		.byte	56
+ 470 0060 28       		.byte	40
+ 471 0061 E8       		.byte	-24
+ 472 0062 E9       		.byte	-23
+ 473 0063 29       		.byte	41
+ 474 0064 EB       		.byte	-21
+ARM GAS  /tmp/cc9vyPBb.s 			page 11
+
+
+ 475 0065 2B       		.byte	43
+ 476 0066 2A       		.byte	42
+ 477 0067 EA       		.byte	-22
+ 478 0068 EE       		.byte	-18
+ 479 0069 2E       		.byte	46
+ 480 006a 2F       		.byte	47
+ 481 006b EF       		.byte	-17
+ 482 006c 2D       		.byte	45
+ 483 006d ED       		.byte	-19
+ 484 006e EC       		.byte	-20
+ 485 006f 2C       		.byte	44
+ 486 0070 E4       		.byte	-28
+ 487 0071 24       		.byte	36
+ 488 0072 25       		.byte	37
+ 489 0073 E5       		.byte	-27
+ 490 0074 27       		.byte	39
+ 491 0075 E7       		.byte	-25
+ 492 0076 E6       		.byte	-26
+ 493 0077 26       		.byte	38
+ 494 0078 22       		.byte	34
+ 495 0079 E2       		.byte	-30
+ 496 007a E3       		.byte	-29
+ 497 007b 23       		.byte	35
+ 498 007c E1       		.byte	-31
+ 499 007d 21       		.byte	33
+ 500 007e 20       		.byte	32
+ 501 007f E0       		.byte	-32
+ 502 0080 A0       		.byte	-96
+ 503 0081 60       		.byte	96
+ 504 0082 61       		.byte	97
+ 505 0083 A1       		.byte	-95
+ 506 0084 63       		.byte	99
+ 507 0085 A3       		.byte	-93
+ 508 0086 A2       		.byte	-94
+ 509 0087 62       		.byte	98
+ 510 0088 66       		.byte	102
+ 511 0089 A6       		.byte	-90
+ 512 008a A7       		.byte	-89
+ 513 008b 67       		.byte	103
+ 514 008c A5       		.byte	-91
+ 515 008d 65       		.byte	101
+ 516 008e 64       		.byte	100
+ 517 008f A4       		.byte	-92
+ 518 0090 6C       		.byte	108
+ 519 0091 AC       		.byte	-84
+ 520 0092 AD       		.byte	-83
+ 521 0093 6D       		.byte	109
+ 522 0094 AF       		.byte	-81
+ 523 0095 6F       		.byte	111
+ 524 0096 6E       		.byte	110
+ 525 0097 AE       		.byte	-82
+ 526 0098 AA       		.byte	-86
+ 527 0099 6A       		.byte	106
+ 528 009a 6B       		.byte	107
+ 529 009b AB       		.byte	-85
+ 530 009c 69       		.byte	105
+ 531 009d A9       		.byte	-87
+ARM GAS  /tmp/cc9vyPBb.s 			page 12
+
+
+ 532 009e A8       		.byte	-88
+ 533 009f 68       		.byte	104
+ 534 00a0 78       		.byte	120
+ 535 00a1 B8       		.byte	-72
+ 536 00a2 B9       		.byte	-71
+ 537 00a3 79       		.byte	121
+ 538 00a4 BB       		.byte	-69
+ 539 00a5 7B       		.byte	123
+ 540 00a6 7A       		.byte	122
+ 541 00a7 BA       		.byte	-70
+ 542 00a8 BE       		.byte	-66
+ 543 00a9 7E       		.byte	126
+ 544 00aa 7F       		.byte	127
+ 545 00ab BF       		.byte	-65
+ 546 00ac 7D       		.byte	125
+ 547 00ad BD       		.byte	-67
+ 548 00ae BC       		.byte	-68
+ 549 00af 7C       		.byte	124
+ 550 00b0 B4       		.byte	-76
+ 551 00b1 74       		.byte	116
+ 552 00b2 75       		.byte	117
+ 553 00b3 B5       		.byte	-75
+ 554 00b4 77       		.byte	119
+ 555 00b5 B7       		.byte	-73
+ 556 00b6 B6       		.byte	-74
+ 557 00b7 76       		.byte	118
+ 558 00b8 72       		.byte	114
+ 559 00b9 B2       		.byte	-78
+ 560 00ba B3       		.byte	-77
+ 561 00bb 73       		.byte	115
+ 562 00bc B1       		.byte	-79
+ 563 00bd 71       		.byte	113
+ 564 00be 70       		.byte	112
+ 565 00bf B0       		.byte	-80
+ 566 00c0 50       		.byte	80
+ 567 00c1 90       		.byte	-112
+ 568 00c2 91       		.byte	-111
+ 569 00c3 51       		.byte	81
+ 570 00c4 93       		.byte	-109
+ 571 00c5 53       		.byte	83
+ 572 00c6 52       		.byte	82
+ 573 00c7 92       		.byte	-110
+ 574 00c8 96       		.byte	-106
+ 575 00c9 56       		.byte	86
+ 576 00ca 57       		.byte	87
+ 577 00cb 97       		.byte	-105
+ 578 00cc 55       		.byte	85
+ 579 00cd 95       		.byte	-107
+ 580 00ce 94       		.byte	-108
+ 581 00cf 54       		.byte	84
+ 582 00d0 9C       		.byte	-100
+ 583 00d1 5C       		.byte	92
+ 584 00d2 5D       		.byte	93
+ 585 00d3 9D       		.byte	-99
+ 586 00d4 5F       		.byte	95
+ 587 00d5 9F       		.byte	-97
+ 588 00d6 9E       		.byte	-98
+ARM GAS  /tmp/cc9vyPBb.s 			page 13
+
+
+ 589 00d7 5E       		.byte	94
+ 590 00d8 5A       		.byte	90
+ 591 00d9 9A       		.byte	-102
+ 592 00da 9B       		.byte	-101
+ 593 00db 5B       		.byte	91
+ 594 00dc 99       		.byte	-103
+ 595 00dd 59       		.byte	89
+ 596 00de 58       		.byte	88
+ 597 00df 98       		.byte	-104
+ 598 00e0 88       		.byte	-120
+ 599 00e1 48       		.byte	72
+ 600 00e2 49       		.byte	73
+ 601 00e3 89       		.byte	-119
+ 602 00e4 4B       		.byte	75
+ 603 00e5 8B       		.byte	-117
+ 604 00e6 8A       		.byte	-118
+ 605 00e7 4A       		.byte	74
+ 606 00e8 4E       		.byte	78
+ 607 00e9 8E       		.byte	-114
+ 608 00ea 8F       		.byte	-113
+ 609 00eb 4F       		.byte	79
+ 610 00ec 8D       		.byte	-115
+ 611 00ed 4D       		.byte	77
+ 612 00ee 4C       		.byte	76
+ 613 00ef 8C       		.byte	-116
+ 614 00f0 44       		.byte	68
+ 615 00f1 84       		.byte	-124
+ 616 00f2 85       		.byte	-123
+ 617 00f3 45       		.byte	69
+ 618 00f4 87       		.byte	-121
+ 619 00f5 47       		.byte	71
+ 620 00f6 46       		.byte	70
+ 621 00f7 86       		.byte	-122
+ 622 00f8 82       		.byte	-126
+ 623 00f9 42       		.byte	66
+ 624 00fa 43       		.byte	67
+ 625 00fb 83       		.byte	-125
+ 626 00fc 41       		.byte	65
+ 627 00fd 81       		.byte	-127
+ 628 00fe 80       		.byte	-128
+ 629 00ff 40       		.byte	64
+ 630              		.text
+ 631              	.Letext0:
+ 632              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 633              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 634              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 635              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 636              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 637              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 638              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 639              		.file 9 "modbus/rtu/../port/port.h"
+ARM GAS  /tmp/cc9vyPBb.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 mbcrc.c
+     /tmp/cc9vyPBb.s:16     .text.usMBCRC16:0000000000000000 $t
+     /tmp/cc9vyPBb.s:24     .text.usMBCRC16:0000000000000000 usMBCRC16
+     /tmp/cc9vyPBb.s:103    .text.usMBCRC16:000000000000002c $d
+     /tmp/cc9vyPBb.s:112    .rodata.aucCRCHi:0000000000000000 aucCRCHi
+     /tmp/cc9vyPBb.s:373    .rodata.aucCRCLo:0000000000000000 aucCRCLo
+     /tmp/cc9vyPBb.s:109    .rodata.aucCRCHi:0000000000000000 $d
+     /tmp/cc9vyPBb.s:370    .rodata.aucCRCLo:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

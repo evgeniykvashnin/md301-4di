@@ -1,0 +1,1778 @@
+ARM GAS  /tmp/ccYt5hKt.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"mbrtu.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.global	__aeabi_uidiv
+  16              		.section	.text.eMBRTUInit,"ax",%progbits
+  17              		.align	1
+  18              		.global	eMBRTUInit
+  19              		.arch armv6s-m
+  20              		.syntax unified
+  21              		.code	16
+  22              		.thumb_func
+  23              		.fpu softvfp
+  25              	eMBRTUInit:
+  26              	.LVL0:
+  27              	.LFB37:
+  28              		.file 1 "modbus/rtu/mbrtu.c"
+   1:modbus/rtu/mbrtu.c **** /* 
+   2:modbus/rtu/mbrtu.c ****  * FreeModbus Libary: A portable Modbus implementation for Modbus ASCII/RTU.
+   3:modbus/rtu/mbrtu.c ****  * Copyright (c) 2006-2018 Christian Walter <cwalter@embedded-solutions.at>
+   4:modbus/rtu/mbrtu.c ****  * All rights reserved.
+   5:modbus/rtu/mbrtu.c ****  *
+   6:modbus/rtu/mbrtu.c ****  * Redistribution and use in source and binary forms, with or without
+   7:modbus/rtu/mbrtu.c ****  * modification, are permitted provided that the following conditions
+   8:modbus/rtu/mbrtu.c ****  * are met:
+   9:modbus/rtu/mbrtu.c ****  * 1. Redistributions of source code must retain the above copyright
+  10:modbus/rtu/mbrtu.c ****  *    notice, this list of conditions and the following disclaimer.
+  11:modbus/rtu/mbrtu.c ****  * 2. Redistributions in binary form must reproduce the above copyright
+  12:modbus/rtu/mbrtu.c ****  *    notice, this list of conditions and the following disclaimer in the
+  13:modbus/rtu/mbrtu.c ****  *    documentation and/or other materials provided with the distribution.
+  14:modbus/rtu/mbrtu.c ****  * 3. The name of the author may not be used to endorse or promote products
+  15:modbus/rtu/mbrtu.c ****  *    derived from this software without specific prior written permission.
+  16:modbus/rtu/mbrtu.c ****  *
+  17:modbus/rtu/mbrtu.c ****  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  18:modbus/rtu/mbrtu.c ****  * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  19:modbus/rtu/mbrtu.c ****  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  20:modbus/rtu/mbrtu.c ****  * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+  21:modbus/rtu/mbrtu.c ****  * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  22:modbus/rtu/mbrtu.c ****  * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  23:modbus/rtu/mbrtu.c ****  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  24:modbus/rtu/mbrtu.c ****  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  25:modbus/rtu/mbrtu.c ****  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+  26:modbus/rtu/mbrtu.c ****  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  27:modbus/rtu/mbrtu.c ****  *
+  28:modbus/rtu/mbrtu.c ****  */
+  29:modbus/rtu/mbrtu.c **** 
+  30:modbus/rtu/mbrtu.c **** /* ----------------------- System includes ----------------------------------*/
+ARM GAS  /tmp/ccYt5hKt.s 			page 2
+
+
+  31:modbus/rtu/mbrtu.c **** #include "stdlib.h"
+  32:modbus/rtu/mbrtu.c **** #include "string.h"
+  33:modbus/rtu/mbrtu.c **** 
+  34:modbus/rtu/mbrtu.c **** /* ----------------------- Platform includes --------------------------------*/
+  35:modbus/rtu/mbrtu.c **** #include "../port/port.h"
+  36:modbus/rtu/mbrtu.c **** 
+  37:modbus/rtu/mbrtu.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  38:modbus/rtu/mbrtu.c **** #include "mb.h"
+  39:modbus/rtu/mbrtu.c **** #include "mbrtu.h"
+  40:modbus/rtu/mbrtu.c **** #include "mbframe.h"
+  41:modbus/rtu/mbrtu.c **** 
+  42:modbus/rtu/mbrtu.c **** #include "mbcrc.h"
+  43:modbus/rtu/mbrtu.c **** #include "mbport.h"
+  44:modbus/rtu/mbrtu.c **** 
+  45:modbus/rtu/mbrtu.c **** /* ----------------------- Defines ------------------------------------------*/
+  46:modbus/rtu/mbrtu.c **** #define MB_SER_PDU_SIZE_MIN     4       /*!< Minimum size of a Modbus RTU frame. */
+  47:modbus/rtu/mbrtu.c **** #define MB_SER_PDU_SIZE_MAX     256     /*!< Maximum size of a Modbus RTU frame. */
+  48:modbus/rtu/mbrtu.c **** #define MB_SER_PDU_SIZE_CRC     2       /*!< Size of CRC field in PDU. */
+  49:modbus/rtu/mbrtu.c **** #define MB_SER_PDU_ADDR_OFF     0       /*!< Offset of slave address in Ser-PDU. */
+  50:modbus/rtu/mbrtu.c **** #define MB_SER_PDU_PDU_OFF      1       /*!< Offset of Modbus-PDU in Ser-PDU. */
+  51:modbus/rtu/mbrtu.c **** 
+  52:modbus/rtu/mbrtu.c **** /* ----------------------- Type definitions ---------------------------------*/
+  53:modbus/rtu/mbrtu.c **** typedef enum
+  54:modbus/rtu/mbrtu.c **** {
+  55:modbus/rtu/mbrtu.c ****     STATE_RX_INIT,              /*!< Receiver is in initial state. */
+  56:modbus/rtu/mbrtu.c ****     STATE_RX_IDLE,              /*!< Receiver is in idle state. */
+  57:modbus/rtu/mbrtu.c ****     STATE_RX_RCV,               /*!< Frame is beeing received. */
+  58:modbus/rtu/mbrtu.c ****     STATE_RX_ERROR              /*!< If the frame is invalid. */
+  59:modbus/rtu/mbrtu.c **** } eMBRcvState;
+  60:modbus/rtu/mbrtu.c **** 
+  61:modbus/rtu/mbrtu.c **** typedef enum
+  62:modbus/rtu/mbrtu.c **** {
+  63:modbus/rtu/mbrtu.c ****     STATE_TX_IDLE,              /*!< Transmitter is in idle state. */
+  64:modbus/rtu/mbrtu.c ****     STATE_TX_XMIT               /*!< Transmitter is in transfer state. */
+  65:modbus/rtu/mbrtu.c **** } eMBSndState;
+  66:modbus/rtu/mbrtu.c **** 
+  67:modbus/rtu/mbrtu.c **** /* ----------------------- Static variables ---------------------------------*/
+  68:modbus/rtu/mbrtu.c **** static volatile eMBSndState eSndState;
+  69:modbus/rtu/mbrtu.c **** static volatile eMBRcvState eRcvState;
+  70:modbus/rtu/mbrtu.c **** 
+  71:modbus/rtu/mbrtu.c **** volatile UCHAR  ucRTUBuf[MB_SER_PDU_SIZE_MAX];
+  72:modbus/rtu/mbrtu.c **** 
+  73:modbus/rtu/mbrtu.c **** static volatile UCHAR *pucSndBufferCur;
+  74:modbus/rtu/mbrtu.c **** static volatile USHORT usSndBufferCount;
+  75:modbus/rtu/mbrtu.c **** 
+  76:modbus/rtu/mbrtu.c **** static volatile USHORT usRcvBufferPos;
+  77:modbus/rtu/mbrtu.c **** 
+  78:modbus/rtu/mbrtu.c **** /* ----------------------- Start implementation -----------------------------*/
+  79:modbus/rtu/mbrtu.c **** eMBErrorCode
+  80:modbus/rtu/mbrtu.c **** eMBRTUInit( UCHAR ucSlaveAddress, UCHAR ucPort, ULONG ulBaudRate, eMBParity eParity )
+  81:modbus/rtu/mbrtu.c **** {
+  29              		.loc 1 81 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 81 1 is_stmt 0 view .LVU1
+  34 0000 10B5     		push	{r4, lr}
+ARM GAS  /tmp/ccYt5hKt.s 			page 3
+
+
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 4, -8
+  38              		.cfi_offset 14, -4
+  39 0002 0800     		movs	r0, r1
+  40              	.LVL1:
+  41              		.loc 1 81 1 view .LVU2
+  42 0004 1400     		movs	r4, r2
+  82:modbus/rtu/mbrtu.c ****     eMBErrorCode    eStatus = MB_ENOERR;
+  43              		.loc 1 82 5 is_stmt 1 view .LVU3
+  44              	.LVL2:
+  83:modbus/rtu/mbrtu.c ****     ULONG           usTimerT35_50us;
+  45              		.loc 1 83 5 view .LVU4
+  84:modbus/rtu/mbrtu.c **** 
+  85:modbus/rtu/mbrtu.c ****     ( void )ucSlaveAddress;
+  46              		.loc 1 85 5 view .LVU5
+  86:modbus/rtu/mbrtu.c ****     ENTER_CRITICAL_SECTION(  );
+  47              		.loc 1 86 5 view .LVU6
+  48              	.LBB22:
+  49              	.LBI22:
+  50              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+   1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS Cortex-M Core Function/Instruction Header File
+   4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V4.30
+   5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     20. October 2015
+   6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:Drivers/CMSIS/Include/cmsis_gcc.h **** /* Copyright (c) 2009 - 2015 ARM LIMITED
+   8:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+   9:Drivers/CMSIS/Include/cmsis_gcc.h ****    All rights reserved.
+  10:Drivers/CMSIS/Include/cmsis_gcc.h ****    Redistribution and use in source and binary forms, with or without
+  11:Drivers/CMSIS/Include/cmsis_gcc.h ****    modification, are permitted provided that the following conditions are met:
+  12:Drivers/CMSIS/Include/cmsis_gcc.h ****    - Redistributions of source code must retain the above copyright
+  13:Drivers/CMSIS/Include/cmsis_gcc.h ****      notice, this list of conditions and the following disclaimer.
+  14:Drivers/CMSIS/Include/cmsis_gcc.h ****    - Redistributions in binary form must reproduce the above copyright
+  15:Drivers/CMSIS/Include/cmsis_gcc.h ****      notice, this list of conditions and the following disclaimer in the
+  16:Drivers/CMSIS/Include/cmsis_gcc.h ****      documentation and/or other materials provided with the distribution.
+  17:Drivers/CMSIS/Include/cmsis_gcc.h ****    - Neither the name of ARM nor the names of its contributors may be used
+  18:Drivers/CMSIS/Include/cmsis_gcc.h ****      to endorse or promote products derived from this software without
+  19:Drivers/CMSIS/Include/cmsis_gcc.h ****      specific prior written permission.
+  20:Drivers/CMSIS/Include/cmsis_gcc.h ****    *
+  21:Drivers/CMSIS/Include/cmsis_gcc.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:Drivers/CMSIS/Include/cmsis_gcc.h ****    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:Drivers/CMSIS/Include/cmsis_gcc.h ****    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:Drivers/CMSIS/Include/cmsis_gcc.h ****    ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+  25:Drivers/CMSIS/Include/cmsis_gcc.h ****    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:Drivers/CMSIS/Include/cmsis_gcc.h ****    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:Drivers/CMSIS/Include/cmsis_gcc.h ****    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:Drivers/CMSIS/Include/cmsis_gcc.h ****    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:Drivers/CMSIS/Include/cmsis_gcc.h ****    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:Drivers/CMSIS/Include/cmsis_gcc.h ****    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:Drivers/CMSIS/Include/cmsis_gcc.h ****    POSSIBILITY OF SUCH DAMAGE.
+  32:Drivers/CMSIS/Include/cmsis_gcc.h ****    ---------------------------------------------------------------------------*/
+  33:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  34:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  35:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  36:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+ARM GAS  /tmp/ccYt5hKt.s 			page 4
+
+
+  37:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  38:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  39:Drivers/CMSIS/Include/cmsis_gcc.h **** #if defined ( __GNUC__ )
+  40:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  41:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  42:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  43:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  44:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  45:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  46:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  47:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+  48:Drivers/CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+  49:Drivers/CMSIS/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+  50:Drivers/CMSIS/Include/cmsis_gcc.h ****   @{
+  51:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+  52:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  53:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+  54:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+  55:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+  56:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+  57:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __enable_irq(void)
+  59:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+  60:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+  61:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+  62:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  63:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  64:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+  65:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+  66:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+  67:Drivers/CMSIS/Include/cmsis_gcc.h ****   Can only be executed in Privileged modes.
+  68:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** __attribute__( ( always_inline ) ) __STATIC_INLINE void __disable_irq(void)
+  51              		.loc 2 69 57 view .LVU7
+  52              	.LBB23:
+  70:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+  71:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+  53              		.loc 2 71 3 view .LVU8
+  54              		.syntax divided
+  55              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+  56 0006 72B6     		cpsid i
+  57              	@ 0 "" 2
+  58              		.thumb
+  59              		.syntax unified
+  60              	.LBE23:
+  61              	.LBE22:
+  87:modbus/rtu/mbrtu.c **** 
+  88:modbus/rtu/mbrtu.c ****     /* Modbus RTU uses 8 Databits. */
+  89:modbus/rtu/mbrtu.c ****     if( xMBPortSerialInit( ucPort, ulBaudRate, 8, eParity ) != TRUE )
+  62              		.loc 1 89 5 view .LVU9
+  63              		.loc 1 89 9 is_stmt 0 view .LVU10
+  64 0008 0822     		movs	r2, #8
+  65              	.LVL3:
+  66              		.loc 1 89 9 view .LVU11
+  67 000a 2100     		movs	r1, r4
+  68              	.LVL4:
+  69              		.loc 1 89 9 view .LVU12
+ARM GAS  /tmp/ccYt5hKt.s 			page 5
+
+
+  70 000c FFF7FEFF 		bl	xMBPortSerialInit
+  71              	.LVL5:
+  72              		.loc 1 89 7 view .LVU13
+  73 0010 0128     		cmp	r0, #1
+  74 0012 02D0     		beq	.L7
+  90:modbus/rtu/mbrtu.c ****     {
+  91:modbus/rtu/mbrtu.c ****         eStatus = MB_EPORTERR;
+  75              		.loc 1 91 17 view .LVU14
+  76 0014 0320     		movs	r0, #3
+  77              	.L2:
+  78              	.LVL6:
+  92:modbus/rtu/mbrtu.c ****     }
+  93:modbus/rtu/mbrtu.c ****     else
+  94:modbus/rtu/mbrtu.c ****     {
+  95:modbus/rtu/mbrtu.c ****         /* If baudrate > 19200 then we should use the fixed timer values
+  96:modbus/rtu/mbrtu.c ****          * t35 = 1750us. Otherwise t35 must be 3.5 times the character time.
+  97:modbus/rtu/mbrtu.c ****          */
+  98:modbus/rtu/mbrtu.c ****         if( ulBaudRate > 19200 )
+  99:modbus/rtu/mbrtu.c ****         {
+ 100:modbus/rtu/mbrtu.c ****             usTimerT35_50us = 35;       /* 1800us. */
+ 101:modbus/rtu/mbrtu.c ****         }
+ 102:modbus/rtu/mbrtu.c ****         else
+ 103:modbus/rtu/mbrtu.c ****         {
+ 104:modbus/rtu/mbrtu.c ****             /* The timer reload value for a character is given by:
+ 105:modbus/rtu/mbrtu.c ****              *
+ 106:modbus/rtu/mbrtu.c ****              * ChTimeValue = Ticks_per_1s / ( Baudrate / 11 )
+ 107:modbus/rtu/mbrtu.c ****              *             = 11 * Ticks_per_1s / Baudrate
+ 108:modbus/rtu/mbrtu.c ****              *             = 220000 / Baudrate
+ 109:modbus/rtu/mbrtu.c ****              * The reload for t3.5 is 1.5 times this value and similary
+ 110:modbus/rtu/mbrtu.c ****              * for t3.5.
+ 111:modbus/rtu/mbrtu.c ****              */
+ 112:modbus/rtu/mbrtu.c ****             usTimerT35_50us = ( 7UL * 220000UL ) / ( 2UL * ulBaudRate );
+ 113:modbus/rtu/mbrtu.c ****         }
+ 114:modbus/rtu/mbrtu.c ****         if( xMBPortTimersInit( ( USHORT ) usTimerT35_50us ) != TRUE )
+ 115:modbus/rtu/mbrtu.c ****         {
+ 116:modbus/rtu/mbrtu.c ****             eStatus = MB_EPORTERR;
+ 117:modbus/rtu/mbrtu.c ****         }
+ 118:modbus/rtu/mbrtu.c ****     }
+ 119:modbus/rtu/mbrtu.c ****     EXIT_CRITICAL_SECTION(  );
+  79              		.loc 1 119 5 is_stmt 1 view .LVU15
+  80              	.LBB24:
+  81              	.LBI24:
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+  82              		.loc 2 58 57 view .LVU16
+  83              	.LBB25:
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+  84              		.loc 2 60 3 view .LVU17
+  85              		.syntax divided
+  86              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+  87 0016 62B6     		cpsie i
+  88              	@ 0 "" 2
+  89              		.thumb
+  90              		.syntax unified
+  91              	.LBE25:
+  92              	.LBE24:
+ 120:modbus/rtu/mbrtu.c **** 
+ 121:modbus/rtu/mbrtu.c ****     return eStatus;
+ARM GAS  /tmp/ccYt5hKt.s 			page 6
+
+
+  93              		.loc 1 121 5 view .LVU18
+ 122:modbus/rtu/mbrtu.c **** }
+  94              		.loc 1 122 1 is_stmt 0 view .LVU19
+  95              		@ sp needed
+  96              	.LVL7:
+  97              		.loc 1 122 1 view .LVU20
+  98 0018 10BD     		pop	{r4, pc}
+  99              	.LVL8:
+ 100              	.L7:
+  98:modbus/rtu/mbrtu.c ****         {
+ 101              		.loc 1 98 9 is_stmt 1 view .LVU21
+  98:modbus/rtu/mbrtu.c ****         {
+ 102              		.loc 1 98 11 is_stmt 0 view .LVU22
+ 103 001a 9623     		movs	r3, #150
+ 104 001c DB01     		lsls	r3, r3, #7
+ 105 001e 9C42     		cmp	r4, r3
+ 106 0020 0AD8     		bhi	.L5
+ 112:modbus/rtu/mbrtu.c ****         }
+ 107              		.loc 1 112 13 is_stmt 1 view .LVU23
+ 112:modbus/rtu/mbrtu.c ****         }
+ 108              		.loc 1 112 58 is_stmt 0 view .LVU24
+ 109 0022 6100     		lsls	r1, r4, #1
+ 112:modbus/rtu/mbrtu.c ****         }
+ 110              		.loc 1 112 29 view .LVU25
+ 111 0024 0648     		ldr	r0, .L9
+ 112 0026 FFF7FEFF 		bl	__aeabi_uidiv
+ 113              	.LVL9:
+ 114              	.L3:
+ 114:modbus/rtu/mbrtu.c ****         {
+ 115              		.loc 1 114 9 is_stmt 1 view .LVU26
+ 114:modbus/rtu/mbrtu.c ****         {
+ 116              		.loc 1 114 13 is_stmt 0 view .LVU27
+ 117 002a 80B2     		uxth	r0, r0
+ 118              	.LVL10:
+ 114:modbus/rtu/mbrtu.c ****         {
+ 119              		.loc 1 114 13 view .LVU28
+ 120 002c FFF7FEFF 		bl	xMBPortTimersInit
+ 121              	.LVL11:
+ 114:modbus/rtu/mbrtu.c ****         {
+ 122              		.loc 1 114 11 view .LVU29
+ 123 0030 0128     		cmp	r0, #1
+ 124 0032 03D0     		beq	.L8
+ 116:modbus/rtu/mbrtu.c ****         }
+ 125              		.loc 1 116 21 view .LVU30
+ 126 0034 0320     		movs	r0, #3
+ 127 0036 EEE7     		b	.L2
+ 128              	.L5:
+ 100:modbus/rtu/mbrtu.c ****         }
+ 129              		.loc 1 100 29 view .LVU31
+ 130 0038 2320     		movs	r0, #35
+ 131 003a F6E7     		b	.L3
+ 132              	.L8:
+  82:modbus/rtu/mbrtu.c ****     ULONG           usTimerT35_50us;
+ 133              		.loc 1 82 21 view .LVU32
+ 134 003c 0020     		movs	r0, #0
+ 135 003e EAE7     		b	.L2
+ 136              	.L10:
+ARM GAS  /tmp/ccYt5hKt.s 			page 7
+
+
+ 137              		.align	2
+ 138              	.L9:
+ 139 0040 A07F1700 		.word	1540000
+ 140              		.cfi_endproc
+ 141              	.LFE37:
+ 143              		.section	.text.eMBRTUStart,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	eMBRTUStart
+ 146              		.syntax unified
+ 147              		.code	16
+ 148              		.thumb_func
+ 149              		.fpu softvfp
+ 151              	eMBRTUStart:
+ 152              	.LFB38:
+ 123:modbus/rtu/mbrtu.c **** 
+ 124:modbus/rtu/mbrtu.c **** void
+ 125:modbus/rtu/mbrtu.c **** eMBRTUStart( void )
+ 126:modbus/rtu/mbrtu.c **** {
+ 153              		.loc 1 126 1 is_stmt 1 view -0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157 0000 10B5     		push	{r4, lr}
+ 158              	.LCFI1:
+ 159              		.cfi_def_cfa_offset 8
+ 160              		.cfi_offset 4, -8
+ 161              		.cfi_offset 14, -4
+ 127:modbus/rtu/mbrtu.c ****     ENTER_CRITICAL_SECTION(  );
+ 162              		.loc 1 127 5 view .LVU34
+ 163              	.LBB26:
+ 164              	.LBI26:
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 165              		.loc 2 69 57 view .LVU35
+ 166              	.LBB27:
+ 167              		.loc 2 71 3 view .LVU36
+ 168              		.syntax divided
+ 169              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 170 0002 72B6     		cpsid i
+ 171              	@ 0 "" 2
+ 172              		.thumb
+ 173              		.syntax unified
+ 174              	.LBE27:
+ 175              	.LBE26:
+ 128:modbus/rtu/mbrtu.c ****     /* Initially the receiver is in the state STATE_RX_INIT. we start
+ 129:modbus/rtu/mbrtu.c ****      * the timer and if no character is received within t3.5 we change
+ 130:modbus/rtu/mbrtu.c ****      * to STATE_RX_IDLE. This makes sure that we delay startup of the
+ 131:modbus/rtu/mbrtu.c ****      * modbus protocol stack until the bus is free.
+ 132:modbus/rtu/mbrtu.c ****      */
+ 133:modbus/rtu/mbrtu.c ****     eRcvState = STATE_RX_INIT;
+ 176              		.loc 1 133 5 view .LVU37
+ 177              		.loc 1 133 15 is_stmt 0 view .LVU38
+ 178 0004 054B     		ldr	r3, .L12
+ 179 0006 0022     		movs	r2, #0
+ 180 0008 1A70     		strb	r2, [r3]
+ 134:modbus/rtu/mbrtu.c ****     vMBPortSerialEnable( TRUE, FALSE );
+ 181              		.loc 1 134 5 is_stmt 1 view .LVU39
+ 182 000a 0021     		movs	r1, #0
+ARM GAS  /tmp/ccYt5hKt.s 			page 8
+
+
+ 183 000c 0120     		movs	r0, #1
+ 184 000e FFF7FEFF 		bl	vMBPortSerialEnable
+ 185              	.LVL12:
+ 135:modbus/rtu/mbrtu.c ****     vMBPortTimersEnable(  );
+ 186              		.loc 1 135 5 view .LVU40
+ 187 0012 FFF7FEFF 		bl	vMBPortTimersEnable
+ 188              	.LVL13:
+ 136:modbus/rtu/mbrtu.c **** 
+ 137:modbus/rtu/mbrtu.c ****     EXIT_CRITICAL_SECTION(  );
+ 189              		.loc 1 137 5 view .LVU41
+ 190              	.LBB28:
+ 191              	.LBI28:
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 192              		.loc 2 58 57 view .LVU42
+ 193              	.LBB29:
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 194              		.loc 2 60 3 view .LVU43
+ 195              		.syntax divided
+ 196              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 197 0016 62B6     		cpsie i
+ 198              	@ 0 "" 2
+ 199              		.thumb
+ 200              		.syntax unified
+ 201              	.LBE29:
+ 202              	.LBE28:
+ 138:modbus/rtu/mbrtu.c **** }
+ 203              		.loc 1 138 1 is_stmt 0 view .LVU44
+ 204              		@ sp needed
+ 205 0018 10BD     		pop	{r4, pc}
+ 206              	.L13:
+ 207 001a C046     		.align	2
+ 208              	.L12:
+ 209 001c 00000000 		.word	.LANCHOR0
+ 210              		.cfi_endproc
+ 211              	.LFE38:
+ 213              		.section	.text.eMBRTUStop,"ax",%progbits
+ 214              		.align	1
+ 215              		.global	eMBRTUStop
+ 216              		.syntax unified
+ 217              		.code	16
+ 218              		.thumb_func
+ 219              		.fpu softvfp
+ 221              	eMBRTUStop:
+ 222              	.LFB39:
+ 139:modbus/rtu/mbrtu.c **** 
+ 140:modbus/rtu/mbrtu.c **** void
+ 141:modbus/rtu/mbrtu.c **** eMBRTUStop( void )
+ 142:modbus/rtu/mbrtu.c **** {
+ 223              		.loc 1 142 1 is_stmt 1 view -0
+ 224              		.cfi_startproc
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+ 227 0000 10B5     		push	{r4, lr}
+ 228              	.LCFI2:
+ 229              		.cfi_def_cfa_offset 8
+ 230              		.cfi_offset 4, -8
+ 231              		.cfi_offset 14, -4
+ARM GAS  /tmp/ccYt5hKt.s 			page 9
+
+
+ 143:modbus/rtu/mbrtu.c ****     ENTER_CRITICAL_SECTION(  );
+ 232              		.loc 1 143 5 view .LVU46
+ 233              	.LBB30:
+ 234              	.LBI30:
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 235              		.loc 2 69 57 view .LVU47
+ 236              	.LBB31:
+ 237              		.loc 2 71 3 view .LVU48
+ 238              		.syntax divided
+ 239              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 240 0002 72B6     		cpsid i
+ 241              	@ 0 "" 2
+ 242              		.thumb
+ 243              		.syntax unified
+ 244              	.LBE31:
+ 245              	.LBE30:
+ 144:modbus/rtu/mbrtu.c ****     vMBPortSerialEnable( FALSE, FALSE );
+ 246              		.loc 1 144 5 view .LVU49
+ 247 0004 0021     		movs	r1, #0
+ 248 0006 0020     		movs	r0, #0
+ 249 0008 FFF7FEFF 		bl	vMBPortSerialEnable
+ 250              	.LVL14:
+ 145:modbus/rtu/mbrtu.c ****     vMBPortTimersDisable(  );
+ 251              		.loc 1 145 5 view .LVU50
+ 252 000c FFF7FEFF 		bl	vMBPortTimersDisable
+ 253              	.LVL15:
+ 146:modbus/rtu/mbrtu.c ****     EXIT_CRITICAL_SECTION(  );
+ 254              		.loc 1 146 5 view .LVU51
+ 255              	.LBB32:
+ 256              	.LBI32:
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 257              		.loc 2 58 57 view .LVU52
+ 258              	.LBB33:
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 259              		.loc 2 60 3 view .LVU53
+ 260              		.syntax divided
+ 261              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 262 0010 62B6     		cpsie i
+ 263              	@ 0 "" 2
+ 264              		.thumb
+ 265              		.syntax unified
+ 266              	.LBE33:
+ 267              	.LBE32:
+ 147:modbus/rtu/mbrtu.c **** }
+ 268              		.loc 1 147 1 is_stmt 0 view .LVU54
+ 269              		@ sp needed
+ 270 0012 10BD     		pop	{r4, pc}
+ 271              		.cfi_endproc
+ 272              	.LFE39:
+ 274              		.section	.text.eMBRTUReceive,"ax",%progbits
+ 275              		.align	1
+ 276              		.global	eMBRTUReceive
+ 277              		.syntax unified
+ 278              		.code	16
+ 279              		.thumb_func
+ 280              		.fpu softvfp
+ 282              	eMBRTUReceive:
+ARM GAS  /tmp/ccYt5hKt.s 			page 10
+
+
+ 283              	.LVL16:
+ 284              	.LFB40:
+ 148:modbus/rtu/mbrtu.c **** 
+ 149:modbus/rtu/mbrtu.c **** eMBErrorCode
+ 150:modbus/rtu/mbrtu.c **** eMBRTUReceive( UCHAR * pucRcvAddress, UCHAR ** pucFrame, USHORT * pusLength )
+ 151:modbus/rtu/mbrtu.c **** {
+ 285              		.loc 1 151 1 is_stmt 1 view -0
+ 286              		.cfi_startproc
+ 287              		@ args = 0, pretend = 0, frame = 0
+ 288              		@ frame_needed = 0, uses_anonymous_args = 0
+ 289              		.loc 1 151 1 is_stmt 0 view .LVU56
+ 290 0000 70B5     		push	{r4, r5, r6, lr}
+ 291              	.LCFI3:
+ 292              		.cfi_def_cfa_offset 16
+ 293              		.cfi_offset 4, -16
+ 294              		.cfi_offset 5, -12
+ 295              		.cfi_offset 6, -8
+ 296              		.cfi_offset 14, -4
+ 297 0002 0500     		movs	r5, r0
+ 298 0004 0E00     		movs	r6, r1
+ 299 0006 1400     		movs	r4, r2
+ 152:modbus/rtu/mbrtu.c ****     BOOL            xFrameReceived = FALSE;
+ 300              		.loc 1 152 5 is_stmt 1 view .LVU57
+ 301              	.LVL17:
+ 153:modbus/rtu/mbrtu.c ****     eMBErrorCode    eStatus = MB_ENOERR;
+ 302              		.loc 1 153 5 view .LVU58
+ 154:modbus/rtu/mbrtu.c **** 
+ 155:modbus/rtu/mbrtu.c ****     ENTER_CRITICAL_SECTION(  );
+ 303              		.loc 1 155 5 view .LVU59
+ 304              	.LBB34:
+ 305              	.LBI34:
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 306              		.loc 2 69 57 view .LVU60
+ 307              	.LBB35:
+ 308              		.loc 2 71 3 view .LVU61
+ 309              		.syntax divided
+ 310              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 311 0008 72B6     		cpsid i
+ 312              	@ 0 "" 2
+ 313              		.thumb
+ 314              		.syntax unified
+ 315              	.LBE35:
+ 316              	.LBE34:
+ 156:modbus/rtu/mbrtu.c ****     assert( usRcvBufferPos < MB_SER_PDU_SIZE_MAX );
+ 317              		.loc 1 156 5 view .LVU62
+ 318 000a 134B     		ldr	r3, .L22
+ 319 000c 1B88     		ldrh	r3, [r3]
+ 320 000e 9BB2     		uxth	r3, r3
+ 321 0010 FF2B     		cmp	r3, #255
+ 322 0012 07D8     		bhi	.L20
+ 157:modbus/rtu/mbrtu.c **** 
+ 158:modbus/rtu/mbrtu.c ****     /* Length and CRC check */
+ 159:modbus/rtu/mbrtu.c ****     if( ( usRcvBufferPos >= MB_SER_PDU_SIZE_MIN )
+ 323              		.loc 1 159 5 view .LVU63
+ 324              		.loc 1 159 26 is_stmt 0 view .LVU64
+ 325 0014 104B     		ldr	r3, .L22
+ 326 0016 1B88     		ldrh	r3, [r3]
+ARM GAS  /tmp/ccYt5hKt.s 			page 11
+
+
+ 327 0018 9BB2     		uxth	r3, r3
+ 328              		.loc 1 159 7 view .LVU65
+ 329 001a 032B     		cmp	r3, #3
+ 330 001c 08D8     		bhi	.L21
+ 160:modbus/rtu/mbrtu.c ****         && ( usMBCRC16( ( UCHAR * ) ucRTUBuf, usRcvBufferPos ) == 0 ) )
+ 161:modbus/rtu/mbrtu.c ****     {
+ 162:modbus/rtu/mbrtu.c ****         /* Save the address field. All frames are passed to the upper layed
+ 163:modbus/rtu/mbrtu.c ****          * and the decision if a frame is used is done there.
+ 164:modbus/rtu/mbrtu.c ****          */
+ 165:modbus/rtu/mbrtu.c ****         *pucRcvAddress = ucRTUBuf[MB_SER_PDU_ADDR_OFF];
+ 166:modbus/rtu/mbrtu.c **** 
+ 167:modbus/rtu/mbrtu.c ****         /* Total length of Modbus-PDU is Modbus-Serial-Line-PDU minus
+ 168:modbus/rtu/mbrtu.c ****          * size of address field and CRC checksum.
+ 169:modbus/rtu/mbrtu.c ****          */
+ 170:modbus/rtu/mbrtu.c ****         *pusLength = ( USHORT )( usRcvBufferPos - MB_SER_PDU_PDU_OFF - MB_SER_PDU_SIZE_CRC );
+ 171:modbus/rtu/mbrtu.c **** 
+ 172:modbus/rtu/mbrtu.c ****         /* Return the start of the Modbus PDU to the caller. */
+ 173:modbus/rtu/mbrtu.c ****         *pucFrame = ( UCHAR * ) & ucRTUBuf[MB_SER_PDU_PDU_OFF];
+ 174:modbus/rtu/mbrtu.c ****         xFrameReceived = TRUE;
+ 175:modbus/rtu/mbrtu.c ****     }
+ 176:modbus/rtu/mbrtu.c ****     else
+ 177:modbus/rtu/mbrtu.c ****     {
+ 178:modbus/rtu/mbrtu.c ****         eStatus = MB_EIO;
+ 331              		.loc 1 178 17 view .LVU66
+ 332 001e 0520     		movs	r0, #5
+ 333              	.LVL18:
+ 334              	.L17:
+ 179:modbus/rtu/mbrtu.c ****     }
+ 180:modbus/rtu/mbrtu.c **** 
+ 181:modbus/rtu/mbrtu.c ****     EXIT_CRITICAL_SECTION(  );
+ 335              		.loc 1 181 5 is_stmt 1 view .LVU67
+ 336              	.LBB36:
+ 337              	.LBI36:
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 338              		.loc 2 58 57 view .LVU68
+ 339              	.LBB37:
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 340              		.loc 2 60 3 view .LVU69
+ 341              		.syntax divided
+ 342              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 343 0020 62B6     		cpsie i
+ 344              	@ 0 "" 2
+ 345              		.thumb
+ 346              		.syntax unified
+ 347              	.LBE37:
+ 348              	.LBE36:
+ 182:modbus/rtu/mbrtu.c ****     return eStatus;
+ 349              		.loc 1 182 5 view .LVU70
+ 183:modbus/rtu/mbrtu.c **** }
+ 350              		.loc 1 183 1 is_stmt 0 view .LVU71
+ 351              		@ sp needed
+ 352              	.LVL19:
+ 353              	.LVL20:
+ 354              	.LVL21:
+ 355              		.loc 1 183 1 view .LVU72
+ 356 0022 70BD     		pop	{r4, r5, r6, pc}
+ 357              	.LVL22:
+ARM GAS  /tmp/ccYt5hKt.s 			page 12
+
+
+ 358              	.L20:
+ 156:modbus/rtu/mbrtu.c **** 
+ 359              		.loc 1 156 5 discriminator 1 view .LVU73
+ 360 0024 0D4B     		ldr	r3, .L22+4
+ 361 0026 0E4A     		ldr	r2, .L22+8
+ 362              	.LVL23:
+ 156:modbus/rtu/mbrtu.c **** 
+ 363              		.loc 1 156 5 discriminator 1 view .LVU74
+ 364 0028 9C21     		movs	r1, #156
+ 365              	.LVL24:
+ 156:modbus/rtu/mbrtu.c **** 
+ 366              		.loc 1 156 5 discriminator 1 view .LVU75
+ 367 002a 0E48     		ldr	r0, .L22+12
+ 368              	.LVL25:
+ 156:modbus/rtu/mbrtu.c **** 
+ 369              		.loc 1 156 5 discriminator 1 view .LVU76
+ 370 002c FFF7FEFF 		bl	__assert_func
+ 371              	.LVL26:
+ 372              	.L21:
+ 160:modbus/rtu/mbrtu.c ****     {
+ 373              		.loc 1 160 14 view .LVU77
+ 374 0030 094B     		ldr	r3, .L22
+ 375 0032 1988     		ldrh	r1, [r3]
+ 376              	.LVL27:
+ 160:modbus/rtu/mbrtu.c ****     {
+ 377              		.loc 1 160 14 view .LVU78
+ 378 0034 89B2     		uxth	r1, r1
+ 379 0036 0C48     		ldr	r0, .L22+16
+ 380              	.LVL28:
+ 160:modbus/rtu/mbrtu.c ****     {
+ 381              		.loc 1 160 14 view .LVU79
+ 382 0038 FFF7FEFF 		bl	usMBCRC16
+ 383              	.LVL29:
+ 160:modbus/rtu/mbrtu.c ****     {
+ 384              		.loc 1 160 9 view .LVU80
+ 385 003c 0028     		cmp	r0, #0
+ 386 003e 09D1     		bne	.L19
+ 165:modbus/rtu/mbrtu.c **** 
+ 387              		.loc 1 165 9 is_stmt 1 view .LVU81
+ 165:modbus/rtu/mbrtu.c **** 
+ 388              		.loc 1 165 34 is_stmt 0 view .LVU82
+ 389 0040 094B     		ldr	r3, .L22+16
+ 390 0042 1A78     		ldrb	r2, [r3]
+ 165:modbus/rtu/mbrtu.c **** 
+ 391              		.loc 1 165 24 view .LVU83
+ 392 0044 2A70     		strb	r2, [r5]
+ 170:modbus/rtu/mbrtu.c **** 
+ 393              		.loc 1 170 9 is_stmt 1 view .LVU84
+ 170:modbus/rtu/mbrtu.c **** 
+ 394              		.loc 1 170 22 is_stmt 0 view .LVU85
+ 395 0046 044A     		ldr	r2, .L22
+ 396 0048 1288     		ldrh	r2, [r2]
+ 397 004a 033A     		subs	r2, r2, #3
+ 170:modbus/rtu/mbrtu.c **** 
+ 398              		.loc 1 170 20 view .LVU86
+ 399 004c 2280     		strh	r2, [r4]
+ 173:modbus/rtu/mbrtu.c ****         xFrameReceived = TRUE;
+ARM GAS  /tmp/ccYt5hKt.s 			page 13
+
+
+ 400              		.loc 1 173 9 is_stmt 1 view .LVU87
+ 173:modbus/rtu/mbrtu.c ****         xFrameReceived = TRUE;
+ 401              		.loc 1 173 19 is_stmt 0 view .LVU88
+ 402 004e 0133     		adds	r3, r3, #1
+ 403 0050 3360     		str	r3, [r6]
+ 174:modbus/rtu/mbrtu.c ****     }
+ 404              		.loc 1 174 9 is_stmt 1 view .LVU89
+ 405              	.LVL30:
+ 174:modbus/rtu/mbrtu.c ****     }
+ 406              		.loc 1 174 24 is_stmt 0 view .LVU90
+ 407 0052 E5E7     		b	.L17
+ 408              	.LVL31:
+ 409              	.L19:
+ 178:modbus/rtu/mbrtu.c ****     }
+ 410              		.loc 1 178 17 view .LVU91
+ 411 0054 0520     		movs	r0, #5
+ 412 0056 E3E7     		b	.L17
+ 413              	.L23:
+ 414              		.align	2
+ 415              	.L22:
+ 416 0058 00000000 		.word	.LANCHOR1
+ 417 005c 00000000 		.word	.LC2
+ 418 0060 00000000 		.word	.LANCHOR2
+ 419 0064 28000000 		.word	.LC5
+ 420 0068 00000000 		.word	ucRTUBuf
+ 421              		.cfi_endproc
+ 422              	.LFE40:
+ 424              		.section	.text.eMBRTUSend,"ax",%progbits
+ 425              		.align	1
+ 426              		.global	eMBRTUSend
+ 427              		.syntax unified
+ 428              		.code	16
+ 429              		.thumb_func
+ 430              		.fpu softvfp
+ 432              	eMBRTUSend:
+ 433              	.LVL32:
+ 434              	.LFB41:
+ 184:modbus/rtu/mbrtu.c **** 
+ 185:modbus/rtu/mbrtu.c **** eMBErrorCode
+ 186:modbus/rtu/mbrtu.c **** eMBRTUSend( UCHAR ucSlaveAddress, const UCHAR * pucFrame, USHORT usLength )
+ 187:modbus/rtu/mbrtu.c **** {
+ 435              		.loc 1 187 1 is_stmt 1 view -0
+ 436              		.cfi_startproc
+ 437              		@ args = 0, pretend = 0, frame = 0
+ 438              		@ frame_needed = 0, uses_anonymous_args = 0
+ 439              		.loc 1 187 1 is_stmt 0 view .LVU93
+ 440 0000 10B5     		push	{r4, lr}
+ 441              	.LCFI4:
+ 442              		.cfi_def_cfa_offset 8
+ 443              		.cfi_offset 4, -8
+ 444              		.cfi_offset 14, -4
+ 188:modbus/rtu/mbrtu.c ****     eMBErrorCode    eStatus = MB_ENOERR;
+ 445              		.loc 1 188 5 is_stmt 1 view .LVU94
+ 446              	.LVL33:
+ 189:modbus/rtu/mbrtu.c ****     USHORT          usCRC16;
+ 447              		.loc 1 189 5 view .LVU95
+ 190:modbus/rtu/mbrtu.c **** 
+ARM GAS  /tmp/ccYt5hKt.s 			page 14
+
+
+ 191:modbus/rtu/mbrtu.c ****     ENTER_CRITICAL_SECTION(  );
+ 448              		.loc 1 191 5 view .LVU96
+ 449              	.LBB38:
+ 450              	.LBI38:
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 451              		.loc 2 69 57 view .LVU97
+ 452              	.LBB39:
+ 453              		.loc 2 71 3 view .LVU98
+ 454              		.syntax divided
+ 455              	@ 71 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 456 0002 72B6     		cpsid i
+ 457              	@ 0 "" 2
+ 458              		.thumb
+ 459              		.syntax unified
+ 460              	.LBE39:
+ 461              	.LBE38:
+ 192:modbus/rtu/mbrtu.c **** 
+ 193:modbus/rtu/mbrtu.c ****     /* Check if the receiver is still in idle state. If not we where to
+ 194:modbus/rtu/mbrtu.c ****      * slow with processing the received frame and the master sent another
+ 195:modbus/rtu/mbrtu.c ****      * frame on the network. We have to abort sending the frame.
+ 196:modbus/rtu/mbrtu.c ****      */
+ 197:modbus/rtu/mbrtu.c ****     if( eRcvState == STATE_RX_IDLE )
+ 462              		.loc 1 197 5 view .LVU99
+ 463              		.loc 1 197 19 is_stmt 0 view .LVU100
+ 464 0004 174B     		ldr	r3, .L28
+ 465 0006 1B78     		ldrb	r3, [r3]
+ 466              		.loc 1 197 7 view .LVU101
+ 467 0008 012B     		cmp	r3, #1
+ 468 000a 02D0     		beq	.L27
+ 198:modbus/rtu/mbrtu.c ****     {
+ 199:modbus/rtu/mbrtu.c ****         /* First byte before the Modbus-PDU is the slave address. */
+ 200:modbus/rtu/mbrtu.c ****         pucSndBufferCur = ( UCHAR * ) pucFrame - 1;
+ 201:modbus/rtu/mbrtu.c ****         usSndBufferCount = 1;
+ 202:modbus/rtu/mbrtu.c **** 
+ 203:modbus/rtu/mbrtu.c ****         /* Now copy the Modbus-PDU into the Modbus-Serial-Line-PDU. */
+ 204:modbus/rtu/mbrtu.c ****         pucSndBufferCur[MB_SER_PDU_ADDR_OFF] = ucSlaveAddress;
+ 205:modbus/rtu/mbrtu.c ****         usSndBufferCount += usLength;
+ 206:modbus/rtu/mbrtu.c **** 
+ 207:modbus/rtu/mbrtu.c ****         /* Calculate CRC16 checksum for Modbus-Serial-Line-PDU. */
+ 208:modbus/rtu/mbrtu.c ****         usCRC16 = usMBCRC16( ( UCHAR * ) pucSndBufferCur, usSndBufferCount );
+ 209:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 & 0xFF );
+ 210:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 >> 8 );
+ 211:modbus/rtu/mbrtu.c **** 
+ 212:modbus/rtu/mbrtu.c ****         /* Activate the transmitter. */
+ 213:modbus/rtu/mbrtu.c ****         eSndState = STATE_TX_XMIT;
+ 214:modbus/rtu/mbrtu.c ****         vMBPortSerialEnable( FALSE, TRUE );
+ 215:modbus/rtu/mbrtu.c ****     }
+ 216:modbus/rtu/mbrtu.c ****     else
+ 217:modbus/rtu/mbrtu.c ****     {
+ 218:modbus/rtu/mbrtu.c ****         eStatus = MB_EIO;
+ 469              		.loc 1 218 17 view .LVU102
+ 470 000c 0520     		movs	r0, #5
+ 471              	.LVL34:
+ 472              	.L25:
+ 219:modbus/rtu/mbrtu.c ****     }
+ 220:modbus/rtu/mbrtu.c ****     EXIT_CRITICAL_SECTION(  );
+ 473              		.loc 1 220 5 is_stmt 1 view .LVU103
+ARM GAS  /tmp/ccYt5hKt.s 			page 15
+
+
+ 474              	.LBB40:
+ 475              	.LBI40:
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 476              		.loc 2 58 57 view .LVU104
+ 477              	.LBB41:
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 478              		.loc 2 60 3 view .LVU105
+ 479              		.syntax divided
+ 480              	@ 60 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 481 000e 62B6     		cpsie i
+ 482              	@ 0 "" 2
+ 483              		.thumb
+ 484              		.syntax unified
+ 485              	.LBE41:
+ 486              	.LBE40:
+ 221:modbus/rtu/mbrtu.c ****     return eStatus;
+ 487              		.loc 1 221 5 view .LVU106
+ 222:modbus/rtu/mbrtu.c **** }
+ 488              		.loc 1 222 1 is_stmt 0 view .LVU107
+ 489              		@ sp needed
+ 490 0010 10BD     		pop	{r4, pc}
+ 491              	.LVL35:
+ 492              	.L27:
+ 200:modbus/rtu/mbrtu.c ****         usSndBufferCount = 1;
+ 493              		.loc 1 200 9 is_stmt 1 view .LVU108
+ 200:modbus/rtu/mbrtu.c ****         usSndBufferCount = 1;
+ 494              		.loc 1 200 48 is_stmt 0 view .LVU109
+ 495 0012 4B1E     		subs	r3, r1, #1
+ 200:modbus/rtu/mbrtu.c ****         usSndBufferCount = 1;
+ 496              		.loc 1 200 25 view .LVU110
+ 497 0014 1449     		ldr	r1, .L28+4
+ 498              	.LVL36:
+ 200:modbus/rtu/mbrtu.c ****         usSndBufferCount = 1;
+ 499              		.loc 1 200 25 view .LVU111
+ 500 0016 0B60     		str	r3, [r1]
+ 201:modbus/rtu/mbrtu.c **** 
+ 501              		.loc 1 201 9 is_stmt 1 view .LVU112
+ 201:modbus/rtu/mbrtu.c **** 
+ 502              		.loc 1 201 26 is_stmt 0 view .LVU113
+ 503 0018 144C     		ldr	r4, .L28+8
+ 504 001a 0121     		movs	r1, #1
+ 505 001c 2180     		strh	r1, [r4]
+ 204:modbus/rtu/mbrtu.c ****         usSndBufferCount += usLength;
+ 506              		.loc 1 204 9 is_stmt 1 view .LVU114
+ 204:modbus/rtu/mbrtu.c ****         usSndBufferCount += usLength;
+ 507              		.loc 1 204 46 is_stmt 0 view .LVU115
+ 508 001e 1870     		strb	r0, [r3]
+ 205:modbus/rtu/mbrtu.c **** 
+ 509              		.loc 1 205 9 is_stmt 1 view .LVU116
+ 205:modbus/rtu/mbrtu.c **** 
+ 510              		.loc 1 205 26 is_stmt 0 view .LVU117
+ 511 0020 2188     		ldrh	r1, [r4]
+ 512 0022 8918     		adds	r1, r1, r2
+ 513 0024 89B2     		uxth	r1, r1
+ 514 0026 2180     		strh	r1, [r4]
+ 208:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 & 0xFF );
+ 515              		.loc 1 208 9 is_stmt 1 view .LVU118
+ARM GAS  /tmp/ccYt5hKt.s 			page 16
+
+
+ 208:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 & 0xFF );
+ 516              		.loc 1 208 19 is_stmt 0 view .LVU119
+ 517 0028 2188     		ldrh	r1, [r4]
+ 518 002a 89B2     		uxth	r1, r1
+ 519 002c 1800     		movs	r0, r3
+ 520              	.LVL37:
+ 208:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 & 0xFF );
+ 521              		.loc 1 208 19 view .LVU120
+ 522 002e FFF7FEFF 		bl	usMBCRC16
+ 523              	.LVL38:
+ 209:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 >> 8 );
+ 524              		.loc 1 209 9 is_stmt 1 view .LVU121
+ 209:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 >> 8 );
+ 525              		.loc 1 209 34 is_stmt 0 view .LVU122
+ 526 0032 2388     		ldrh	r3, [r4]
+ 527 0034 9BB2     		uxth	r3, r3
+ 528 0036 5A1C     		adds	r2, r3, #1
+ 529 0038 92B2     		uxth	r2, r2
+ 530 003a 2280     		strh	r2, [r4]
+ 209:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 >> 8 );
+ 531              		.loc 1 209 40 view .LVU123
+ 532 003c C2B2     		uxtb	r2, r0
+ 209:modbus/rtu/mbrtu.c ****         ucRTUBuf[usSndBufferCount++] = ( UCHAR )( usCRC16 >> 8 );
+ 533              		.loc 1 209 38 view .LVU124
+ 534 003e 0C49     		ldr	r1, .L28+12
+ 535 0040 CA54     		strb	r2, [r1, r3]
+ 210:modbus/rtu/mbrtu.c **** 
+ 536              		.loc 1 210 9 is_stmt 1 view .LVU125
+ 210:modbus/rtu/mbrtu.c **** 
+ 537              		.loc 1 210 34 is_stmt 0 view .LVU126
+ 538 0042 2388     		ldrh	r3, [r4]
+ 539 0044 9BB2     		uxth	r3, r3
+ 540 0046 5A1C     		adds	r2, r3, #1
+ 541 0048 92B2     		uxth	r2, r2
+ 542 004a 2280     		strh	r2, [r4]
+ 210:modbus/rtu/mbrtu.c **** 
+ 543              		.loc 1 210 40 view .LVU127
+ 544 004c 000A     		lsrs	r0, r0, #8
+ 545              	.LVL39:
+ 210:modbus/rtu/mbrtu.c **** 
+ 546              		.loc 1 210 40 view .LVU128
+ 547 004e C0B2     		uxtb	r0, r0
+ 210:modbus/rtu/mbrtu.c **** 
+ 548              		.loc 1 210 38 view .LVU129
+ 549 0050 C854     		strb	r0, [r1, r3]
+ 213:modbus/rtu/mbrtu.c ****         vMBPortSerialEnable( FALSE, TRUE );
+ 550              		.loc 1 213 9 is_stmt 1 view .LVU130
+ 213:modbus/rtu/mbrtu.c ****         vMBPortSerialEnable( FALSE, TRUE );
+ 551              		.loc 1 213 19 is_stmt 0 view .LVU131
+ 552 0052 0122     		movs	r2, #1
+ 553 0054 074B     		ldr	r3, .L28+16
+ 554 0056 1A70     		strb	r2, [r3]
+ 214:modbus/rtu/mbrtu.c ****     }
+ 555              		.loc 1 214 9 is_stmt 1 view .LVU132
+ 556 0058 0121     		movs	r1, #1
+ 557 005a 0020     		movs	r0, #0
+ 558 005c FFF7FEFF 		bl	vMBPortSerialEnable
+ARM GAS  /tmp/ccYt5hKt.s 			page 17
+
+
+ 559              	.LVL40:
+ 188:modbus/rtu/mbrtu.c ****     USHORT          usCRC16;
+ 560              		.loc 1 188 21 is_stmt 0 view .LVU133
+ 561 0060 0020     		movs	r0, #0
+ 562 0062 D4E7     		b	.L25
+ 563              	.L29:
+ 564              		.align	2
+ 565              	.L28:
+ 566 0064 00000000 		.word	.LANCHOR0
+ 567 0068 00000000 		.word	.LANCHOR3
+ 568 006c 00000000 		.word	.LANCHOR4
+ 569 0070 00000000 		.word	ucRTUBuf
+ 570 0074 00000000 		.word	.LANCHOR5
+ 571              		.cfi_endproc
+ 572              	.LFE41:
+ 574              		.section	.text.xMBRTUReceiveFSM,"ax",%progbits
+ 575              		.align	1
+ 576              		.global	xMBRTUReceiveFSM
+ 577              		.syntax unified
+ 578              		.code	16
+ 579              		.thumb_func
+ 580              		.fpu softvfp
+ 582              	xMBRTUReceiveFSM:
+ 583              	.LFB42:
+ 223:modbus/rtu/mbrtu.c **** 
+ 224:modbus/rtu/mbrtu.c **** BOOL
+ 225:modbus/rtu/mbrtu.c **** xMBRTUReceiveFSM( void )
+ 226:modbus/rtu/mbrtu.c **** {
+ 584              		.loc 1 226 1 is_stmt 1 view -0
+ 585              		.cfi_startproc
+ 586              		@ args = 0, pretend = 0, frame = 8
+ 587              		@ frame_needed = 0, uses_anonymous_args = 0
+ 588 0000 00B5     		push	{lr}
+ 589              	.LCFI5:
+ 590              		.cfi_def_cfa_offset 4
+ 591              		.cfi_offset 14, -4
+ 592 0002 83B0     		sub	sp, sp, #12
+ 593              	.LCFI6:
+ 594              		.cfi_def_cfa_offset 16
+ 227:modbus/rtu/mbrtu.c ****     BOOL            xTaskNeedSwitch = FALSE;
+ 595              		.loc 1 227 5 view .LVU135
+ 596              	.LVL41:
+ 228:modbus/rtu/mbrtu.c ****     UCHAR           ucByte;
+ 597              		.loc 1 228 5 view .LVU136
+ 229:modbus/rtu/mbrtu.c **** 
+ 230:modbus/rtu/mbrtu.c ****     assert( eSndState == STATE_TX_IDLE );
+ 598              		.loc 1 230 5 view .LVU137
+ 599 0004 244B     		ldr	r3, .L40
+ 600 0006 1B78     		ldrb	r3, [r3]
+ 601 0008 002B     		cmp	r3, #0
+ 602 000a 11D1     		bne	.L39
+ 231:modbus/rtu/mbrtu.c **** 
+ 232:modbus/rtu/mbrtu.c ****     /* Always read the character. */
+ 233:modbus/rtu/mbrtu.c ****     ( void )xMBPortSerialGetByte( ( CHAR * ) & ucByte );
+ 603              		.loc 1 233 5 view .LVU138
+ 604              		.loc 1 233 13 is_stmt 0 view .LVU139
+ 605 000c 6B46     		mov	r3, sp
+ARM GAS  /tmp/ccYt5hKt.s 			page 18
+
+
+ 606 000e D81D     		adds	r0, r3, #7
+ 607 0010 FFF7FEFF 		bl	xMBPortSerialGetByte
+ 608              	.LVL42:
+ 234:modbus/rtu/mbrtu.c **** 
+ 235:modbus/rtu/mbrtu.c ****     switch ( eRcvState )
+ 609              		.loc 1 235 5 is_stmt 1 view .LVU140
+ 610 0014 214B     		ldr	r3, .L40+4
+ 611 0016 1B78     		ldrb	r3, [r3]
+ 612 0018 DBB2     		uxtb	r3, r3
+ 613 001a 012B     		cmp	r3, #1
+ 614 001c 14D0     		beq	.L32
+ 615 001e 002B     		cmp	r3, #0
+ 616 0020 0CD0     		beq	.L33
+ 617 0022 022B     		cmp	r3, #2
+ 618 0024 22D0     		beq	.L34
+ 619 0026 032B     		cmp	r3, #3
+ 620 0028 0BD0     		beq	.L35
+ 621              	.L36:
+ 236:modbus/rtu/mbrtu.c ****     {
+ 237:modbus/rtu/mbrtu.c ****         /* If we have received a character in the init state we have to
+ 238:modbus/rtu/mbrtu.c ****          * wait until the frame is finished.
+ 239:modbus/rtu/mbrtu.c ****          */
+ 240:modbus/rtu/mbrtu.c ****     case STATE_RX_INIT:
+ 241:modbus/rtu/mbrtu.c ****         vMBPortTimersEnable(  );
+ 242:modbus/rtu/mbrtu.c ****         break;
+ 243:modbus/rtu/mbrtu.c **** 
+ 244:modbus/rtu/mbrtu.c ****         /* In the error state we wait until all characters in the
+ 245:modbus/rtu/mbrtu.c ****          * damaged frame are transmitted.
+ 246:modbus/rtu/mbrtu.c ****          */
+ 247:modbus/rtu/mbrtu.c ****     case STATE_RX_ERROR:
+ 248:modbus/rtu/mbrtu.c ****         vMBPortTimersEnable(  );
+ 249:modbus/rtu/mbrtu.c ****         break;
+ 250:modbus/rtu/mbrtu.c **** 
+ 251:modbus/rtu/mbrtu.c ****         /* In the idle state we wait for a new character. If a character
+ 252:modbus/rtu/mbrtu.c ****          * is received the t1.5 and t3.5 timers are started and the
+ 253:modbus/rtu/mbrtu.c ****          * receiver is in the state STATE_RX_RECEIVCE.
+ 254:modbus/rtu/mbrtu.c ****          */
+ 255:modbus/rtu/mbrtu.c ****     case STATE_RX_IDLE:
+ 256:modbus/rtu/mbrtu.c ****         usRcvBufferPos = 0;
+ 257:modbus/rtu/mbrtu.c ****         ucRTUBuf[usRcvBufferPos++] = ucByte;
+ 258:modbus/rtu/mbrtu.c ****         eRcvState = STATE_RX_RCV;
+ 259:modbus/rtu/mbrtu.c **** 
+ 260:modbus/rtu/mbrtu.c ****         /* Enable t3.5 timers. */
+ 261:modbus/rtu/mbrtu.c ****         vMBPortTimersEnable(  );
+ 262:modbus/rtu/mbrtu.c ****         break;
+ 263:modbus/rtu/mbrtu.c **** 
+ 264:modbus/rtu/mbrtu.c ****         /* We are currently receiving a frame. Reset the timer after
+ 265:modbus/rtu/mbrtu.c ****          * every character received. If more than the maximum possible
+ 266:modbus/rtu/mbrtu.c ****          * number of bytes in a modbus frame is received the frame is
+ 267:modbus/rtu/mbrtu.c ****          * ignored.
+ 268:modbus/rtu/mbrtu.c ****          */
+ 269:modbus/rtu/mbrtu.c ****     case STATE_RX_RCV:
+ 270:modbus/rtu/mbrtu.c ****         if( usRcvBufferPos < MB_SER_PDU_SIZE_MAX )
+ 271:modbus/rtu/mbrtu.c ****         {
+ 272:modbus/rtu/mbrtu.c ****             ucRTUBuf[usRcvBufferPos++] = ucByte;
+ 273:modbus/rtu/mbrtu.c ****         }
+ 274:modbus/rtu/mbrtu.c ****         else
+ARM GAS  /tmp/ccYt5hKt.s 			page 19
+
+
+ 275:modbus/rtu/mbrtu.c ****         {
+ 276:modbus/rtu/mbrtu.c ****             eRcvState = STATE_RX_ERROR;
+ 277:modbus/rtu/mbrtu.c ****         }
+ 278:modbus/rtu/mbrtu.c ****         vMBPortTimersEnable(  );
+ 279:modbus/rtu/mbrtu.c ****         break;
+ 280:modbus/rtu/mbrtu.c ****     }
+ 281:modbus/rtu/mbrtu.c ****     return xTaskNeedSwitch;
+ 622              		.loc 1 281 5 view .LVU141
+ 282:modbus/rtu/mbrtu.c **** }
+ 623              		.loc 1 282 1 is_stmt 0 view .LVU142
+ 624 002a 0020     		movs	r0, #0
+ 625 002c 03B0     		add	sp, sp, #12
+ 626              		@ sp needed
+ 627 002e 00BD     		pop	{pc}
+ 628              	.L39:
+ 230:modbus/rtu/mbrtu.c **** 
+ 629              		.loc 1 230 5 discriminator 1 view .LVU143
+ 630 0030 1B4B     		ldr	r3, .L40+8
+ 631 0032 1C4A     		ldr	r2, .L40+12
+ 632 0034 E621     		movs	r1, #230
+ 633 0036 1C48     		ldr	r0, .L40+16
+ 634 0038 FFF7FEFF 		bl	__assert_func
+ 635              	.LVL43:
+ 636              	.L33:
+ 241:modbus/rtu/mbrtu.c ****         break;
+ 637              		.loc 1 241 9 is_stmt 1 view .LVU144
+ 638 003c FFF7FEFF 		bl	vMBPortTimersEnable
+ 639              	.LVL44:
+ 242:modbus/rtu/mbrtu.c **** 
+ 640              		.loc 1 242 9 view .LVU145
+ 641 0040 F3E7     		b	.L36
+ 642              	.L35:
+ 248:modbus/rtu/mbrtu.c ****         break;
+ 643              		.loc 1 248 9 view .LVU146
+ 644 0042 FFF7FEFF 		bl	vMBPortTimersEnable
+ 645              	.LVL45:
+ 249:modbus/rtu/mbrtu.c **** 
+ 646              		.loc 1 249 9 view .LVU147
+ 647 0046 F0E7     		b	.L36
+ 648              	.L32:
+ 256:modbus/rtu/mbrtu.c ****         ucRTUBuf[usRcvBufferPos++] = ucByte;
+ 649              		.loc 1 256 9 view .LVU148
+ 256:modbus/rtu/mbrtu.c ****         ucRTUBuf[usRcvBufferPos++] = ucByte;
+ 650              		.loc 1 256 24 is_stmt 0 view .LVU149
+ 651 0048 184A     		ldr	r2, .L40+20
+ 652 004a 0023     		movs	r3, #0
+ 653 004c 1380     		strh	r3, [r2]
+ 257:modbus/rtu/mbrtu.c ****         eRcvState = STATE_RX_RCV;
+ 654              		.loc 1 257 9 is_stmt 1 view .LVU150
+ 257:modbus/rtu/mbrtu.c ****         eRcvState = STATE_RX_RCV;
+ 655              		.loc 1 257 32 is_stmt 0 view .LVU151
+ 656 004e 1388     		ldrh	r3, [r2]
+ 657 0050 9BB2     		uxth	r3, r3
+ 658 0052 591C     		adds	r1, r3, #1
+ 659 0054 89B2     		uxth	r1, r1
+ 660 0056 1180     		strh	r1, [r2]
+ 257:modbus/rtu/mbrtu.c ****         eRcvState = STATE_RX_RCV;
+ARM GAS  /tmp/ccYt5hKt.s 			page 20
+
+
+ 661              		.loc 1 257 36 view .LVU152
+ 662 0058 6A46     		mov	r2, sp
+ 663 005a D179     		ldrb	r1, [r2, #7]
+ 664 005c 144A     		ldr	r2, .L40+24
+ 665 005e D154     		strb	r1, [r2, r3]
+ 258:modbus/rtu/mbrtu.c **** 
+ 666              		.loc 1 258 9 is_stmt 1 view .LVU153
+ 258:modbus/rtu/mbrtu.c **** 
+ 667              		.loc 1 258 19 is_stmt 0 view .LVU154
+ 668 0060 0E4B     		ldr	r3, .L40+4
+ 669 0062 0222     		movs	r2, #2
+ 670 0064 1A70     		strb	r2, [r3]
+ 261:modbus/rtu/mbrtu.c ****         break;
+ 671              		.loc 1 261 9 is_stmt 1 view .LVU155
+ 672 0066 FFF7FEFF 		bl	vMBPortTimersEnable
+ 673              	.LVL46:
+ 262:modbus/rtu/mbrtu.c **** 
+ 674              		.loc 1 262 9 view .LVU156
+ 675 006a DEE7     		b	.L36
+ 676              	.L34:
+ 270:modbus/rtu/mbrtu.c ****         {
+ 677              		.loc 1 270 9 view .LVU157
+ 270:modbus/rtu/mbrtu.c ****         {
+ 678              		.loc 1 270 28 is_stmt 0 view .LVU158
+ 679 006c 0F4B     		ldr	r3, .L40+20
+ 680 006e 1B88     		ldrh	r3, [r3]
+ 681 0070 9BB2     		uxth	r3, r3
+ 270:modbus/rtu/mbrtu.c ****         {
+ 682              		.loc 1 270 11 view .LVU159
+ 683 0072 FF2B     		cmp	r3, #255
+ 684 0074 0CD8     		bhi	.L37
+ 272:modbus/rtu/mbrtu.c ****         }
+ 685              		.loc 1 272 13 is_stmt 1 view .LVU160
+ 272:modbus/rtu/mbrtu.c ****         }
+ 686              		.loc 1 272 36 is_stmt 0 view .LVU161
+ 687 0076 0D49     		ldr	r1, .L40+20
+ 688 0078 0B88     		ldrh	r3, [r1]
+ 689 007a 9BB2     		uxth	r3, r3
+ 690 007c 5A1C     		adds	r2, r3, #1
+ 691 007e 92B2     		uxth	r2, r2
+ 692 0080 0A80     		strh	r2, [r1]
+ 272:modbus/rtu/mbrtu.c ****         }
+ 693              		.loc 1 272 40 view .LVU162
+ 694 0082 6A46     		mov	r2, sp
+ 695 0084 D179     		ldrb	r1, [r2, #7]
+ 696 0086 0A4A     		ldr	r2, .L40+24
+ 697 0088 D154     		strb	r1, [r2, r3]
+ 698              	.L38:
+ 278:modbus/rtu/mbrtu.c ****         break;
+ 699              		.loc 1 278 9 is_stmt 1 view .LVU163
+ 700 008a FFF7FEFF 		bl	vMBPortTimersEnable
+ 701              	.LVL47:
+ 279:modbus/rtu/mbrtu.c ****     }
+ 702              		.loc 1 279 9 view .LVU164
+ 703 008e CCE7     		b	.L36
+ 704              	.L37:
+ 276:modbus/rtu/mbrtu.c ****         }
+ARM GAS  /tmp/ccYt5hKt.s 			page 21
+
+
+ 705              		.loc 1 276 13 view .LVU165
+ 276:modbus/rtu/mbrtu.c ****         }
+ 706              		.loc 1 276 23 is_stmt 0 view .LVU166
+ 707 0090 024B     		ldr	r3, .L40+4
+ 708 0092 0322     		movs	r2, #3
+ 709 0094 1A70     		strb	r2, [r3]
+ 710 0096 F8E7     		b	.L38
+ 711              	.L41:
+ 712              		.align	2
+ 713              	.L40:
+ 714 0098 00000000 		.word	.LANCHOR5
+ 715 009c 00000000 		.word	.LANCHOR0
+ 716 00a0 00000000 		.word	.LC15
+ 717 00a4 00000000 		.word	.LANCHOR6
+ 718 00a8 28000000 		.word	.LC5
+ 719 00ac 00000000 		.word	.LANCHOR1
+ 720 00b0 00000000 		.word	ucRTUBuf
+ 721              		.cfi_endproc
+ 722              	.LFE42:
+ 724              		.section	.text.xMBRTUTransmitFSM,"ax",%progbits
+ 725              		.align	1
+ 726              		.global	xMBRTUTransmitFSM
+ 727              		.syntax unified
+ 728              		.code	16
+ 729              		.thumb_func
+ 730              		.fpu softvfp
+ 732              	xMBRTUTransmitFSM:
+ 733              	.LFB43:
+ 283:modbus/rtu/mbrtu.c **** 
+ 284:modbus/rtu/mbrtu.c **** BOOL
+ 285:modbus/rtu/mbrtu.c **** xMBRTUTransmitFSM( void )
+ 286:modbus/rtu/mbrtu.c **** {
+ 734              		.loc 1 286 1 is_stmt 1 view -0
+ 735              		.cfi_startproc
+ 736              		@ args = 0, pretend = 0, frame = 0
+ 737              		@ frame_needed = 0, uses_anonymous_args = 0
+ 738 0000 10B5     		push	{r4, lr}
+ 739              	.LCFI7:
+ 740              		.cfi_def_cfa_offset 8
+ 741              		.cfi_offset 4, -8
+ 742              		.cfi_offset 14, -4
+ 287:modbus/rtu/mbrtu.c ****     BOOL            xNeedPoll = FALSE;
+ 743              		.loc 1 287 5 view .LVU168
+ 744              	.LVL48:
+ 288:modbus/rtu/mbrtu.c **** 
+ 289:modbus/rtu/mbrtu.c ****     assert( eRcvState == STATE_RX_IDLE );
+ 745              		.loc 1 289 5 view .LVU169
+ 746 0002 1E4B     		ldr	r3, .L49
+ 747 0004 1B78     		ldrb	r3, [r3]
+ 748 0006 012B     		cmp	r3, #1
+ 749 0008 09D1     		bne	.L48
+ 290:modbus/rtu/mbrtu.c **** 
+ 291:modbus/rtu/mbrtu.c ****     switch ( eSndState )
+ 750              		.loc 1 291 5 view .LVU170
+ 751 000a 1D4B     		ldr	r3, .L49+4
+ 752 000c 1B78     		ldrb	r3, [r3]
+ 753 000e DBB2     		uxtb	r3, r3
+ARM GAS  /tmp/ccYt5hKt.s 			page 22
+
+
+ 754 0010 002B     		cmp	r3, #0
+ 755 0012 0BD0     		beq	.L44
+ 756 0014 012B     		cmp	r3, #1
+ 757 0016 0FD0     		beq	.L45
+ 287:modbus/rtu/mbrtu.c **** 
+ 758              		.loc 1 287 21 is_stmt 0 view .LVU171
+ 759 0018 0024     		movs	r4, #0
+ 760              	.LVL49:
+ 761              	.L46:
+ 292:modbus/rtu/mbrtu.c ****     {
+ 293:modbus/rtu/mbrtu.c ****         /* We should not get a transmitter event if the transmitter is in
+ 294:modbus/rtu/mbrtu.c ****          * idle state.  */
+ 295:modbus/rtu/mbrtu.c ****     case STATE_TX_IDLE:
+ 296:modbus/rtu/mbrtu.c ****         /* enable receiver/disable transmitter. */
+ 297:modbus/rtu/mbrtu.c ****         vMBPortSerialEnable( TRUE, FALSE );
+ 298:modbus/rtu/mbrtu.c ****         break;
+ 299:modbus/rtu/mbrtu.c **** 
+ 300:modbus/rtu/mbrtu.c ****     case STATE_TX_XMIT:
+ 301:modbus/rtu/mbrtu.c ****         /* check if we are finished. */
+ 302:modbus/rtu/mbrtu.c ****         if( usSndBufferCount != 0 )
+ 303:modbus/rtu/mbrtu.c ****         {
+ 304:modbus/rtu/mbrtu.c ****             xMBPortSerialPutByte( ( CHAR )*pucSndBufferCur );
+ 305:modbus/rtu/mbrtu.c ****             pucSndBufferCur++;  /* next byte in sendbuffer. */
+ 306:modbus/rtu/mbrtu.c ****             usSndBufferCount--;
+ 307:modbus/rtu/mbrtu.c ****         }
+ 308:modbus/rtu/mbrtu.c ****         else
+ 309:modbus/rtu/mbrtu.c ****         {
+ 310:modbus/rtu/mbrtu.c ****             xNeedPoll = xMBPortEventPost( EV_FRAME_SENT );
+ 311:modbus/rtu/mbrtu.c ****             /* Disable transmitter. This prevents another transmit buffer
+ 312:modbus/rtu/mbrtu.c ****              * empty interrupt. */
+ 313:modbus/rtu/mbrtu.c ****             vMBPortSerialEnable( TRUE, FALSE );
+ 314:modbus/rtu/mbrtu.c ****             eSndState = STATE_TX_IDLE;
+ 315:modbus/rtu/mbrtu.c ****         }
+ 316:modbus/rtu/mbrtu.c ****         break;
+ 317:modbus/rtu/mbrtu.c ****     }
+ 318:modbus/rtu/mbrtu.c **** 
+ 319:modbus/rtu/mbrtu.c ****     return xNeedPoll;
+ 762              		.loc 1 319 5 is_stmt 1 view .LVU172
+ 320:modbus/rtu/mbrtu.c **** }
+ 763              		.loc 1 320 1 is_stmt 0 view .LVU173
+ 764 001a 2000     		movs	r0, r4
+ 765              		@ sp needed
+ 766              	.LVL50:
+ 767              		.loc 1 320 1 view .LVU174
+ 768 001c 10BD     		pop	{r4, pc}
+ 769              	.LVL51:
+ 770              	.L48:
+ 289:modbus/rtu/mbrtu.c **** 
+ 771              		.loc 1 289 5 discriminator 1 view .LVU175
+ 772 001e 2221     		movs	r1, #34
+ 773 0020 184B     		ldr	r3, .L49+8
+ 774 0022 194A     		ldr	r2, .L49+12
+ 775 0024 FF31     		adds	r1, r1, #255
+ 776 0026 1948     		ldr	r0, .L49+16
+ 777 0028 FFF7FEFF 		bl	__assert_func
+ 778              	.LVL52:
+ 779              	.L44:
+ARM GAS  /tmp/ccYt5hKt.s 			page 23
+
+
+ 297:modbus/rtu/mbrtu.c ****         break;
+ 780              		.loc 1 297 9 is_stmt 1 view .LVU176
+ 781 002c 0021     		movs	r1, #0
+ 782 002e 0120     		movs	r0, #1
+ 783 0030 FFF7FEFF 		bl	vMBPortSerialEnable
+ 784              	.LVL53:
+ 298:modbus/rtu/mbrtu.c **** 
+ 785              		.loc 1 298 9 view .LVU177
+ 287:modbus/rtu/mbrtu.c **** 
+ 786              		.loc 1 287 21 is_stmt 0 view .LVU178
+ 787 0034 0024     		movs	r4, #0
+ 298:modbus/rtu/mbrtu.c **** 
+ 788              		.loc 1 298 9 view .LVU179
+ 789 0036 F0E7     		b	.L46
+ 790              	.L45:
+ 302:modbus/rtu/mbrtu.c ****         {
+ 791              		.loc 1 302 9 is_stmt 1 view .LVU180
+ 302:modbus/rtu/mbrtu.c ****         {
+ 792              		.loc 1 302 30 is_stmt 0 view .LVU181
+ 793 0038 154B     		ldr	r3, .L49+20
+ 794 003a 1B88     		ldrh	r3, [r3]
+ 795 003c 9BB2     		uxth	r3, r3
+ 302:modbus/rtu/mbrtu.c ****         {
+ 796              		.loc 1 302 11 view .LVU182
+ 797 003e 002B     		cmp	r3, #0
+ 798 0040 0FD0     		beq	.L47
+ 304:modbus/rtu/mbrtu.c ****             pucSndBufferCur++;  /* next byte in sendbuffer. */
+ 799              		.loc 1 304 13 is_stmt 1 view .LVU183
+ 800 0042 144C     		ldr	r4, .L49+24
+ 801 0044 2368     		ldr	r3, [r4]
+ 802 0046 1878     		ldrb	r0, [r3]
+ 803 0048 C0B2     		uxtb	r0, r0
+ 804 004a FFF7FEFF 		bl	xMBPortSerialPutByte
+ 805              	.LVL54:
+ 305:modbus/rtu/mbrtu.c ****             usSndBufferCount--;
+ 806              		.loc 1 305 13 view .LVU184
+ 305:modbus/rtu/mbrtu.c ****             usSndBufferCount--;
+ 807              		.loc 1 305 28 is_stmt 0 view .LVU185
+ 808 004e 2368     		ldr	r3, [r4]
+ 809 0050 0133     		adds	r3, r3, #1
+ 810 0052 2360     		str	r3, [r4]
+ 306:modbus/rtu/mbrtu.c ****         }
+ 811              		.loc 1 306 13 is_stmt 1 view .LVU186
+ 306:modbus/rtu/mbrtu.c ****         }
+ 812              		.loc 1 306 29 is_stmt 0 view .LVU187
+ 813 0054 0E4A     		ldr	r2, .L49+20
+ 814 0056 1388     		ldrh	r3, [r2]
+ 815 0058 013B     		subs	r3, r3, #1
+ 816 005a 9BB2     		uxth	r3, r3
+ 817 005c 1380     		strh	r3, [r2]
+ 287:modbus/rtu/mbrtu.c **** 
+ 818              		.loc 1 287 21 view .LVU188
+ 819 005e 0024     		movs	r4, #0
+ 820 0060 DBE7     		b	.L46
+ 821              	.L47:
+ 310:modbus/rtu/mbrtu.c ****             /* Disable transmitter. This prevents another transmit buffer
+ 822              		.loc 1 310 13 is_stmt 1 view .LVU189
+ARM GAS  /tmp/ccYt5hKt.s 			page 24
+
+
+ 310:modbus/rtu/mbrtu.c ****             /* Disable transmitter. This prevents another transmit buffer
+ 823              		.loc 1 310 25 is_stmt 0 view .LVU190
+ 824 0062 0320     		movs	r0, #3
+ 825 0064 FFF7FEFF 		bl	xMBPortEventPost
+ 826              	.LVL55:
+ 827 0068 0400     		movs	r4, r0
+ 828              	.LVL56:
+ 313:modbus/rtu/mbrtu.c ****             eSndState = STATE_TX_IDLE;
+ 829              		.loc 1 313 13 is_stmt 1 view .LVU191
+ 830 006a 0021     		movs	r1, #0
+ 831 006c 0120     		movs	r0, #1
+ 832              	.LVL57:
+ 313:modbus/rtu/mbrtu.c ****             eSndState = STATE_TX_IDLE;
+ 833              		.loc 1 313 13 is_stmt 0 view .LVU192
+ 834 006e FFF7FEFF 		bl	vMBPortSerialEnable
+ 835              	.LVL58:
+ 314:modbus/rtu/mbrtu.c ****         }
+ 836              		.loc 1 314 13 is_stmt 1 view .LVU193
+ 314:modbus/rtu/mbrtu.c ****         }
+ 837              		.loc 1 314 23 is_stmt 0 view .LVU194
+ 838 0072 034B     		ldr	r3, .L49+4
+ 839 0074 0022     		movs	r2, #0
+ 840 0076 1A70     		strb	r2, [r3]
+ 841 0078 CFE7     		b	.L46
+ 842              	.L50:
+ 843 007a C046     		.align	2
+ 844              	.L49:
+ 845 007c 00000000 		.word	.LANCHOR0
+ 846 0080 00000000 		.word	.LANCHOR5
+ 847 0084 00000000 		.word	.LC23
+ 848 0088 00000000 		.word	.LANCHOR7
+ 849 008c 28000000 		.word	.LC5
+ 850 0090 00000000 		.word	.LANCHOR4
+ 851 0094 00000000 		.word	.LANCHOR3
+ 852              		.cfi_endproc
+ 853              	.LFE43:
+ 855              		.section	.text.xMBRTUTimerT35Expired,"ax",%progbits
+ 856              		.align	1
+ 857              		.global	xMBRTUTimerT35Expired
+ 858              		.syntax unified
+ 859              		.code	16
+ 860              		.thumb_func
+ 861              		.fpu softvfp
+ 863              	xMBRTUTimerT35Expired:
+ 864              	.LFB44:
+ 321:modbus/rtu/mbrtu.c **** 
+ 322:modbus/rtu/mbrtu.c **** BOOL
+ 323:modbus/rtu/mbrtu.c **** xMBRTUTimerT35Expired( void )
+ 324:modbus/rtu/mbrtu.c **** {
+ 865              		.loc 1 324 1 is_stmt 1 view -0
+ 866              		.cfi_startproc
+ 867              		@ args = 0, pretend = 0, frame = 0
+ 868              		@ frame_needed = 0, uses_anonymous_args = 0
+ 869 0000 10B5     		push	{r4, lr}
+ 870              	.LCFI8:
+ 871              		.cfi_def_cfa_offset 8
+ 872              		.cfi_offset 4, -8
+ARM GAS  /tmp/ccYt5hKt.s 			page 25
+
+
+ 873              		.cfi_offset 14, -4
+ 325:modbus/rtu/mbrtu.c ****     BOOL            xNeedPoll = FALSE;
+ 874              		.loc 1 325 5 view .LVU196
+ 875              	.LVL59:
+ 326:modbus/rtu/mbrtu.c **** 
+ 327:modbus/rtu/mbrtu.c ****     switch ( eRcvState )
+ 876              		.loc 1 327 5 view .LVU197
+ 877 0002 1A4B     		ldr	r3, .L61
+ 878 0004 1B78     		ldrb	r3, [r3]
+ 879 0006 DBB2     		uxtb	r3, r3
+ 880 0008 022B     		cmp	r3, #2
+ 881 000a 16D0     		beq	.L52
+ 882 000c 032B     		cmp	r3, #3
+ 883 000e 20D0     		beq	.L55
+ 884 0010 002B     		cmp	r3, #0
+ 885 0012 0DD0     		beq	.L59
+ 328:modbus/rtu/mbrtu.c ****     {
+ 329:modbus/rtu/mbrtu.c ****         /* Timer t35 expired. Startup phase is finished. */
+ 330:modbus/rtu/mbrtu.c ****     case STATE_RX_INIT:
+ 331:modbus/rtu/mbrtu.c ****         xNeedPoll = xMBPortEventPost( EV_READY );
+ 332:modbus/rtu/mbrtu.c ****         break;
+ 333:modbus/rtu/mbrtu.c **** 
+ 334:modbus/rtu/mbrtu.c ****         /* A frame was received and t35 expired. Notify the listener that
+ 335:modbus/rtu/mbrtu.c ****          * a new frame was received. */
+ 336:modbus/rtu/mbrtu.c ****     case STATE_RX_RCV:
+ 337:modbus/rtu/mbrtu.c ****         xNeedPoll = xMBPortEventPost( EV_FRAME_RECEIVED );
+ 338:modbus/rtu/mbrtu.c ****         break;
+ 339:modbus/rtu/mbrtu.c **** 
+ 340:modbus/rtu/mbrtu.c ****         /* An error occured while receiving the frame. */
+ 341:modbus/rtu/mbrtu.c ****     case STATE_RX_ERROR:
+ 342:modbus/rtu/mbrtu.c ****         break;
+ 343:modbus/rtu/mbrtu.c **** 
+ 344:modbus/rtu/mbrtu.c ****         /* Function called in an illegal state. */
+ 345:modbus/rtu/mbrtu.c ****     default:
+ 346:modbus/rtu/mbrtu.c ****         assert( ( eRcvState == STATE_RX_INIT ) ||
+ 886              		.loc 1 346 9 view .LVU198
+ 887 0014 154B     		ldr	r3, .L61
+ 888 0016 1B78     		ldrb	r3, [r3]
+ 889 0018 002B     		cmp	r3, #0
+ 890 001a 22D0     		beq	.L56
+ 891              		.loc 1 346 9 is_stmt 0 discriminator 1 view .LVU199
+ 892 001c 134B     		ldr	r3, .L61
+ 893 001e 1B78     		ldrb	r3, [r3]
+ 894 0020 022B     		cmp	r3, #2
+ 895 0022 20D0     		beq	.L57
+ 896              		.loc 1 346 9 discriminator 2 view .LVU200
+ 897 0024 114B     		ldr	r3, .L61
+ 898 0026 1B78     		ldrb	r3, [r3]
+ 899 0028 032B     		cmp	r3, #3
+ 900 002a 0BD1     		bne	.L60
+ 325:modbus/rtu/mbrtu.c **** 
+ 901              		.loc 1 325 21 view .LVU201
+ 902 002c 0024     		movs	r4, #0
+ 903 002e 11E0     		b	.L53
+ 904              	.L59:
+ 331:modbus/rtu/mbrtu.c ****         break;
+ 905              		.loc 1 331 9 is_stmt 1 view .LVU202
+ARM GAS  /tmp/ccYt5hKt.s 			page 26
+
+
+ 331:modbus/rtu/mbrtu.c ****         break;
+ 906              		.loc 1 331 21 is_stmt 0 view .LVU203
+ 907 0030 0020     		movs	r0, #0
+ 908 0032 FFF7FEFF 		bl	xMBPortEventPost
+ 909              	.LVL60:
+ 910 0036 0400     		movs	r4, r0
+ 911              	.LVL61:
+ 332:modbus/rtu/mbrtu.c **** 
+ 912              		.loc 1 332 9 is_stmt 1 view .LVU204
+ 913 0038 0CE0     		b	.L53
+ 914              	.LVL62:
+ 915              	.L52:
+ 337:modbus/rtu/mbrtu.c ****         break;
+ 916              		.loc 1 337 9 view .LVU205
+ 337:modbus/rtu/mbrtu.c ****         break;
+ 917              		.loc 1 337 21 is_stmt 0 view .LVU206
+ 918 003a 0120     		movs	r0, #1
+ 919 003c FFF7FEFF 		bl	xMBPortEventPost
+ 920              	.LVL63:
+ 921 0040 0400     		movs	r4, r0
+ 922              	.LVL64:
+ 338:modbus/rtu/mbrtu.c **** 
+ 923              		.loc 1 338 9 is_stmt 1 view .LVU207
+ 924 0042 07E0     		b	.L53
+ 925              	.LVL65:
+ 926              	.L60:
+ 927              		.loc 1 346 9 is_stmt 0 discriminator 3 view .LVU208
+ 928 0044 5C21     		movs	r1, #92
+ 929 0046 0A4B     		ldr	r3, .L61+4
+ 930 0048 0A4A     		ldr	r2, .L61+8
+ 931 004a FF31     		adds	r1, r1, #255
+ 932 004c 0A48     		ldr	r0, .L61+12
+ 933 004e FFF7FEFF 		bl	__assert_func
+ 934              	.LVL66:
+ 935              	.L55:
+ 325:modbus/rtu/mbrtu.c **** 
+ 936              		.loc 1 325 21 view .LVU209
+ 937 0052 0024     		movs	r4, #0
+ 938              	.LVL67:
+ 939              	.L53:
+ 347:modbus/rtu/mbrtu.c ****                 ( eRcvState == STATE_RX_RCV ) || ( eRcvState == STATE_RX_ERROR ) );
+ 348:modbus/rtu/mbrtu.c ****     }
+ 349:modbus/rtu/mbrtu.c **** 
+ 350:modbus/rtu/mbrtu.c ****     vMBPortTimersDisable(  );
+ 940              		.loc 1 350 5 is_stmt 1 view .LVU210
+ 941 0054 FFF7FEFF 		bl	vMBPortTimersDisable
+ 942              	.LVL68:
+ 351:modbus/rtu/mbrtu.c ****     eRcvState = STATE_RX_IDLE;
+ 943              		.loc 1 351 5 view .LVU211
+ 944              		.loc 1 351 15 is_stmt 0 view .LVU212
+ 945 0058 044B     		ldr	r3, .L61
+ 946 005a 0122     		movs	r2, #1
+ 947 005c 1A70     		strb	r2, [r3]
+ 352:modbus/rtu/mbrtu.c **** 
+ 353:modbus/rtu/mbrtu.c ****     return xNeedPoll;
+ 948              		.loc 1 353 5 is_stmt 1 view .LVU213
+ 354:modbus/rtu/mbrtu.c **** }
+ARM GAS  /tmp/ccYt5hKt.s 			page 27
+
+
+ 949              		.loc 1 354 1 is_stmt 0 view .LVU214
+ 950 005e 2000     		movs	r0, r4
+ 951              		@ sp needed
+ 952              	.LVL69:
+ 953              		.loc 1 354 1 view .LVU215
+ 954 0060 10BD     		pop	{r4, pc}
+ 955              	.LVL70:
+ 956              	.L56:
+ 325:modbus/rtu/mbrtu.c **** 
+ 957              		.loc 1 325 21 view .LVU216
+ 958 0062 0024     		movs	r4, #0
+ 959 0064 F6E7     		b	.L53
+ 960              	.L57:
+ 961 0066 0024     		movs	r4, #0
+ 962 0068 F4E7     		b	.L53
+ 963              	.L62:
+ 964 006a C046     		.align	2
+ 965              	.L61:
+ 966 006c 00000000 		.word	.LANCHOR0
+ 967 0070 00000000 		.word	.LC31
+ 968 0074 00000000 		.word	.LANCHOR8
+ 969 0078 28000000 		.word	.LC5
+ 970              		.cfi_endproc
+ 971              	.LFE44:
+ 973              		.comm	ucRTUBuf,256,4
+ 974              		.section	.bss.eRcvState,"aw",%nobits
+ 975              		.set	.LANCHOR0,. + 0
+ 978              	eRcvState:
+ 979 0000 00       		.space	1
+ 980              		.section	.bss.eSndState,"aw",%nobits
+ 981              		.set	.LANCHOR5,. + 0
+ 984              	eSndState:
+ 985 0000 00       		.space	1
+ 986              		.section	.bss.pucSndBufferCur,"aw",%nobits
+ 987              		.align	2
+ 988              		.set	.LANCHOR3,. + 0
+ 991              	pucSndBufferCur:
+ 992 0000 00000000 		.space	4
+ 993              		.section	.bss.usRcvBufferPos,"aw",%nobits
+ 994              		.align	1
+ 995              		.set	.LANCHOR1,. + 0
+ 998              	usRcvBufferPos:
+ 999 0000 0000     		.space	2
+ 1000              		.section	.bss.usSndBufferCount,"aw",%nobits
+ 1001              		.align	1
+ 1002              		.set	.LANCHOR4,. + 0
+ 1005              	usSndBufferCount:
+ 1006 0000 0000     		.space	2
+ 1007              		.section	.rodata.__func__.7908,"a"
+ 1008              		.align	2
+ 1009              		.set	.LANCHOR2,. + 0
+ 1012              	__func__.7908:
+ 1013 0000 654D4252 		.ascii	"eMBRTUReceive\000"
+ 1013      54555265 
+ 1013      63656976 
+ 1013      6500
+ 1014              		.section	.rodata.__func__.7921,"a"
+ARM GAS  /tmp/ccYt5hKt.s 			page 28
+
+
+ 1015              		.align	2
+ 1016              		.set	.LANCHOR6,. + 0
+ 1019              	__func__.7921:
+ 1020 0000 784D4252 		.ascii	"xMBRTUReceiveFSM\000"
+ 1020      54555265 
+ 1020      63656976 
+ 1020      6546534D 
+ 1020      00
+ 1021              		.section	.rodata.__func__.7931,"a"
+ 1022              		.align	2
+ 1023              		.set	.LANCHOR7,. + 0
+ 1026              	__func__.7931:
+ 1027 0000 784D4252 		.ascii	"xMBRTUTransmitFSM\000"
+ 1027      54555472 
+ 1027      616E736D 
+ 1027      69744653 
+ 1027      4D00
+ 1028              		.section	.rodata.__func__.7944,"a"
+ 1029              		.align	2
+ 1030              		.set	.LANCHOR8,. + 0
+ 1033              	__func__.7944:
+ 1034 0000 784D4252 		.ascii	"xMBRTUTimerT35Expired\000"
+ 1034      54555469 
+ 1034      6D657254 
+ 1034      33354578 
+ 1034      70697265 
+ 1035              		.section	.rodata.eMBRTUReceive.str1.4,"aMS",%progbits,1
+ 1036              		.align	2
+ 1037              	.LC2:
+ 1038 0000 75735263 		.ascii	"usRcvBufferPos < MB_SER_PDU_SIZE_MAX\000"
+ 1038      76427566 
+ 1038      66657250 
+ 1038      6F73203C 
+ 1038      204D425F 
+ 1039 0025 000000   		.space	3
+ 1040              	.LC5:
+ 1041 0028 6D6F6462 		.ascii	"modbus/rtu/mbrtu.c\000"
+ 1041      75732F72 
+ 1041      74752F6D 
+ 1041      62727475 
+ 1041      2E6300
+ 1042              		.section	.rodata.xMBRTUReceiveFSM.str1.4,"aMS",%progbits,1
+ 1043              		.align	2
+ 1044              	.LC15:
+ 1045 0000 65536E64 		.ascii	"eSndState == STATE_TX_IDLE\000"
+ 1045      53746174 
+ 1045      65203D3D 
+ 1045      20535441 
+ 1045      54455F54 
+ 1046              		.section	.rodata.xMBRTUTimerT35Expired.str1.4,"aMS",%progbits,1
+ 1047              		.align	2
+ 1048              	.LC31:
+ 1049 0000 28206552 		.ascii	"( eRcvState == STATE_RX_INIT ) || ( eRcvState == ST"
+ 1049      63765374 
+ 1049      61746520 
+ 1049      3D3D2053 
+ 1049      54415445 
+ARM GAS  /tmp/ccYt5hKt.s 			page 29
+
+
+ 1050 0033 4154455F 		.ascii	"ATE_RX_RCV ) || ( eRcvState == STATE_RX_ERROR )\000"
+ 1050      52585F52 
+ 1050      43562029 
+ 1050      207C7C20 
+ 1050      28206552 
+ 1051              		.section	.rodata.xMBRTUTransmitFSM.str1.4,"aMS",%progbits,1
+ 1052              		.align	2
+ 1053              	.LC23:
+ 1054 0000 65526376 		.ascii	"eRcvState == STATE_RX_IDLE\000"
+ 1054      53746174 
+ 1054      65203D3D 
+ 1054      20535441 
+ 1054      54455F52 
+ 1055              		.text
+ 1056              	.Letext0:
+ 1057              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 1058              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 1059              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 1060              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 1061              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 1062              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 1063              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 1064              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 1065              		.file 11 "modbus/rtu/../port/port.h"
+ 1066              		.file 12 "modbus/include/mbport.h"
+ 1067              		.file 13 "modbus/include/mb.h"
+ 1068              		.file 14 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/assert.h"
+ 1069              		.file 15 "modbus/rtu/mbcrc.h"
+ARM GAS  /tmp/ccYt5hKt.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 mbrtu.c
+     /tmp/ccYt5hKt.s:17     .text.eMBRTUInit:0000000000000000 $t
+     /tmp/ccYt5hKt.s:25     .text.eMBRTUInit:0000000000000000 eMBRTUInit
+     /tmp/ccYt5hKt.s:139    .text.eMBRTUInit:0000000000000040 $d
+     /tmp/ccYt5hKt.s:144    .text.eMBRTUStart:0000000000000000 $t
+     /tmp/ccYt5hKt.s:151    .text.eMBRTUStart:0000000000000000 eMBRTUStart
+     /tmp/ccYt5hKt.s:209    .text.eMBRTUStart:000000000000001c $d
+     /tmp/ccYt5hKt.s:214    .text.eMBRTUStop:0000000000000000 $t
+     /tmp/ccYt5hKt.s:221    .text.eMBRTUStop:0000000000000000 eMBRTUStop
+     /tmp/ccYt5hKt.s:275    .text.eMBRTUReceive:0000000000000000 $t
+     /tmp/ccYt5hKt.s:282    .text.eMBRTUReceive:0000000000000000 eMBRTUReceive
+     /tmp/ccYt5hKt.s:416    .text.eMBRTUReceive:0000000000000058 $d
+                            *COM*:0000000000000100 ucRTUBuf
+     /tmp/ccYt5hKt.s:425    .text.eMBRTUSend:0000000000000000 $t
+     /tmp/ccYt5hKt.s:432    .text.eMBRTUSend:0000000000000000 eMBRTUSend
+     /tmp/ccYt5hKt.s:566    .text.eMBRTUSend:0000000000000064 $d
+     /tmp/ccYt5hKt.s:575    .text.xMBRTUReceiveFSM:0000000000000000 $t
+     /tmp/ccYt5hKt.s:582    .text.xMBRTUReceiveFSM:0000000000000000 xMBRTUReceiveFSM
+     /tmp/ccYt5hKt.s:714    .text.xMBRTUReceiveFSM:0000000000000098 $d
+     /tmp/ccYt5hKt.s:725    .text.xMBRTUTransmitFSM:0000000000000000 $t
+     /tmp/ccYt5hKt.s:732    .text.xMBRTUTransmitFSM:0000000000000000 xMBRTUTransmitFSM
+     /tmp/ccYt5hKt.s:845    .text.xMBRTUTransmitFSM:000000000000007c $d
+     /tmp/ccYt5hKt.s:856    .text.xMBRTUTimerT35Expired:0000000000000000 $t
+     /tmp/ccYt5hKt.s:863    .text.xMBRTUTimerT35Expired:0000000000000000 xMBRTUTimerT35Expired
+     /tmp/ccYt5hKt.s:966    .text.xMBRTUTimerT35Expired:000000000000006c $d
+     /tmp/ccYt5hKt.s:978    .bss.eRcvState:0000000000000000 eRcvState
+     /tmp/ccYt5hKt.s:979    .bss.eRcvState:0000000000000000 $d
+     /tmp/ccYt5hKt.s:984    .bss.eSndState:0000000000000000 eSndState
+     /tmp/ccYt5hKt.s:985    .bss.eSndState:0000000000000000 $d
+     /tmp/ccYt5hKt.s:987    .bss.pucSndBufferCur:0000000000000000 $d
+     /tmp/ccYt5hKt.s:991    .bss.pucSndBufferCur:0000000000000000 pucSndBufferCur
+     /tmp/ccYt5hKt.s:994    .bss.usRcvBufferPos:0000000000000000 $d
+     /tmp/ccYt5hKt.s:998    .bss.usRcvBufferPos:0000000000000000 usRcvBufferPos
+     /tmp/ccYt5hKt.s:1001   .bss.usSndBufferCount:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1005   .bss.usSndBufferCount:0000000000000000 usSndBufferCount
+     /tmp/ccYt5hKt.s:1008   .rodata.__func__.7908:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1012   .rodata.__func__.7908:0000000000000000 __func__.7908
+     /tmp/ccYt5hKt.s:1015   .rodata.__func__.7921:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1019   .rodata.__func__.7921:0000000000000000 __func__.7921
+     /tmp/ccYt5hKt.s:1022   .rodata.__func__.7931:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1026   .rodata.__func__.7931:0000000000000000 __func__.7931
+     /tmp/ccYt5hKt.s:1029   .rodata.__func__.7944:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1033   .rodata.__func__.7944:0000000000000000 __func__.7944
+     /tmp/ccYt5hKt.s:1036   .rodata.eMBRTUReceive.str1.4:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1043   .rodata.xMBRTUReceiveFSM.str1.4:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1047   .rodata.xMBRTUTimerT35Expired.str1.4:0000000000000000 $d
+     /tmp/ccYt5hKt.s:1052   .rodata.xMBRTUTransmitFSM.str1.4:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_uidiv
+xMBPortSerialInit
+xMBPortTimersInit
+vMBPortSerialEnable
+vMBPortTimersEnable
+vMBPortTimersDisable
+__assert_func
+ARM GAS  /tmp/ccYt5hKt.s 			page 31
+
+
+usMBCRC16
+xMBPortSerialGetByte
+xMBPortSerialPutByte
+xMBPortEventPost

@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cc53Pg4v.s 			page 1
+ARM GAS  /tmp/ccn5smZ1.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
   29:modbus/mb.c   **** 
   30:modbus/mb.c   **** /* ----------------------- System includes ----------------------------------*/
   31:modbus/mb.c   **** #include "stdlib.h"
-ARM GAS  /tmp/cc53Pg4v.s 			page 2
+ARM GAS  /tmp/ccn5smZ1.s 			page 2
 
 
   32:modbus/mb.c   **** #include "string.h"
@@ -118,7 +118,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
   86:modbus/mb.c   **** BOOL( *pxMBPortCBTimerExpired ) ( void );
   87:modbus/mb.c   **** 
   88:modbus/mb.c   **** BOOL( *pxMBFrameCBReceiveFSMCur ) ( void );
-ARM GAS  /tmp/cc53Pg4v.s 			page 3
+ARM GAS  /tmp/ccn5smZ1.s 			page 3
 
 
   89:modbus/mb.c   **** BOOL( *pxMBFrameCBTransmitFSMCur ) ( void );
@@ -178,7 +178,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
   40 0002 0D00     		movs	r5, r1
   41 0004 1100     		movs	r1, r2
   42              	.LVL1:
-ARM GAS  /tmp/cc53Pg4v.s 			page 4
+ARM GAS  /tmp/ccn5smZ1.s 			page 4
 
 
   43              		.loc 1 130 1 view .LVU2
@@ -238,7 +238,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  160:modbus/mb.c   ****         case MB_ASCII:
  161:modbus/mb.c   ****             pvMBFrameStartCur = eMBASCIIStart;
  162:modbus/mb.c   ****             pvMBFrameStopCur = eMBASCIIStop;
-ARM GAS  /tmp/cc53Pg4v.s 			page 5
+ARM GAS  /tmp/ccn5smZ1.s 			page 5
 
 
  163:modbus/mb.c   ****             peMBFrameSendCur = eMBASCIISend;
@@ -298,7 +298,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  152:modbus/mb.c   ****             pxMBFrameCBTransmitterEmpty = xMBRTUTransmitFSM;
   98              		.loc 1 152 13 is_stmt 1 view .LVU24
  152:modbus/mb.c   ****             pxMBFrameCBTransmitterEmpty = xMBRTUTransmitFSM;
-ARM GAS  /tmp/cc53Pg4v.s 			page 6
+ARM GAS  /tmp/ccn5smZ1.s 			page 6
 
 
   99              		.loc 1 152 37 is_stmt 0 view .LVU25
@@ -358,7 +358,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  187:modbus/mb.c   ****                 eMBState = STATE_DISABLED;
  133              		.loc 1 187 17 view .LVU40
  134              		.loc 1 187 26 is_stmt 0 view .LVU41
-ARM GAS  /tmp/cc53Pg4v.s 			page 7
+ARM GAS  /tmp/ccn5smZ1.s 			page 7
 
 
  135 0062 144B     		ldr	r3, .L7+64
@@ -418,7 +418,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  182              		.section	.text.eMBRegisterCB,"ax",%progbits
  183              		.align	1
  184              		.global	eMBRegisterCB
-ARM GAS  /tmp/cc53Pg4v.s 			page 8
+ARM GAS  /tmp/ccn5smZ1.s 			page 8
 
 
  185              		.syntax unified
@@ -478,7 +478,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  204              		.loc 1 228 5 view .LVU51
  229:modbus/mb.c   **** 
  230:modbus/mb.c   ****     if( ( 0 < ucFunctionCode ) && ( ucFunctionCode <= 127 ) )
-ARM GAS  /tmp/cc53Pg4v.s 			page 9
+ARM GAS  /tmp/ccn5smZ1.s 			page 9
 
 
  205              		.loc 1 230 5 view .LVU52
@@ -538,7 +538,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
   43:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
   44:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
   45:Drivers/CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  /tmp/cc53Pg4v.s 			page 10
+ARM GAS  /tmp/ccn5smZ1.s 			page 10
 
 
   46:Drivers/CMSIS/Include/cmsis_gcc.h **** 
@@ -598,7 +598,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  238              		.loc 1 237 39 is_stmt 0 view .LVU63
  239 0014 DC00     		lsls	r4, r3, #3
  240 0016 154A     		ldr	r2, .L26
-ARM GAS  /tmp/cc53Pg4v.s 			page 11
+ARM GAS  /tmp/ccn5smZ1.s 			page 11
 
 
  241 0018 1219     		adds	r2, r2, r4
@@ -658,7 +658,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  277              	.L13:
  240:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
  278              		.loc 1 240 21 is_stmt 1 view .LVU75
-ARM GAS  /tmp/cc53Pg4v.s 			page 12
+ARM GAS  /tmp/ccn5smZ1.s 			page 12
 
 
  240:modbus/mb.c   ****                     xFuncHandlers[i].pxHandler = pxHandler;
@@ -718,7 +718,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  263:modbus/mb.c   ****     else
  264:modbus/mb.c   ****     {
  265:modbus/mb.c   ****         eStatus = MB_EINVAL;
-ARM GAS  /tmp/cc53Pg4v.s 			page 13
+ARM GAS  /tmp/ccn5smZ1.s 			page 13
 
 
  266:modbus/mb.c   ****     }
@@ -778,7 +778,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  352              	.L20:
  265:modbus/mb.c   ****     }
  353              		.loc 1 265 17 view .LVU100
-ARM GAS  /tmp/cc53Pg4v.s 			page 14
+ARM GAS  /tmp/ccn5smZ1.s 			page 14
 
 
  354 0068 0220     		movs	r0, #2
@@ -838,7 +838,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  285:modbus/mb.c   ****         eStatus = MB_EILLSTATE;
  393              		.loc 1 285 17 view .LVU107
  394 000a 0620     		movs	r0, #6
-ARM GAS  /tmp/cc53Pg4v.s 			page 15
+ARM GAS  /tmp/ccn5smZ1.s 			page 15
 
 
  395              	.L29:
@@ -898,7 +898,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  439              		@ args = 0, pretend = 0, frame = 0
  440              		@ frame_needed = 0, uses_anonymous_args = 0
  441 0000 10B5     		push	{r4, lr}
-ARM GAS  /tmp/cc53Pg4v.s 			page 16
+ARM GAS  /tmp/ccn5smZ1.s 			page 16
 
 
  442              	.LCFI3:
@@ -958,7 +958,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  478              	.L40:
  479 001e C046     		.align	2
  480              	.L39:
-ARM GAS  /tmp/cc53Pg4v.s 			page 17
+ARM GAS  /tmp/ccn5smZ1.s 			page 17
 
 
  481 0020 00000000 		.word	.LANCHOR6
@@ -1018,7 +1018,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  526 0016 0020     		movs	r0, #0
  527              	.LVL42:
  528              	.L43:
-ARM GAS  /tmp/cc53Pg4v.s 			page 18
+ARM GAS  /tmp/ccn5smZ1.s 			page 18
 
 
  318:modbus/mb.c   ****     }
@@ -1078,7 +1078,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  566              		@ args = 0, pretend = 0, frame = 8
  567              		@ frame_needed = 0, uses_anonymous_args = 0
  568 0000 10B5     		push	{r4, lr}
-ARM GAS  /tmp/cc53Pg4v.s 			page 19
+ARM GAS  /tmp/ccn5smZ1.s 			page 19
 
 
  569              	.LCFI5:
@@ -1138,7 +1138,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  355:modbus/mb.c   ****         case EV_READY:
  356:modbus/mb.c   ****             break;
  357:modbus/mb.c   **** 
-ARM GAS  /tmp/cc53Pg4v.s 			page 20
+ARM GAS  /tmp/ccn5smZ1.s 			page 20
 
 
  358:modbus/mb.c   ****         case EV_FRAME_RECEIVED:
@@ -1198,7 +1198,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  602 0018 0024     		movs	r4, #0
  603              	.LVL46:
  604              	.L49:
-ARM GAS  /tmp/cc53Pg4v.s 			page 21
+ARM GAS  /tmp/ccn5smZ1.s 			page 21
 
 
  411:modbus/mb.c   **** }
@@ -1258,7 +1258,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  648 004e 002B     		cmp	r3, #0
  649 0050 E3D1     		bne	.L49
  650              	.L52:
-ARM GAS  /tmp/cc53Pg4v.s 			page 22
+ARM GAS  /tmp/ccn5smZ1.s 			page 22
 
 
  365:modbus/mb.c   ****                 }
@@ -1318,7 +1318,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  690              		.loc 1 376 37 is_stmt 0 view .LVU184
  691 0074 DA00     		lsls	r2, r3, #3
  692 0076 2249     		ldr	r1, .L63+32
-ARM GAS  /tmp/cc53Pg4v.s 			page 23
+ARM GAS  /tmp/ccn5smZ1.s 			page 23
 
 
  693 0078 525C     		ldrb	r2, [r2, r1]
@@ -1378,7 +1378,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  731              		.loc 1 394 21 is_stmt 1 view .LVU200
  395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
  732              		.loc 1 395 21 view .LVU201
-ARM GAS  /tmp/cc53Pg4v.s 			page 24
+ARM GAS  /tmp/ccn5smZ1.s 			page 24
 
 
  395:modbus/mb.c   ****                     ucMBFrame[usLength++] = eException;
@@ -1438,7 +1438,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  774              	.LVL59:
  775              	.L58:
  346:modbus/mb.c   ****     }
-ARM GAS  /tmp/cc53Pg4v.s 			page 25
+ARM GAS  /tmp/ccn5smZ1.s 			page 25
 
 
  776              		.loc 1 346 16 view .LVU215
@@ -1476,9 +1476,9 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  807              		.comm	pxMBPortCBTimerExpired,4,4
  808              		.comm	pxMBFrameCBTransmitterEmpty,4,4
  809              		.comm	pxMBFrameCBByteReceived,4,4
- 810              		.section	.bss.eException.7963,"aw",%nobits
+ 810              		.section	.bss.eException.7936,"aw",%nobits
  811              		.set	.LANCHOR11,. + 0
- 814              	eException.7963:
+ 814              	eException.7936:
  815 0000 00       		.space	1
  816              		.section	.bss.peMBFrameReceiveCur,"aw",%nobits
  817              		.align	2
@@ -1498,7 +1498,7 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  837              		.section	.bss.pvMBFrameStartCur,"aw",%nobits
  838              		.align	2
  839              		.set	.LANCHOR1,. + 0
-ARM GAS  /tmp/cc53Pg4v.s 			page 26
+ARM GAS  /tmp/ccn5smZ1.s 			page 26
 
 
  842              	pvMBFrameStartCur:
@@ -1508,142 +1508,112 @@ ARM GAS  /tmp/cc53Pg4v.s 			page 1
  846              		.set	.LANCHOR2,. + 0
  849              	pvMBFrameStopCur:
  850 0000 00000000 		.space	4
- 851              		.section	.bss.ucFunctionCode.7961,"aw",%nobits
+ 851              		.section	.bss.ucFunctionCode.7934,"aw",%nobits
  852              		.set	.LANCHOR10,. + 0
- 855              	ucFunctionCode.7961:
+ 855              	ucFunctionCode.7934:
  856 0000 00       		.space	1
  857              		.section	.bss.ucMBAddress,"aw",%nobits
  858              		.set	.LANCHOR0,. + 0
  861              	ucMBAddress:
  862 0000 00       		.space	1
- 863              		.section	.bss.ucMBFrame.7959,"aw",%nobits
+ 863              		.section	.bss.ucMBFrame.7932,"aw",%nobits
  864              		.align	2
  865              		.set	.LANCHOR8,. + 0
- 868              	ucMBFrame.7959:
+ 868              	ucMBFrame.7932:
  869 0000 00000000 		.space	4
- 870              		.section	.bss.ucRcvAddress.7960,"aw",%nobits
+ 870              		.section	.bss.ucRcvAddress.7933,"aw",%nobits
  871              		.set	.LANCHOR9,. + 0
- 874              	ucRcvAddress.7960:
+ 874              	ucRcvAddress.7933:
  875 0000 00       		.space	1
- 876              		.section	.bss.usLength.7962,"aw",%nobits
+ 876              		.section	.bss.usLength.7935,"aw",%nobits
  877              		.align	1
  878              		.set	.LANCHOR7,. + 0
- 881              	usLength.7962:
+ 881              	usLength.7935:
  882 0000 0000     		.space	2
- 883              		.section	.data.eMBState,"aw"
- 884              		.set	.LANCHOR6,. + 0
- 887              	eMBState:
- 888 0000 02       		.byte	2
- 889              		.section	.data.xFuncHandlers,"aw"
- 890              		.align	2
- 893              	xFuncHandlers:
- 894 0000 11       		.byte	17
- 895 0001 000000   		.space	3
- 896 0004 00000000 		.word	eMBFuncReportSlaveID
- 897 0008 04       		.byte	4
- 898 0009 000000   		.space	3
- 899 000c 00000000 		.word	eMBFuncReadInputRegister
- 900 0010 03       		.byte	3
- 901 0011 000000   		.space	3
- 902 0014 00000000 		.word	eMBFuncReadHoldingRegister
- 903 0018 10       		.byte	16
- 904 0019 000000   		.space	3
- 905 001c 00000000 		.word	eMBFuncWriteMultipleHoldingRegister
- 906 0020 06       		.byte	6
- 907 0021 000000   		.space	3
- 908 0024 00000000 		.word	eMBFuncWriteHoldingRegister
- 909 0028 17       		.byte	23
- 910 0029 000000   		.space	3
- 911 002c 00000000 		.word	eMBFuncReadWriteMultipleHoldingRegister
- 912 0030 01       		.byte	1
- 913 0031 000000   		.space	3
- 914 0034 00000000 		.word	eMBFuncReadCoils
-ARM GAS  /tmp/cc53Pg4v.s 			page 27
+ 883              		.section	.bss.xFuncHandlers,"aw",%nobits
+ 884              		.align	2
+ 887              	xFuncHandlers:
+ 888 0000 00000000 		.space	128
+ 888      00000000 
+ 888      00000000 
+ 888      00000000 
+ 888      00000000 
+ 889              		.section	.data.eMBState,"aw"
+ 890              		.set	.LANCHOR6,. + 0
+ 893              	eMBState:
+ 894 0000 02       		.byte	2
+ 895              		.text
+ 896              	.Letext0:
+ 897              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 898              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 899              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 900              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 901              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 902              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
+ 903              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 904              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 905              		.file 11 "modbus/port/port.h"
+ 906              		.file 12 "modbus/include/mbport.h"
+ 907              		.file 13 "modbus/include/mbproto.h"
+ 908              		.file 14 "modbus/include/mb.h"
+ 909              		.file 15 "modbus/include/mbframe.h"
+ 910              		.file 16 "modbus/rtu/mbrtu.h"
+ARM GAS  /tmp/ccn5smZ1.s 			page 27
 
 
- 915 0038 05       		.byte	5
- 916 0039 000000   		.space	3
- 917 003c 00000000 		.word	eMBFuncWriteCoil
- 918 0040 0F       		.byte	15
- 919 0041 000000   		.space	3
- 920 0044 00000000 		.word	eMBFuncWriteMultipleCoils
- 921 0048 02       		.byte	2
- 922 0049 000000   		.space	3
- 923 004c 00000000 		.word	eMBFuncReadDiscreteInputs
- 924 0050 00000000 		.space	48
- 924      00000000 
- 924      00000000 
- 924      00000000 
- 924      00000000 
- 925              		.text
- 926              	.Letext0:
- 927              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
- 928              		.file 4 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
- 929              		.file 5 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
- 930              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
- 931              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
- 932              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/stdlib.h"
- 933              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
- 934              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
- 935              		.file 11 "modbus/port/port.h"
- 936              		.file 12 "modbus/include/mbport.h"
- 937              		.file 13 "modbus/include/mbproto.h"
- 938              		.file 14 "modbus/include/mb.h"
- 939              		.file 15 "modbus/include/mbframe.h"
- 940              		.file 16 "modbus/rtu/mbrtu.h"
-ARM GAS  /tmp/cc53Pg4v.s 			page 28
+ARM GAS  /tmp/ccn5smZ1.s 			page 28
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mb.c
-     /tmp/cc53Pg4v.s:16     .text.eMBInit:0000000000000000 $t
-     /tmp/cc53Pg4v.s:24     .text.eMBInit:0000000000000000 eMBInit
-     /tmp/cc53Pg4v.s:162    .text.eMBInit:0000000000000074 $d
+     /tmp/ccn5smZ1.s:16     .text.eMBInit:0000000000000000 $t
+     /tmp/ccn5smZ1.s:24     .text.eMBInit:0000000000000000 eMBInit
+     /tmp/ccn5smZ1.s:162    .text.eMBInit:0000000000000074 $d
                             *COM*:0000000000000004 pxMBFrameCBByteReceived
                             *COM*:0000000000000004 pxMBFrameCBTransmitterEmpty
                             *COM*:0000000000000004 pxMBPortCBTimerExpired
-     /tmp/cc53Pg4v.s:183    .text.eMBRegisterCB:0000000000000000 $t
-     /tmp/cc53Pg4v.s:190    .text.eMBRegisterCB:0000000000000000 eMBRegisterCB
-     /tmp/cc53Pg4v.s:361    .text.eMBRegisterCB:000000000000006c $d
-     /tmp/cc53Pg4v.s:893    .data.xFuncHandlers:0000000000000000 xFuncHandlers
-     /tmp/cc53Pg4v.s:366    .text.eMBClose:0000000000000000 $t
-     /tmp/cc53Pg4v.s:373    .text.eMBClose:0000000000000000 eMBClose
-     /tmp/cc53Pg4v.s:422    .text.eMBClose:0000000000000020 $d
-     /tmp/cc53Pg4v.s:428    .text.eMBEnable:0000000000000000 $t
-     /tmp/cc53Pg4v.s:435    .text.eMBEnable:0000000000000000 eMBEnable
-     /tmp/cc53Pg4v.s:481    .text.eMBEnable:0000000000000020 $d
-     /tmp/cc53Pg4v.s:487    .text.eMBDisable:0000000000000000 $t
-     /tmp/cc53Pg4v.s:494    .text.eMBDisable:0000000000000000 eMBDisable
-     /tmp/cc53Pg4v.s:549    .text.eMBDisable:0000000000000028 $d
-     /tmp/cc53Pg4v.s:555    .text.eMBPoll:0000000000000000 $t
-     /tmp/cc53Pg4v.s:562    .text.eMBPoll:0000000000000000 eMBPoll
-     /tmp/cc53Pg4v.s:792    .text.eMBPoll:00000000000000e0 $d
+     /tmp/ccn5smZ1.s:183    .text.eMBRegisterCB:0000000000000000 $t
+     /tmp/ccn5smZ1.s:190    .text.eMBRegisterCB:0000000000000000 eMBRegisterCB
+     /tmp/ccn5smZ1.s:361    .text.eMBRegisterCB:000000000000006c $d
+     /tmp/ccn5smZ1.s:887    .bss.xFuncHandlers:0000000000000000 xFuncHandlers
+     /tmp/ccn5smZ1.s:366    .text.eMBClose:0000000000000000 $t
+     /tmp/ccn5smZ1.s:373    .text.eMBClose:0000000000000000 eMBClose
+     /tmp/ccn5smZ1.s:422    .text.eMBClose:0000000000000020 $d
+     /tmp/ccn5smZ1.s:428    .text.eMBEnable:0000000000000000 $t
+     /tmp/ccn5smZ1.s:435    .text.eMBEnable:0000000000000000 eMBEnable
+     /tmp/ccn5smZ1.s:481    .text.eMBEnable:0000000000000020 $d
+     /tmp/ccn5smZ1.s:487    .text.eMBDisable:0000000000000000 $t
+     /tmp/ccn5smZ1.s:494    .text.eMBDisable:0000000000000000 eMBDisable
+     /tmp/ccn5smZ1.s:549    .text.eMBDisable:0000000000000028 $d
+     /tmp/ccn5smZ1.s:555    .text.eMBPoll:0000000000000000 $t
+     /tmp/ccn5smZ1.s:562    .text.eMBPoll:0000000000000000 eMBPoll
+     /tmp/ccn5smZ1.s:792    .text.eMBPoll:00000000000000e0 $d
                             *COM*:0000000000000004 pxMBFrameCBTransmitFSMCur
                             *COM*:0000000000000004 pxMBFrameCBReceiveFSMCur
-     /tmp/cc53Pg4v.s:814    .bss.eException.7963:0000000000000000 eException.7963
-     /tmp/cc53Pg4v.s:815    .bss.eException.7963:0000000000000000 $d
-     /tmp/cc53Pg4v.s:817    .bss.peMBFrameReceiveCur:0000000000000000 $d
-     /tmp/cc53Pg4v.s:821    .bss.peMBFrameReceiveCur:0000000000000000 peMBFrameReceiveCur
-     /tmp/cc53Pg4v.s:824    .bss.peMBFrameSendCur:0000000000000000 $d
-     /tmp/cc53Pg4v.s:828    .bss.peMBFrameSendCur:0000000000000000 peMBFrameSendCur
-     /tmp/cc53Pg4v.s:831    .bss.pvMBFrameCloseCur:0000000000000000 $d
-     /tmp/cc53Pg4v.s:835    .bss.pvMBFrameCloseCur:0000000000000000 pvMBFrameCloseCur
-     /tmp/cc53Pg4v.s:838    .bss.pvMBFrameStartCur:0000000000000000 $d
-     /tmp/cc53Pg4v.s:842    .bss.pvMBFrameStartCur:0000000000000000 pvMBFrameStartCur
-     /tmp/cc53Pg4v.s:845    .bss.pvMBFrameStopCur:0000000000000000 $d
-     /tmp/cc53Pg4v.s:849    .bss.pvMBFrameStopCur:0000000000000000 pvMBFrameStopCur
-     /tmp/cc53Pg4v.s:855    .bss.ucFunctionCode.7961:0000000000000000 ucFunctionCode.7961
-     /tmp/cc53Pg4v.s:856    .bss.ucFunctionCode.7961:0000000000000000 $d
-     /tmp/cc53Pg4v.s:861    .bss.ucMBAddress:0000000000000000 ucMBAddress
-     /tmp/cc53Pg4v.s:862    .bss.ucMBAddress:0000000000000000 $d
-     /tmp/cc53Pg4v.s:864    .bss.ucMBFrame.7959:0000000000000000 $d
-     /tmp/cc53Pg4v.s:868    .bss.ucMBFrame.7959:0000000000000000 ucMBFrame.7959
-     /tmp/cc53Pg4v.s:874    .bss.ucRcvAddress.7960:0000000000000000 ucRcvAddress.7960
-     /tmp/cc53Pg4v.s:875    .bss.ucRcvAddress.7960:0000000000000000 $d
-     /tmp/cc53Pg4v.s:877    .bss.usLength.7962:0000000000000000 $d
-     /tmp/cc53Pg4v.s:881    .bss.usLength.7962:0000000000000000 usLength.7962
-     /tmp/cc53Pg4v.s:887    .data.eMBState:0000000000000000 eMBState
-     /tmp/cc53Pg4v.s:890    .data.xFuncHandlers:0000000000000000 $d
+     /tmp/ccn5smZ1.s:814    .bss.eException.7936:0000000000000000 eException.7936
+     /tmp/ccn5smZ1.s:815    .bss.eException.7936:0000000000000000 $d
+     /tmp/ccn5smZ1.s:817    .bss.peMBFrameReceiveCur:0000000000000000 $d
+     /tmp/ccn5smZ1.s:821    .bss.peMBFrameReceiveCur:0000000000000000 peMBFrameReceiveCur
+     /tmp/ccn5smZ1.s:824    .bss.peMBFrameSendCur:0000000000000000 $d
+     /tmp/ccn5smZ1.s:828    .bss.peMBFrameSendCur:0000000000000000 peMBFrameSendCur
+     /tmp/ccn5smZ1.s:831    .bss.pvMBFrameCloseCur:0000000000000000 $d
+     /tmp/ccn5smZ1.s:835    .bss.pvMBFrameCloseCur:0000000000000000 pvMBFrameCloseCur
+     /tmp/ccn5smZ1.s:838    .bss.pvMBFrameStartCur:0000000000000000 $d
+     /tmp/ccn5smZ1.s:842    .bss.pvMBFrameStartCur:0000000000000000 pvMBFrameStartCur
+     /tmp/ccn5smZ1.s:845    .bss.pvMBFrameStopCur:0000000000000000 $d
+     /tmp/ccn5smZ1.s:849    .bss.pvMBFrameStopCur:0000000000000000 pvMBFrameStopCur
+     /tmp/ccn5smZ1.s:855    .bss.ucFunctionCode.7934:0000000000000000 ucFunctionCode.7934
+     /tmp/ccn5smZ1.s:856    .bss.ucFunctionCode.7934:0000000000000000 $d
+     /tmp/ccn5smZ1.s:861    .bss.ucMBAddress:0000000000000000 ucMBAddress
+     /tmp/ccn5smZ1.s:862    .bss.ucMBAddress:0000000000000000 $d
+     /tmp/ccn5smZ1.s:864    .bss.ucMBFrame.7932:0000000000000000 $d
+     /tmp/ccn5smZ1.s:868    .bss.ucMBFrame.7932:0000000000000000 ucMBFrame.7932
+     /tmp/ccn5smZ1.s:874    .bss.ucRcvAddress.7933:0000000000000000 ucRcvAddress.7933
+     /tmp/ccn5smZ1.s:875    .bss.ucRcvAddress.7933:0000000000000000 $d
+     /tmp/ccn5smZ1.s:877    .bss.usLength.7935:0000000000000000 $d
+     /tmp/ccn5smZ1.s:881    .bss.usLength.7935:0000000000000000 usLength.7935
+     /tmp/ccn5smZ1.s:884    .bss.xFuncHandlers:0000000000000000 $d
+     /tmp/ccn5smZ1.s:893    .data.eMBState:0000000000000000 eMBState
 
 UNDEFINED SYMBOLS
 eMBRTUInit
@@ -1651,7 +1621,7 @@ xMBPortEventInit
 eMBRTUStart
 eMBRTUStop
 eMBRTUSend
-ARM GAS  /tmp/cc53Pg4v.s 			page 29
+ARM GAS  /tmp/ccn5smZ1.s 			page 29
 
 
 eMBRTUReceive
@@ -1660,13 +1630,3 @@ xMBRTUTransmitFSM
 xMBRTUTimerT35Expired
 xMBPortEventGet
 xMBPortEventPost
-eMBFuncReportSlaveID
-eMBFuncReadInputRegister
-eMBFuncReadHoldingRegister
-eMBFuncWriteMultipleHoldingRegister
-eMBFuncWriteHoldingRegister
-eMBFuncReadWriteMultipleHoldingRegister
-eMBFuncReadCoils
-eMBFuncWriteCoil
-eMBFuncWriteMultipleCoils
-eMBFuncReadDiscreteInputs

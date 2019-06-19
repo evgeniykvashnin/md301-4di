@@ -24,8 +24,8 @@ build/main.o: Src/main.c Inc/main.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h \
  Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h \
- modbus/include/mb.h modbus/include/../port/port.h \
- modbus/include/mbport.h modbus/include/mbproto.h
+ modbus/include/mb.h modbus/port/port.h modbus/include/mbport.h \
+ modbus/include/mbproto.h modbus/include/mbport.h
 
 Inc/main.h:
 
@@ -85,8 +85,10 @@ Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h:
 
 modbus/include/mb.h:
 
-modbus/include/../port/port.h:
+modbus/port/port.h:
 
 modbus/include/mbport.h:
 
 modbus/include/mbproto.h:
+
+modbus/include/mbport.h:

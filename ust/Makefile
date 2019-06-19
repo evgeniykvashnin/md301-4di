@@ -56,8 +56,18 @@ Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pwr_ex.c \
 Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_flash.c \
 Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_flash_ex.c \
 modbus/mb.c \
+modbus/rtu/mbrtu.c \
+modbus/rtu/mbcrc.c \
+modbus/port/portevent.c \
 modbus/port/porttimer.c \
 modbus/port/portserial.c \
+modbus/functions/mbfunccoils.c \
+modbus/functions/mbfuncdiag.c \
+modbus/functions/mbfuncdisc.c \
+modbus/functions/mbfuncholding.c \
+modbus/functions/mbfuncinput.c \
+modbus/functions/mbfuncother.c \
+modbus/functions/mbutils.c \
 Src/system_stm32f0xx.c
 
 # ASM sources
