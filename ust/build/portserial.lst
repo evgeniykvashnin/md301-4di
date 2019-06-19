@@ -1,0 +1,937 @@
+ARM GAS  /tmp/ccLAqOuN.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"portserial.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.vMBPortSerialEnable,"ax",%progbits
+  16              		.align	1
+  17              		.global	vMBPortSerialEnable
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	vMBPortSerialEnable:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "modbus/port/portserial.c"
+   1:modbus/port/portserial.c **** /*
+   2:modbus/port/portserial.c ****  * FreeModbus Libary: BARE Port
+   3:modbus/port/portserial.c ****  * Copyright (C) 2006 Christian Walter <wolti@sil.at>
+   4:modbus/port/portserial.c ****  *
+   5:modbus/port/portserial.c ****  * This library is free software; you can redistribute it and/or
+   6:modbus/port/portserial.c ****  * modify it under the terms of the GNU Lesser General Public
+   7:modbus/port/portserial.c ****  * License as published by the Free Software Foundation; either
+   8:modbus/port/portserial.c ****  * version 2.1 of the License, or (at your option) any later version.
+   9:modbus/port/portserial.c ****  *
+  10:modbus/port/portserial.c ****  * This library is distributed in the hope that it will be useful,
+  11:modbus/port/portserial.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  12:modbus/port/portserial.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  13:modbus/port/portserial.c ****  * Lesser General Public License for more details.
+  14:modbus/port/portserial.c ****  *
+  15:modbus/port/portserial.c ****  * You should have received a copy of the GNU Lesser General Public
+  16:modbus/port/portserial.c ****  * License along with this library; if not, write to the Free Software
+  17:modbus/port/portserial.c ****  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  18:modbus/port/portserial.c ****  *
+  19:modbus/port/portserial.c ****  * File: $Id$
+  20:modbus/port/portserial.c ****  */
+  21:modbus/port/portserial.c **** 
+  22:modbus/port/portserial.c **** #include "port.h"
+  23:modbus/port/portserial.c **** 
+  24:modbus/port/portserial.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  25:modbus/port/portserial.c **** #include "mb.h"
+  26:modbus/port/portserial.c **** #include "mbport.h"
+  27:modbus/port/portserial.c **** 
+  28:modbus/port/portserial.c **** /* ----------------------- static functions ---------------------------------*/
+  29:modbus/port/portserial.c **** static UART_HandleTypeDef huart;
+  30:modbus/port/portserial.c **** static GPIO_TypeDef * DE_Port;
+  31:modbus/port/portserial.c **** static uint16_t DE_Pin;
+ARM GAS  /tmp/ccLAqOuN.s 			page 2
+
+
+  32:modbus/port/portserial.c **** void prvvUARTTxReadyISR( void );
+  33:modbus/port/portserial.c **** void prvvUARTRxISR( void );
+  34:modbus/port/portserial.c **** 
+  35:modbus/port/portserial.c **** /* ----------------------- Start implementation -----------------------------*/
+  36:modbus/port/portserial.c **** void
+  37:modbus/port/portserial.c **** vMBPortSerialEnable( BOOL xRxEnable, BOOL xTxEnable )
+  38:modbus/port/portserial.c **** {
+  28              		.loc 1 38 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 38 1 is_stmt 0 view .LVU1
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  38 0002 0C00     		movs	r4, r1
+  39:modbus/port/portserial.c ****     /* If xRXEnable enable serial receive interrupts. If xTxENable enable
+  40:modbus/port/portserial.c ****      * transmitter empty interrupts.
+  41:modbus/port/portserial.c ****      */
+  42:modbus/port/portserial.c ****     if (xRxEnable)
+  39              		.loc 1 42 5 is_stmt 1 view .LVU2
+  40              		.loc 1 42 8 is_stmt 0 view .LVU3
+  41 0004 0028     		cmp	r0, #0
+  42 0006 0ED1     		bne	.L6
+  43:modbus/port/portserial.c ****     {
+  44:modbus/port/portserial.c ****         HAL_GPIO_WritePin(DE_Port,DE_Pin,GPIO_PIN_RESET);
+  45:modbus/port/portserial.c ****         __HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
+  46:modbus/port/portserial.c ****     }else{
+  47:modbus/port/portserial.c ****         __HAL_UART_DISABLE_IT(&huart, UART_IT_RXNE);
+  43              		.loc 1 47 9 is_stmt 1 view .LVU4
+  44 0008 154B     		ldr	r3, .L8
+  45 000a 1A68     		ldr	r2, [r3]
+  46 000c 1368     		ldr	r3, [r2]
+  47 000e 2021     		movs	r1, #32
+  48              	.LVL1:
+  49              		.loc 1 47 9 is_stmt 0 view .LVU5
+  50 0010 8B43     		bics	r3, r1
+  51 0012 1360     		str	r3, [r2]
+  52              	.LVL2:
+  53              	.L3:
+  48:modbus/port/portserial.c ****     }
+  49:modbus/port/portserial.c ****     if (xTxEnable)
+  54              		.loc 1 49 5 is_stmt 1 view .LVU6
+  55              		.loc 1 49 8 is_stmt 0 view .LVU7
+  56 0014 002C     		cmp	r4, #0
+  57 0016 14D1     		bne	.L7
+  50:modbus/port/portserial.c ****     {
+  51:modbus/port/portserial.c ****         HAL_GPIO_WritePin(DE_Port,DE_Pin,GPIO_PIN_RESET);
+  52:modbus/port/portserial.c ****         __HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
+  53:modbus/port/portserial.c ****     }else{
+  54:modbus/port/portserial.c ****         __HAL_UART_DISABLE_IT(&huart, UART_IT_RXNE);
+  58              		.loc 1 54 9 is_stmt 1 view .LVU8
+  59 0018 114B     		ldr	r3, .L8
+  60 001a 1A68     		ldr	r2, [r3]
+  61 001c 1368     		ldr	r3, [r2]
+ARM GAS  /tmp/ccLAqOuN.s 			page 3
+
+
+  62 001e 2021     		movs	r1, #32
+  63 0020 8B43     		bics	r3, r1
+  64 0022 1360     		str	r3, [r2]
+  65              	.L1:
+  55:modbus/port/portserial.c ****     } 
+  56:modbus/port/portserial.c **** }
+  66              		.loc 1 56 1 is_stmt 0 view .LVU9
+  67              		@ sp needed
+  68 0024 10BD     		pop	{r4, pc}
+  69              	.LVL3:
+  70              	.L6:
+  44:modbus/port/portserial.c ****         __HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
+  71              		.loc 1 44 9 is_stmt 1 view .LVU10
+  72 0026 0F4B     		ldr	r3, .L8+4
+  73 0028 1988     		ldrh	r1, [r3]
+  74              	.LVL4:
+  44:modbus/port/portserial.c ****         __HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
+  75              		.loc 1 44 9 is_stmt 0 view .LVU11
+  76 002a 0F4B     		ldr	r3, .L8+8
+  77 002c 1868     		ldr	r0, [r3]
+  78              	.LVL5:
+  44:modbus/port/portserial.c ****         __HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
+  79              		.loc 1 44 9 view .LVU12
+  80 002e 0022     		movs	r2, #0
+  81 0030 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  82              	.LVL6:
+  45:modbus/port/portserial.c ****     }else{
+  83              		.loc 1 45 9 is_stmt 1 view .LVU13
+  84 0034 0A4B     		ldr	r3, .L8
+  85 0036 1A68     		ldr	r2, [r3]
+  86 0038 1368     		ldr	r3, [r2]
+  87 003a 2021     		movs	r1, #32
+  88 003c 0B43     		orrs	r3, r1
+  89 003e 1360     		str	r3, [r2]
+  90 0040 E8E7     		b	.L3
+  91              	.L7:
+  51:modbus/port/portserial.c ****         __HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
+  92              		.loc 1 51 9 view .LVU14
+  93 0042 084B     		ldr	r3, .L8+4
+  94 0044 1988     		ldrh	r1, [r3]
+  95 0046 084B     		ldr	r3, .L8+8
+  96 0048 1868     		ldr	r0, [r3]
+  97 004a 0022     		movs	r2, #0
+  98 004c FFF7FEFF 		bl	HAL_GPIO_WritePin
+  99              	.LVL7:
+  52:modbus/port/portserial.c ****     }else{
+ 100              		.loc 1 52 9 view .LVU15
+ 101 0050 034B     		ldr	r3, .L8
+ 102 0052 1A68     		ldr	r2, [r3]
+ 103 0054 1368     		ldr	r3, [r2]
+ 104 0056 2021     		movs	r1, #32
+ 105 0058 0B43     		orrs	r3, r1
+ 106 005a 1360     		str	r3, [r2]
+ 107 005c E2E7     		b	.L1
+ 108              	.L9:
+ 109 005e C046     		.align	2
+ 110              	.L8:
+ARM GAS  /tmp/ccLAqOuN.s 			page 4
+
+
+ 111 0060 00000000 		.word	.LANCHOR2
+ 112 0064 00000000 		.word	.LANCHOR0
+ 113 0068 00000000 		.word	.LANCHOR1
+ 114              		.cfi_endproc
+ 115              	.LFE37:
+ 117              		.section	.text.xMBPortSerialInit,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	xMBPortSerialInit
+ 120              		.syntax unified
+ 121              		.code	16
+ 122              		.thumb_func
+ 123              		.fpu softvfp
+ 125              	xMBPortSerialInit:
+ 126              	.LVL8:
+ 127              	.LFB38:
+  57:modbus/port/portserial.c **** 
+  58:modbus/port/portserial.c **** BOOL
+  59:modbus/port/portserial.c **** xMBPortSerialInit( UCHAR ucPORT, ULONG ulBaudRate, UCHAR ucDataBits, eMBParity eParity )
+  60:modbus/port/portserial.c **** {
+ 128              		.loc 1 60 1 view -0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132              		.loc 1 60 1 is_stmt 0 view .LVU17
+ 133 0000 70B5     		push	{r4, r5, r6, lr}
+ 134              	.LCFI1:
+ 135              		.cfi_def_cfa_offset 16
+ 136              		.cfi_offset 4, -16
+ 137              		.cfi_offset 5, -12
+ 138              		.cfi_offset 6, -8
+ 139              		.cfi_offset 14, -4
+  61:modbus/port/portserial.c ****     
+  62:modbus/port/portserial.c ****     huart.Init.Mode = UART_MODE_TX_RX;
+ 140              		.loc 1 62 5 is_stmt 1 view .LVU18
+ 141              		.loc 1 62 21 is_stmt 0 view .LVU19
+ 142 0002 294C     		ldr	r4, .L22
+ 143 0004 0C25     		movs	r5, #12
+ 144 0006 6561     		str	r5, [r4, #20]
+  63:modbus/port/portserial.c ****     huart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 145              		.loc 1 63 5 is_stmt 1 view .LVU20
+ 146              		.loc 1 63 26 is_stmt 0 view .LVU21
+ 147 0008 0025     		movs	r5, #0
+ 148 000a A561     		str	r5, [r4, #24]
+  64:modbus/port/portserial.c ****     huart.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+ 149              		.loc 1 64 5 is_stmt 1 view .LVU22
+ 150              		.loc 1 64 31 is_stmt 0 view .LVU23
+ 151 000c 2562     		str	r5, [r4, #32]
+  65:modbus/port/portserial.c ****     huart.Init.OverSampling = UART_OVERSAMPLING_16;
+ 152              		.loc 1 65 5 is_stmt 1 view .LVU24
+ 153              		.loc 1 65 29 is_stmt 0 view .LVU25
+ 154 000e E561     		str	r5, [r4, #28]
+  66:modbus/port/portserial.c ****     huart.Init.StopBits = UART_STOPBITS_1;
+ 155              		.loc 1 66 5 is_stmt 1 view .LVU26
+ 156              		.loc 1 66 25 is_stmt 0 view .LVU27
+ 157 0010 E560     		str	r5, [r4, #12]
+  67:modbus/port/portserial.c ****     huart.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+ 158              		.loc 1 67 5 is_stmt 1 view .LVU28
+ARM GAS  /tmp/ccLAqOuN.s 			page 5
+
+
+ 159              		.loc 1 67 39 is_stmt 0 view .LVU29
+ 160 0012 6562     		str	r5, [r4, #36]
+  68:modbus/port/portserial.c **** 
+  69:modbus/port/portserial.c ****     switch (ucPORT)
+ 161              		.loc 1 69 5 is_stmt 1 view .LVU30
+ 162 0014 0028     		cmp	r0, #0
+ 163 0016 03D0     		beq	.L11
+ 164 0018 0128     		cmp	r0, #1
+ 165 001a 13D0     		beq	.L12
+  70:modbus/port/portserial.c ****     {
+  71:modbus/port/portserial.c ****     case 0:
+  72:modbus/port/portserial.c ****         huart.Instance = USART1;
+  73:modbus/port/portserial.c ****         DE_Port = GPIOA;
+  74:modbus/port/portserial.c ****         DE_Pin = GPIO_PIN_4;
+  75:modbus/port/portserial.c ****         break;
+  76:modbus/port/portserial.c ****     case 1:
+  77:modbus/port/portserial.c ****         huart.Instance = USART2;
+  78:modbus/port/portserial.c ****         DE_Port = GPIOA;
+  79:modbus/port/portserial.c ****         DE_Pin = GPIO_PIN_1;
+  80:modbus/port/portserial.c ****         break;
+  81:modbus/port/portserial.c ****     default:
+  82:modbus/port/portserial.c ****         return FALSE;
+ 166              		.loc 1 82 16 is_stmt 0 view .LVU31
+ 167 001c 0020     		movs	r0, #0
+ 168              	.LVL9:
+ 169              	.L13:
+  83:modbus/port/portserial.c ****     }
+  84:modbus/port/portserial.c ****     huart.Init.BaudRate = ulBaudRate;
+  85:modbus/port/portserial.c **** 
+  86:modbus/port/portserial.c ****     switch (ucDataBits)
+  87:modbus/port/portserial.c ****     {
+  88:modbus/port/portserial.c ****     case 8:
+  89:modbus/port/portserial.c ****         huart.Init.WordLength = UART_WORDLENGTH_8B;
+  90:modbus/port/portserial.c ****         break;
+  91:modbus/port/portserial.c ****     case 9:
+  92:modbus/port/portserial.c ****         huart.Init.WordLength = UART_WORDLENGTH_9B;
+  93:modbus/port/portserial.c ****         break;
+  94:modbus/port/portserial.c ****     default:
+  95:modbus/port/portserial.c ****         return FALSE;
+  96:modbus/port/portserial.c ****     }
+  97:modbus/port/portserial.c **** 
+  98:modbus/port/portserial.c ****     switch (eParity)
+  99:modbus/port/portserial.c ****     {
+ 100:modbus/port/portserial.c ****     case MB_PAR_NONE:
+ 101:modbus/port/portserial.c ****         huart.Init.Parity = UART_PARITY_NONE;
+ 102:modbus/port/portserial.c ****         break;
+ 103:modbus/port/portserial.c ****     case MB_PAR_EVEN:
+ 104:modbus/port/portserial.c ****         huart.Init.Parity = UART_PARITY_EVEN;
+ 105:modbus/port/portserial.c ****         break;
+ 106:modbus/port/portserial.c ****     case MB_PAR_ODD:
+ 107:modbus/port/portserial.c ****         huart.Init.Parity = UART_PARITY_ODD;
+ 108:modbus/port/portserial.c ****         break;
+ 109:modbus/port/portserial.c ****     default:
+ 110:modbus/port/portserial.c ****        return FALSE;
+ 111:modbus/port/portserial.c ****     }
+ 112:modbus/port/portserial.c **** 
+ 113:modbus/port/portserial.c ****     return HAL_OK == HAL_RS485Ex_Init(&huart, UART_DE_POLARITY_HIGH, 0, 0) ? TRUE : FALSE;
+ARM GAS  /tmp/ccLAqOuN.s 			page 6
+
+
+ 114:modbus/port/portserial.c ****   
+ 115:modbus/port/portserial.c ****         return (TRUE);
+ 116:modbus/port/portserial.c ****     
+ 117:modbus/port/portserial.c **** }
+ 170              		.loc 1 117 1 view .LVU32
+ 171              		@ sp needed
+ 172 001e 70BD     		pop	{r4, r5, r6, pc}
+ 173              	.LVL10:
+ 174              	.L11:
+  72:modbus/port/portserial.c ****         DE_Port = GPIOA;
+ 175              		.loc 1 72 9 is_stmt 1 view .LVU33
+  72:modbus/port/portserial.c ****         DE_Port = GPIOA;
+ 176              		.loc 1 72 24 is_stmt 0 view .LVU34
+ 177 0020 2148     		ldr	r0, .L22
+ 178              	.LVL11:
+  72:modbus/port/portserial.c ****         DE_Port = GPIOA;
+ 179              		.loc 1 72 24 view .LVU35
+ 180 0022 224C     		ldr	r4, .L22+4
+ 181 0024 0460     		str	r4, [r0]
+  73:modbus/port/portserial.c ****         DE_Pin = GPIO_PIN_4;
+ 182              		.loc 1 73 9 is_stmt 1 view .LVU36
+  73:modbus/port/portserial.c ****         DE_Pin = GPIO_PIN_4;
+ 183              		.loc 1 73 17 is_stmt 0 view .LVU37
+ 184 0026 2248     		ldr	r0, .L22+8
+ 185 0028 9024     		movs	r4, #144
+ 186 002a E405     		lsls	r4, r4, #23
+ 187 002c 0460     		str	r4, [r0]
+  74:modbus/port/portserial.c ****         break;
+ 188              		.loc 1 74 9 is_stmt 1 view .LVU38
+  74:modbus/port/portserial.c ****         break;
+ 189              		.loc 1 74 16 is_stmt 0 view .LVU39
+ 190 002e 2148     		ldr	r0, .L22+12
+ 191 0030 1024     		movs	r4, #16
+ 192 0032 0480     		strh	r4, [r0]
+  75:modbus/port/portserial.c ****     case 1:
+ 193              		.loc 1 75 9 is_stmt 1 view .LVU40
+ 194              	.L14:
+  84:modbus/port/portserial.c **** 
+ 195              		.loc 1 84 5 view .LVU41
+  84:modbus/port/portserial.c **** 
+ 196              		.loc 1 84 25 is_stmt 0 view .LVU42
+ 197 0034 1C48     		ldr	r0, .L22
+ 198 0036 4160     		str	r1, [r0, #4]
+  86:modbus/port/portserial.c ****     {
+ 199              		.loc 1 86 5 is_stmt 1 view .LVU43
+ 200 0038 082A     		cmp	r2, #8
+ 201 003a 0ED0     		beq	.L15
+  86:modbus/port/portserial.c ****     {
+ 202              		.loc 1 86 5 is_stmt 0 view .LVU44
+ 203 003c 092A     		cmp	r2, #9
+ 204 003e 17D0     		beq	.L16
+  95:modbus/port/portserial.c ****     }
+ 205              		.loc 1 95 16 view .LVU45
+ 206 0040 0020     		movs	r0, #0
+ 207 0042 ECE7     		b	.L13
+ 208              	.LVL12:
+ 209              	.L12:
+ARM GAS  /tmp/ccLAqOuN.s 			page 7
+
+
+  77:modbus/port/portserial.c ****         DE_Port = GPIOA;
+ 210              		.loc 1 77 9 is_stmt 1 view .LVU46
+  77:modbus/port/portserial.c ****         DE_Port = GPIOA;
+ 211              		.loc 1 77 24 is_stmt 0 view .LVU47
+ 212 0044 1848     		ldr	r0, .L22
+ 213              	.LVL13:
+  77:modbus/port/portserial.c ****         DE_Port = GPIOA;
+ 214              		.loc 1 77 24 view .LVU48
+ 215 0046 1C4C     		ldr	r4, .L22+16
+ 216 0048 0460     		str	r4, [r0]
+  78:modbus/port/portserial.c ****         DE_Pin = GPIO_PIN_1;
+ 217              		.loc 1 78 9 is_stmt 1 view .LVU49
+  78:modbus/port/portserial.c ****         DE_Pin = GPIO_PIN_1;
+ 218              		.loc 1 78 17 is_stmt 0 view .LVU50
+ 219 004a 1948     		ldr	r0, .L22+8
+ 220 004c 9024     		movs	r4, #144
+ 221 004e E405     		lsls	r4, r4, #23
+ 222 0050 0460     		str	r4, [r0]
+  79:modbus/port/portserial.c ****         break;
+ 223              		.loc 1 79 9 is_stmt 1 view .LVU51
+  79:modbus/port/portserial.c ****         break;
+ 224              		.loc 1 79 16 is_stmt 0 view .LVU52
+ 225 0052 1848     		ldr	r0, .L22+12
+ 226 0054 0224     		movs	r4, #2
+ 227 0056 0480     		strh	r4, [r0]
+  80:modbus/port/portserial.c ****     default:
+ 228              		.loc 1 80 9 is_stmt 1 view .LVU53
+ 229 0058 ECE7     		b	.L14
+ 230              	.L15:
+  89:modbus/port/portserial.c ****         break;
+ 231              		.loc 1 89 9 view .LVU54
+  89:modbus/port/portserial.c ****         break;
+ 232              		.loc 1 89 31 is_stmt 0 view .LVU55
+ 233 005a 134A     		ldr	r2, .L22
+ 234              	.LVL14:
+  89:modbus/port/portserial.c ****         break;
+ 235              		.loc 1 89 31 view .LVU56
+ 236 005c 0021     		movs	r1, #0
+ 237              	.LVL15:
+  89:modbus/port/portserial.c ****         break;
+ 238              		.loc 1 89 31 view .LVU57
+ 239 005e 9160     		str	r1, [r2, #8]
+  90:modbus/port/portserial.c ****     case 9:
+ 240              		.loc 1 90 9 is_stmt 1 view .LVU58
+ 241              	.L17:
+  98:modbus/port/portserial.c ****     {
+ 242              		.loc 1 98 5 view .LVU59
+ 243 0060 012B     		cmp	r3, #1
+ 244 0062 1CD0     		beq	.L18
+ 245 0064 002B     		cmp	r3, #0
+ 246 0066 08D0     		beq	.L19
+ 247 0068 022B     		cmp	r3, #2
+ 248 006a 13D0     		beq	.L20
+ 110:modbus/port/portserial.c ****     }
+ 249              		.loc 1 110 15 is_stmt 0 view .LVU60
+ 250 006c 0020     		movs	r0, #0
+ 110:modbus/port/portserial.c ****     }
+ARM GAS  /tmp/ccLAqOuN.s 			page 8
+
+
+ 251              		.loc 1 110 15 view .LVU61
+ 252 006e D6E7     		b	.L13
+ 253              	.LVL16:
+ 254              	.L16:
+  92:modbus/port/portserial.c ****         break;
+ 255              		.loc 1 92 9 is_stmt 1 view .LVU62
+  92:modbus/port/portserial.c ****         break;
+ 256              		.loc 1 92 31 is_stmt 0 view .LVU63
+ 257 0070 0D4A     		ldr	r2, .L22
+ 258              	.LVL17:
+  92:modbus/port/portserial.c ****         break;
+ 259              		.loc 1 92 31 view .LVU64
+ 260 0072 8021     		movs	r1, #128
+ 261              	.LVL18:
+  92:modbus/port/portserial.c ****         break;
+ 262              		.loc 1 92 31 view .LVU65
+ 263 0074 4901     		lsls	r1, r1, #5
+ 264 0076 9160     		str	r1, [r2, #8]
+  93:modbus/port/portserial.c ****     default:
+ 265              		.loc 1 93 9 is_stmt 1 view .LVU66
+ 266 0078 F2E7     		b	.L17
+ 267              	.L19:
+ 101:modbus/port/portserial.c ****         break;
+ 268              		.loc 1 101 9 view .LVU67
+ 101:modbus/port/portserial.c ****         break;
+ 269              		.loc 1 101 27 is_stmt 0 view .LVU68
+ 270 007a 0B4B     		ldr	r3, .L22
+ 271              	.LVL19:
+ 101:modbus/port/portserial.c ****         break;
+ 272              		.loc 1 101 27 view .LVU69
+ 273 007c 0022     		movs	r2, #0
+ 274 007e 1A61     		str	r2, [r3, #16]
+ 102:modbus/port/portserial.c ****     case MB_PAR_EVEN:
+ 275              		.loc 1 102 9 is_stmt 1 view .LVU70
+ 276              	.L21:
+ 113:modbus/port/portserial.c ****   
+ 277              		.loc 1 113 5 view .LVU71
+ 113:modbus/port/portserial.c ****   
+ 278              		.loc 1 113 22 is_stmt 0 view .LVU72
+ 279 0080 0023     		movs	r3, #0
+ 280 0082 0022     		movs	r2, #0
+ 281 0084 0021     		movs	r1, #0
+ 282 0086 0848     		ldr	r0, .L22
+ 113:modbus/port/portserial.c ****   
+ 283              		.loc 1 113 22 view .LVU73
+ 284 0088 FFF7FEFF 		bl	HAL_RS485Ex_Init
+ 285              	.LVL20:
+ 113:modbus/port/portserial.c ****   
+ 286              		.loc 1 113 83 view .LVU74
+ 287 008c 4342     		rsbs	r3, r0, #0
+ 288 008e 5841     		adcs	r0, r0, r3
+ 289 0090 C0B2     		uxtb	r0, r0
+ 290 0092 C4E7     		b	.L13
+ 291              	.LVL21:
+ 292              	.L20:
+ 104:modbus/port/portserial.c ****         break;
+ 293              		.loc 1 104 9 is_stmt 1 view .LVU75
+ARM GAS  /tmp/ccLAqOuN.s 			page 9
+
+
+ 104:modbus/port/portserial.c ****         break;
+ 294              		.loc 1 104 27 is_stmt 0 view .LVU76
+ 295 0094 044B     		ldr	r3, .L22
+ 296              	.LVL22:
+ 104:modbus/port/portserial.c ****         break;
+ 297              		.loc 1 104 27 view .LVU77
+ 298 0096 8022     		movs	r2, #128
+ 299 0098 D200     		lsls	r2, r2, #3
+ 300 009a 1A61     		str	r2, [r3, #16]
+ 105:modbus/port/portserial.c ****     case MB_PAR_ODD:
+ 301              		.loc 1 105 9 is_stmt 1 view .LVU78
+ 302 009c F0E7     		b	.L21
+ 303              	.LVL23:
+ 304              	.L18:
+ 107:modbus/port/portserial.c ****         break;
+ 305              		.loc 1 107 9 view .LVU79
+ 107:modbus/port/portserial.c ****         break;
+ 306              		.loc 1 107 27 is_stmt 0 view .LVU80
+ 307 009e 024B     		ldr	r3, .L22
+ 308              	.LVL24:
+ 107:modbus/port/portserial.c ****         break;
+ 309              		.loc 1 107 27 view .LVU81
+ 310 00a0 C022     		movs	r2, #192
+ 311 00a2 D200     		lsls	r2, r2, #3
+ 312 00a4 1A61     		str	r2, [r3, #16]
+ 108:modbus/port/portserial.c ****     default:
+ 313              		.loc 1 108 9 is_stmt 1 view .LVU82
+ 314 00a6 EBE7     		b	.L21
+ 315              	.L23:
+ 316              		.align	2
+ 317              	.L22:
+ 318 00a8 00000000 		.word	.LANCHOR2
+ 319 00ac 00380140 		.word	1073821696
+ 320 00b0 00000000 		.word	.LANCHOR1
+ 321 00b4 00000000 		.word	.LANCHOR0
+ 322 00b8 00440040 		.word	1073759232
+ 323              		.cfi_endproc
+ 324              	.LFE38:
+ 326              		.section	.text.xMBPortSerialPutByte,"ax",%progbits
+ 327              		.align	1
+ 328              		.global	xMBPortSerialPutByte
+ 329              		.syntax unified
+ 330              		.code	16
+ 331              		.thumb_func
+ 332              		.fpu softvfp
+ 334              	xMBPortSerialPutByte:
+ 335              	.LVL25:
+ 336              	.LFB39:
+ 118:modbus/port/portserial.c **** 
+ 119:modbus/port/portserial.c **** BOOL
+ 120:modbus/port/portserial.c **** xMBPortSerialPutByte( CHAR ucByte )
+ 121:modbus/port/portserial.c **** {
+ 337              		.loc 1 121 1 view -0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341              		@ link register save eliminated.
+ARM GAS  /tmp/ccLAqOuN.s 			page 10
+
+
+ 122:modbus/port/portserial.c ****     /* Put a byte in the UARTs transmit buffer. This function is called
+ 123:modbus/port/portserial.c ****      * by the protocol stack if pxMBFrameCBTransmitterEmpty( ) has been
+ 124:modbus/port/portserial.c ****      * called. */
+ 125:modbus/port/portserial.c ****     huart.Instance->TDR = ucByte;
+ 342              		.loc 1 125 5 view .LVU84
+ 343              		.loc 1 125 10 is_stmt 0 view .LVU85
+ 344 0000 024B     		ldr	r3, .L25
+ 345 0002 1B68     		ldr	r3, [r3]
+ 346              		.loc 1 125 25 view .LVU86
+ 347 0004 80B2     		uxth	r0, r0
+ 348              	.LVL26:
+ 349              		.loc 1 125 25 view .LVU87
+ 350 0006 1885     		strh	r0, [r3, #40]
+ 126:modbus/port/portserial.c ****     return TRUE;
+ 351              		.loc 1 126 5 is_stmt 1 view .LVU88
+ 127:modbus/port/portserial.c **** }
+ 352              		.loc 1 127 1 is_stmt 0 view .LVU89
+ 353 0008 0120     		movs	r0, #1
+ 354              		@ sp needed
+ 355 000a 7047     		bx	lr
+ 356              	.L26:
+ 357              		.align	2
+ 358              	.L25:
+ 359 000c 00000000 		.word	.LANCHOR2
+ 360              		.cfi_endproc
+ 361              	.LFE39:
+ 363              		.section	.text.xMBPortSerialGetByte,"ax",%progbits
+ 364              		.align	1
+ 365              		.global	xMBPortSerialGetByte
+ 366              		.syntax unified
+ 367              		.code	16
+ 368              		.thumb_func
+ 369              		.fpu softvfp
+ 371              	xMBPortSerialGetByte:
+ 372              	.LVL27:
+ 373              	.LFB40:
+ 128:modbus/port/portserial.c **** 
+ 129:modbus/port/portserial.c **** BOOL
+ 130:modbus/port/portserial.c **** xMBPortSerialGetByte( CHAR * pucByte )
+ 131:modbus/port/portserial.c **** {
+ 374              		.loc 1 131 1 is_stmt 1 view -0
+ 375              		.cfi_startproc
+ 376              		@ args = 0, pretend = 0, frame = 0
+ 377              		@ frame_needed = 0, uses_anonymous_args = 0
+ 378              		@ link register save eliminated.
+ 132:modbus/port/portserial.c ****     /* Return the byte in the UARTs receive buffer. This function is called
+ 133:modbus/port/portserial.c ****      * by the protocol stack after pxMBFrameCBByteReceived( ) has been called.
+ 134:modbus/port/portserial.c ****      */
+ 135:modbus/port/portserial.c ****     *pucByte = huart.Instance->RDR;
+ 379              		.loc 1 135 5 view .LVU91
+ 380              		.loc 1 135 21 is_stmt 0 view .LVU92
+ 381 0000 024B     		ldr	r3, .L28
+ 382 0002 1B68     		ldr	r3, [r3]
+ 383              		.loc 1 135 30 view .LVU93
+ 384 0004 9B8C     		ldrh	r3, [r3, #36]
+ 385              		.loc 1 135 14 view .LVU94
+ 386 0006 0370     		strb	r3, [r0]
+ARM GAS  /tmp/ccLAqOuN.s 			page 11
+
+
+ 136:modbus/port/portserial.c ****     return TRUE;
+ 387              		.loc 1 136 5 is_stmt 1 view .LVU95
+ 137:modbus/port/portserial.c **** }
+ 388              		.loc 1 137 1 is_stmt 0 view .LVU96
+ 389 0008 0120     		movs	r0, #1
+ 390              	.LVL28:
+ 391              		.loc 1 137 1 view .LVU97
+ 392              		@ sp needed
+ 393 000a 7047     		bx	lr
+ 394              	.L29:
+ 395              		.align	2
+ 396              	.L28:
+ 397 000c 00000000 		.word	.LANCHOR2
+ 398              		.cfi_endproc
+ 399              	.LFE40:
+ 401              		.section	.text.UART_IRQ_Handler,"ax",%progbits
+ 402              		.align	1
+ 403              		.global	UART_IRQ_Handler
+ 404              		.syntax unified
+ 405              		.code	16
+ 406              		.thumb_func
+ 407              		.fpu softvfp
+ 409              	UART_IRQ_Handler:
+ 410              	.LVL29:
+ 411              	.LFB41:
+ 138:modbus/port/portserial.c **** 
+ 139:modbus/port/portserial.c **** /* Create an interrupt handler for the transmit buffer empty interrupt
+ 140:modbus/port/portserial.c ****  * (or an equivalent) for your target processor. This function should then
+ 141:modbus/port/portserial.c ****  * call pxMBFrameCBTransmitterEmpty( ) which tells the protocol stack that
+ 142:modbus/port/portserial.c ****  * a new character can be sent. The protocol stack will then call 
+ 143:modbus/port/portserial.c ****  * xMBPortSerialPutByte( ) to send the character.
+ 144:modbus/port/portserial.c ****  */
+ 145:modbus/port/portserial.c **** 
+ 146:modbus/port/portserial.c **** BOOL UART_IRQ_Handler(USART_TypeDef * usart){
+ 412              		.loc 1 146 45 is_stmt 1 view -0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 0
+ 415              		@ frame_needed = 0, uses_anonymous_args = 0
+ 416              		.loc 1 146 45 is_stmt 0 view .LVU99
+ 417 0000 10B5     		push	{r4, lr}
+ 418              	.LCFI2:
+ 419              		.cfi_def_cfa_offset 8
+ 420              		.cfi_offset 4, -8
+ 421              		.cfi_offset 14, -4
+ 147:modbus/port/portserial.c ****       if (usart == huart.Instance) {
+ 422              		.loc 1 147 7 is_stmt 1 view .LVU100
+ 423              		.loc 1 147 25 is_stmt 0 view .LVU101
+ 424 0002 134B     		ldr	r3, .L39
+ 425 0004 1B68     		ldr	r3, [r3]
+ 426              		.loc 1 147 10 view .LVU102
+ 427 0006 8342     		cmp	r3, r0
+ 428 0008 01D0     		beq	.L36
+ 148:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart, UART_I
+ 149:modbus/port/portserial.c **** 			pxMBFrameCBByteReceived();
+ 150:modbus/port/portserial.c **** 			__HAL_UART_SEND_REQ(&huart, UART_RXDATA_FLUSH_REQUEST);
+ 151:modbus/port/portserial.c **** 			return TRUE;
+ 152:modbus/port/portserial.c **** 		}
+ARM GAS  /tmp/ccLAqOuN.s 			page 12
+
+
+ 153:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_TXE) != RESET) &&(__HAL_UART_GET_IT_SOURCE(&huart, UART_IT_
+ 154:modbus/port/portserial.c **** 			pxMBFrameCBTransmitterEmpty();
+ 155:modbus/port/portserial.c **** 			return TRUE;
+ 156:modbus/port/portserial.c **** 		}
+ 157:modbus/port/portserial.c **** 	}
+ 158:modbus/port/portserial.c **** 	return FALSE;
+ 429              		.loc 1 158 9 view .LVU103
+ 430 000a 0020     		movs	r0, #0
+ 431              	.LVL30:
+ 432              	.L31:
+ 159:modbus/port/portserial.c **** }
+ 433              		.loc 1 159 1 view .LVU104
+ 434              		@ sp needed
+ 435 000c 10BD     		pop	{r4, pc}
+ 436              	.LVL31:
+ 437              	.L36:
+ 148:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart, UART_I
+ 438              		.loc 1 148 3 is_stmt 1 view .LVU105
+ 148:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart, UART_I
+ 439              		.loc 1 148 7 is_stmt 0 view .LVU106
+ 440 000e DA69     		ldr	r2, [r3, #28]
+ 148:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart, UART_I
+ 441              		.loc 1 148 5 view .LVU107
+ 442 0010 9206     		lsls	r2, r2, #26
+ 443 0012 02D5     		bpl	.L32
+ 148:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart, UART_I
+ 444              		.loc 1 148 61 discriminator 1 view .LVU108
+ 445 0014 1A68     		ldr	r2, [r3]
+ 148:modbus/port/portserial.c **** 		if((__HAL_UART_GET_IT(&huart, UART_IT_RXNE) != RESET) && (__HAL_UART_GET_IT_SOURCE(&huart, UART_I
+ 446              		.loc 1 148 57 discriminator 1 view .LVU109
+ 447 0016 9206     		lsls	r2, r2, #26
+ 448 0018 07D4     		bmi	.L37
+ 449              	.L32:
+ 153:modbus/port/portserial.c **** 			pxMBFrameCBTransmitterEmpty();
+ 450              		.loc 1 153 3 is_stmt 1 view .LVU110
+ 153:modbus/port/portserial.c **** 			pxMBFrameCBTransmitterEmpty();
+ 451              		.loc 1 153 7 is_stmt 0 view .LVU111
+ 452 001a DA69     		ldr	r2, [r3, #28]
+ 153:modbus/port/portserial.c **** 			pxMBFrameCBTransmitterEmpty();
+ 453              		.loc 1 153 5 view .LVU112
+ 454 001c 1206     		lsls	r2, r2, #24
+ 455 001e 14D5     		bpl	.L34
+ 153:modbus/port/portserial.c **** 			pxMBFrameCBTransmitterEmpty();
+ 456              		.loc 1 153 59 discriminator 1 view .LVU113
+ 457 0020 1B68     		ldr	r3, [r3]
+ 153:modbus/port/portserial.c **** 			pxMBFrameCBTransmitterEmpty();
+ 458              		.loc 1 153 56 discriminator 1 view .LVU114
+ 459 0022 1B06     		lsls	r3, r3, #24
+ 460 0024 0CD4     		bmi	.L38
+ 158:modbus/port/portserial.c **** }
+ 461              		.loc 1 158 9 view .LVU115
+ 462 0026 0020     		movs	r0, #0
+ 463              	.LVL32:
+ 158:modbus/port/portserial.c **** }
+ 464              		.loc 1 158 9 view .LVU116
+ 465 0028 F0E7     		b	.L31
+ 466              	.LVL33:
+ARM GAS  /tmp/ccLAqOuN.s 			page 13
+
+
+ 467              	.L37:
+ 149:modbus/port/portserial.c **** 			__HAL_UART_SEND_REQ(&huart, UART_RXDATA_FLUSH_REQUEST);
+ 468              		.loc 1 149 4 is_stmt 1 view .LVU117
+ 469 002a 0A4B     		ldr	r3, .L39+4
+ 470 002c 1B68     		ldr	r3, [r3]
+ 471 002e 9847     		blx	r3
+ 472              	.LVL34:
+ 150:modbus/port/portserial.c **** 			return TRUE;
+ 473              		.loc 1 150 4 view .LVU118
+ 474 0030 074B     		ldr	r3, .L39
+ 475 0032 1A68     		ldr	r2, [r3]
+ 476 0034 9369     		ldr	r3, [r2, #24]
+ 477 0036 0821     		movs	r1, #8
+ 478 0038 0B43     		orrs	r3, r1
+ 479 003a 9361     		str	r3, [r2, #24]
+ 151:modbus/port/portserial.c **** 		}
+ 480              		.loc 1 151 4 view .LVU119
+ 151:modbus/port/portserial.c **** 		}
+ 481              		.loc 1 151 11 is_stmt 0 view .LVU120
+ 482 003c 0120     		movs	r0, #1
+ 483 003e E5E7     		b	.L31
+ 484              	.LVL35:
+ 485              	.L38:
+ 154:modbus/port/portserial.c **** 			return TRUE;
+ 486              		.loc 1 154 4 is_stmt 1 view .LVU121
+ 487 0040 054B     		ldr	r3, .L39+8
+ 488 0042 1B68     		ldr	r3, [r3]
+ 489 0044 9847     		blx	r3
+ 490              	.LVL36:
+ 155:modbus/port/portserial.c **** 		}
+ 491              		.loc 1 155 4 view .LVU122
+ 155:modbus/port/portserial.c **** 		}
+ 492              		.loc 1 155 11 is_stmt 0 view .LVU123
+ 493 0046 0120     		movs	r0, #1
+ 494 0048 E0E7     		b	.L31
+ 495              	.LVL37:
+ 496              	.L34:
+ 158:modbus/port/portserial.c **** }
+ 497              		.loc 1 158 9 view .LVU124
+ 498 004a 0020     		movs	r0, #0
+ 499              	.LVL38:
+ 158:modbus/port/portserial.c **** }
+ 500              		.loc 1 158 9 view .LVU125
+ 501 004c DEE7     		b	.L31
+ 502              	.L40:
+ 503 004e C046     		.align	2
+ 504              	.L39:
+ 505 0050 00000000 		.word	.LANCHOR2
+ 506 0054 00000000 		.word	pxMBFrameCBByteReceived
+ 507 0058 00000000 		.word	pxMBFrameCBTransmitterEmpty
+ 508              		.cfi_endproc
+ 509              	.LFE41:
+ 511              		.section	.text.prvvUARTTxReadyISR,"ax",%progbits
+ 512              		.align	1
+ 513              		.global	prvvUARTTxReadyISR
+ 514              		.syntax unified
+ 515              		.code	16
+ARM GAS  /tmp/ccLAqOuN.s 			page 14
+
+
+ 516              		.thumb_func
+ 517              		.fpu softvfp
+ 519              	prvvUARTTxReadyISR:
+ 520              	.LFB42:
+ 160:modbus/port/portserial.c **** 
+ 161:modbus/port/portserial.c **** void prvvUARTTxReadyISR( void )
+ 162:modbus/port/portserial.c **** {
+ 521              		.loc 1 162 1 is_stmt 1 view -0
+ 522              		.cfi_startproc
+ 523              		@ args = 0, pretend = 0, frame = 0
+ 524              		@ frame_needed = 0, uses_anonymous_args = 0
+ 525 0000 10B5     		push	{r4, lr}
+ 526              	.LCFI3:
+ 527              		.cfi_def_cfa_offset 8
+ 528              		.cfi_offset 4, -8
+ 529              		.cfi_offset 14, -4
+ 163:modbus/port/portserial.c ****     pxMBFrameCBTransmitterEmpty(  );
+ 530              		.loc 1 163 5 view .LVU127
+ 531 0002 024B     		ldr	r3, .L42
+ 532 0004 1B68     		ldr	r3, [r3]
+ 533 0006 9847     		blx	r3
+ 534              	.LVL39:
+ 164:modbus/port/portserial.c **** }
+ 535              		.loc 1 164 1 is_stmt 0 view .LVU128
+ 536              		@ sp needed
+ 537 0008 10BD     		pop	{r4, pc}
+ 538              	.L43:
+ 539 000a C046     		.align	2
+ 540              	.L42:
+ 541 000c 00000000 		.word	pxMBFrameCBTransmitterEmpty
+ 542              		.cfi_endproc
+ 543              	.LFE42:
+ 545              		.section	.text.prvvUARTRxISR,"ax",%progbits
+ 546              		.align	1
+ 547              		.global	prvvUARTRxISR
+ 548              		.syntax unified
+ 549              		.code	16
+ 550              		.thumb_func
+ 551              		.fpu softvfp
+ 553              	prvvUARTRxISR:
+ 554              	.LFB43:
+ 165:modbus/port/portserial.c **** 
+ 166:modbus/port/portserial.c **** /* Create an interrupt handler for the receive interrupt for your target
+ 167:modbus/port/portserial.c ****  * processor. This function should then call pxMBFrameCBByteReceived( ). The
+ 168:modbus/port/portserial.c ****  * protocol stack will then call xMBPortSerialGetByte( ) to retrieve the
+ 169:modbus/port/portserial.c ****  * character.
+ 170:modbus/port/portserial.c ****  */
+ 171:modbus/port/portserial.c **** 
+ 172:modbus/port/portserial.c **** 
+ 173:modbus/port/portserial.c **** void prvvUARTRxISR( void )
+ 174:modbus/port/portserial.c **** {
+ 555              		.loc 1 174 1 is_stmt 1 view -0
+ 556              		.cfi_startproc
+ 557              		@ args = 0, pretend = 0, frame = 0
+ 558              		@ frame_needed = 0, uses_anonymous_args = 0
+ 559 0000 10B5     		push	{r4, lr}
+ 560              	.LCFI4:
+ARM GAS  /tmp/ccLAqOuN.s 			page 15
+
+
+ 561              		.cfi_def_cfa_offset 8
+ 562              		.cfi_offset 4, -8
+ 563              		.cfi_offset 14, -4
+ 175:modbus/port/portserial.c ****     pxMBFrameCBByteReceived(  );
+ 564              		.loc 1 175 5 view .LVU130
+ 565 0002 024B     		ldr	r3, .L45
+ 566 0004 1B68     		ldr	r3, [r3]
+ 567 0006 9847     		blx	r3
+ 568              	.LVL40:
+ 176:modbus/port/portserial.c **** }...
+ 569              		.loc 1 176 1 is_stmt 0 view .LVU131
+ 570              		@ sp needed
+ 571 0008 10BD     		pop	{r4, pc}
+ 572              	.L46:
+ 573 000a C046     		.align	2
+ 574              	.L45:
+ 575 000c 00000000 		.word	pxMBFrameCBByteReceived
+ 576              		.cfi_endproc
+ 577              	.LFE43:
+ 579              		.section	.bss.DE_Pin,"aw",%nobits
+ 580              		.align	1
+ 581              		.set	.LANCHOR0,. + 0
+ 584              	DE_Pin:
+ 585 0000 0000     		.space	2
+ 586              		.section	.bss.DE_Port,"aw",%nobits
+ 587              		.align	2
+ 588              		.set	.LANCHOR1,. + 0
+ 591              	DE_Port:
+ 592 0000 00000000 		.space	4
+ 593              		.section	.bss.huart,"aw",%nobits
+ 594              		.align	2
+ 595              		.set	.LANCHOR2,. + 0
+ 598              	huart:
+ 599 0000 00000000 		.space	112
+ 599      00000000 
+ 599      00000000 
+ 599      00000000 
+ 599      00000000 
+ 600              		.text
+ 601              	.Letext0:
+ 602              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 603              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 604              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 605              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f070x6.h"
+ 606              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 607              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 608              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 609              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 610              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f0xx.h"
+ 611              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
+ 612              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_gpio.h"
+ 613              		.file 13 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h"
+ 614              		.file 14 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h"
+ 615              		.file 15 "modbus/port/port.h"
+ 616              		.file 16 "modbus/include/mbport.h"
+ 617              		.file 17 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h"
+ARM GAS  /tmp/ccLAqOuN.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 portserial.c
+     /tmp/ccLAqOuN.s:16     .text.vMBPortSerialEnable:0000000000000000 $t
+     /tmp/ccLAqOuN.s:24     .text.vMBPortSerialEnable:0000000000000000 vMBPortSerialEnable
+     /tmp/ccLAqOuN.s:111    .text.vMBPortSerialEnable:0000000000000060 $d
+     /tmp/ccLAqOuN.s:118    .text.xMBPortSerialInit:0000000000000000 $t
+     /tmp/ccLAqOuN.s:125    .text.xMBPortSerialInit:0000000000000000 xMBPortSerialInit
+     /tmp/ccLAqOuN.s:318    .text.xMBPortSerialInit:00000000000000a8 $d
+     /tmp/ccLAqOuN.s:327    .text.xMBPortSerialPutByte:0000000000000000 $t
+     /tmp/ccLAqOuN.s:334    .text.xMBPortSerialPutByte:0000000000000000 xMBPortSerialPutByte
+     /tmp/ccLAqOuN.s:359    .text.xMBPortSerialPutByte:000000000000000c $d
+     /tmp/ccLAqOuN.s:364    .text.xMBPortSerialGetByte:0000000000000000 $t
+     /tmp/ccLAqOuN.s:371    .text.xMBPortSerialGetByte:0000000000000000 xMBPortSerialGetByte
+     /tmp/ccLAqOuN.s:397    .text.xMBPortSerialGetByte:000000000000000c $d
+     /tmp/ccLAqOuN.s:402    .text.UART_IRQ_Handler:0000000000000000 $t
+     /tmp/ccLAqOuN.s:409    .text.UART_IRQ_Handler:0000000000000000 UART_IRQ_Handler
+     /tmp/ccLAqOuN.s:505    .text.UART_IRQ_Handler:0000000000000050 $d
+     /tmp/ccLAqOuN.s:512    .text.prvvUARTTxReadyISR:0000000000000000 $t
+     /tmp/ccLAqOuN.s:519    .text.prvvUARTTxReadyISR:0000000000000000 prvvUARTTxReadyISR
+     /tmp/ccLAqOuN.s:541    .text.prvvUARTTxReadyISR:000000000000000c $d
+     /tmp/ccLAqOuN.s:546    .text.prvvUARTRxISR:0000000000000000 $t
+     /tmp/ccLAqOuN.s:553    .text.prvvUARTRxISR:0000000000000000 prvvUARTRxISR
+     /tmp/ccLAqOuN.s:575    .text.prvvUARTRxISR:000000000000000c $d
+     /tmp/ccLAqOuN.s:580    .bss.DE_Pin:0000000000000000 $d
+     /tmp/ccLAqOuN.s:584    .bss.DE_Pin:0000000000000000 DE_Pin
+     /tmp/ccLAqOuN.s:587    .bss.DE_Port:0000000000000000 $d
+     /tmp/ccLAqOuN.s:591    .bss.DE_Port:0000000000000000 DE_Port
+     /tmp/ccLAqOuN.s:594    .bss.huart:0000000000000000 $d
+     /tmp/ccLAqOuN.s:598    .bss.huart:0000000000000000 huart
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_RS485Ex_Init
+pxMBFrameCBByteReceived
+pxMBFrameCBTransmitterEmpty

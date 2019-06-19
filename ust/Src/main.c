@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "mb.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,13 +43,15 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+TIM_HandleTypeDef htim14;
+
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
-HAL_StatusTypeDef state;
+
 /* USER CODE BEGIN PV */
-  uint8_t received[4];
-  uint8_t status=0;
-  uint8_t str[]="usrt";
+//  uint8_t received[4];
+ //uint8_t status=0;
+//  uint8_t str[]="usrt";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,70 +59,71 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM14_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-  /* Prevent unused argument(s) compilation warning */
-    if(huart==&huart1){
-      status=1;
-      HAL_UART_Receive_IT(&huart1, received, sizeof(received));
-    }
-  /* NOTE : This function should not be modified, when the callback is needed,
-            the HAL_UART_RxCpltCallback can be implemented in the user file.
-   */
-}
+// void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+// {
+//   /* Prevent unused argument(s) compilation warning */
+//     if(huart==&huart1){
+//       status=1;
+//       HAL_UART_Receive_IT(&huart1, received, sizeof(received));
+//     }
+//   /* NOTE : This function should not be modified, when the callback is needed,
+//             the HAL_UART_RxCpltCallback can be implemented in the user file.
+//    */
+// }
 
-static char header[] = "PA4  PA5  PA6  PA7\r\n";
-static char headerb[] = "PB12 PB13 PB14 PB15\r\n";
+//static char header[] = "PA4  PA5  PA6  PA7\r\n";
+//static char headerb[] = "PB12 PB13 PB14 PB15\r\n";
 
-static char open[]="o    ";
-static char close[]="c    ";
-void test(){
-  uint16_t gpionum=0x0010U;
-    HAL_UART_Transmit(&huart1,(uint8_t*)header,sizeof(header),30);
-    for (int i = 0; i < 4; i++)
-     {
-        if(HAL_GPIO_ReadPin(GPIOA,gpionum)==GPIO_PIN_SET){
-          HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),30);
-        }else{
-          HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),30);
-        }
-          gpionum=gpionum*2;
-     }
-    HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,30);
-    HAL_UART_Transmit(&huart1,(uint8_t*)headerb,sizeof(headerb),30);
-    gpionum=0x1000U;
-     for (int i = 0; i < 4; i++)
-     {
-        if(HAL_GPIO_ReadPin(GPIOB,gpionum)==GPIO_PIN_SET){
-           HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),30);
-        }else{
-           HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),30);
-         }
-          gpionum=gpionum*2;
-     }
-     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nGreen: ",9,30);
-     if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)==GPIO_PIN_SET)
-     {
-       HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 30);
-     }else{
-       HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 30);
-     }
-      HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nRed: ",7,30);
-     if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==GPIO_PIN_SET)
-       {
-        HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 30);
-       }else{
-        HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 30);
-       }
-     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n\n",3,30);
+//static char open[]="o    ";
+//static char close[]="c    ";
+// void test(){
+//   uint16_t gpionum=0x0010U;
+//     HAL_UART_Transmit(&huart1,(uint8_t*)header,sizeof(header),30);
+//     for (int i = 0; i < 4; i++)
+//      {
+//         if(HAL_GPIO_ReadPin(GPIOA,gpionum)==GPIO_PIN_SET){
+//           HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),30);
+//         }else{
+//           HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),30);
+//         }
+//           gpionum=gpionum*2;
+//      }
+//     HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n",2,30);
+//     HAL_UART_Transmit(&huart1,(uint8_t*)headerb,sizeof(headerb),30);
+//     gpionum=0x1000U;
+//      for (int i = 0; i < 4; i++)
+//      {
+//         if(HAL_GPIO_ReadPin(GPIOB,gpionum)==GPIO_PIN_SET){
+//            HAL_UART_Transmit(&huart1,(uint8_t*)open,sizeof(open),30);
+//         }else{
+//            HAL_UART_Transmit(&huart1,(uint8_t*)close,sizeof(close),30);
+//          }
+//           gpionum=gpionum*2;
+//      }
+//      HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nGreen: ",9,30);
+//      if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_6)==GPIO_PIN_SET)
+//      {
+//        HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 30);
+//      }else{
+//        HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 30);
+//      }
+//       HAL_UART_Transmit(&huart1,(uint8_t*)"\r\nRed: ",7,30);
+//      if (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==GPIO_PIN_SET)
+//        {
+//         HAL_UART_Transmit(&huart1,(uint8_t*)"on", 2, 30);
+//        }else{
+//         HAL_UART_Transmit(&huart1,(uint8_t*)"off", 3, 30);
+//        }
+//      HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n\n",3,30);
 
-}
+// }
 
 /* USER CODE END 0 */
 
@@ -154,25 +158,31 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_IT(&huart1, received, sizeof(received));
+//  HAL_UART_Receive_IT(&huart1, received, sizeof(received));
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
+  xMBPortTimersInit(20);
+  vMBPortTimersEnable();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      if(status==1 && received[0]=='t'){
+
+     /*  if(status==1 && received[0]=='t'){
         test();
         received[0]=0;
       }
+      
       state=HAL_UART_Transmit(&huart2,(uint8_t*)"test\r\n",6,100);
       if(state==HAL_OK){
           HAL_GPIO_TogglePin(GPIOB,GPIO_PIN_5);
       }
-      HAL_Delay(1000);
+      HAL_Delay(1000);*/
+     
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -218,6 +228,37 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 0;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 0;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
+
 }
 
 /**

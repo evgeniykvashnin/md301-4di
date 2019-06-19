@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccL8YdpV.s 			page 1
+ARM GAS  /tmp/ccli5LHT.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
   30:Src/system_stm32f0xx.c ****   *-----------------------------------------------------------------------------
   31:Src/system_stm32f0xx.c ****   *        SYSCLK(Hz)                             | 8000000
   32:Src/system_stm32f0xx.c ****   *-----------------------------------------------------------------------------
-ARM GAS  /tmp/ccL8YdpV.s 			page 2
+ARM GAS  /tmp/ccli5LHT.s 			page 2
 
 
   33:Src/system_stm32f0xx.c ****   *        HCLK(Hz)                               | 8000000
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
   87:Src/system_stm32f0xx.c **** 
   88:Src/system_stm32f0xx.c **** /** @addtogroup STM32F0xx_System_Private_TypesDefinitions
   89:Src/system_stm32f0xx.c ****   * @{
-ARM GAS  /tmp/ccL8YdpV.s 			page 3
+ARM GAS  /tmp/ccli5LHT.s 			page 3
 
 
   90:Src/system_stm32f0xx.c ****   */
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  144:Src/system_stm32f0xx.c **** 
  145:Src/system_stm32f0xx.c **** /** @addtogroup STM32F0xx_System_Private_FunctionPrototypes
  146:Src/system_stm32f0xx.c ****   * @{
-ARM GAS  /tmp/ccL8YdpV.s 			page 4
+ARM GAS  /tmp/ccli5LHT.s 			page 4
 
 
  147:Src/system_stm32f0xx.c ****   */
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
   49 0016 0240     		ands	r2, r0
   50 0018 1A60     		str	r2, [r3]
  179:Src/system_stm32f0xx.c **** 
-ARM GAS  /tmp/ccL8YdpV.s 			page 5
+ARM GAS  /tmp/ccli5LHT.s 			page 5
 
 
  180:Src/system_stm32f0xx.c ****   /* Reset HSEBYP bit */
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  210:Src/system_stm32f0xx.c ****   /* Set default USB clock to PLLCLK, since there is no HSI48 */
  211:Src/system_stm32f0xx.c ****   RCC->CFGR3 |= (uint32_t)0x00000080U;  
   75              		.loc 1 211 3 is_stmt 1 view .LVU15
-ARM GAS  /tmp/ccL8YdpV.s 			page 6
+ARM GAS  /tmp/ccli5LHT.s 			page 6
 
 
   76              		.loc 1 211 14 is_stmt 0 view .LVU16
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  228:Src/system_stm32f0xx.c ****   *         other parameters.
  229:Src/system_stm32f0xx.c ****   *
  230:Src/system_stm32f0xx.c ****   * @note   Each time the core clock (HCLK) changes, this function must be called
-ARM GAS  /tmp/ccL8YdpV.s 			page 7
+ARM GAS  /tmp/ccli5LHT.s 			page 7
 
 
  231:Src/system_stm32f0xx.c ****   *         to update SystemCoreClock variable value. Otherwise, any configuration
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  266:Src/system_stm32f0xx.c **** 
  267:Src/system_stm32f0xx.c ****   switch (tmp)
  135              		.loc 1 267 3 is_stmt 1 view .LVU27
-ARM GAS  /tmp/ccL8YdpV.s 			page 8
+ARM GAS  /tmp/ccli5LHT.s 			page 8
 
 
  136 000a 042B     		cmp	r3, #4
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  147 0018 1C4A     		ldr	r2, .L12+8
  148              	.LVL3:
  149              		.loc 1 310 23 view .LVU31
-ARM GAS  /tmp/ccL8YdpV.s 			page 9
+ARM GAS  /tmp/ccli5LHT.s 			page 9
 
 
  150 001a 1A60     		str	r2, [r3]
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  190              		.loc 1 273 7 is_stmt 1 view .LVU45
  273:Src/system_stm32f0xx.c ****       break;
  191              		.loc 1 273 23 is_stmt 0 view .LVU46
-ARM GAS  /tmp/ccL8YdpV.s 			page 10
+ARM GAS  /tmp/ccli5LHT.s 			page 10
 
 
  192 003c 124B     		ldr	r3, .L12+4
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  231 005a 1140     		ands	r1, r2
  280:Src/system_stm32f0xx.c **** 
  232              		.loc 1 280 20 view .LVU62
-ARM GAS  /tmp/ccL8YdpV.s 			page 11
+ARM GAS  /tmp/ccli5LHT.s 			page 11
 
 
  233 005c 0131     		adds	r1, r1, #1
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  278              		.global	AHBPrescTable
  279              		.global	SystemCoreClock
  280              		.section	.data.SystemCoreClock,"aw"
-ARM GAS  /tmp/ccL8YdpV.s 			page 12
+ARM GAS  /tmp/ccli5LHT.s 			page 12
 
 
  281              		.align	2
@@ -706,23 +706,23 @@ ARM GAS  /tmp/ccL8YdpV.s 			page 1
  329              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
  330              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
  331              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
-ARM GAS  /tmp/ccL8YdpV.s 			page 13
+ARM GAS  /tmp/ccli5LHT.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 system_stm32f0xx.c
-     /tmp/ccL8YdpV.s:16     .text.SystemInit:0000000000000000 $t
-     /tmp/ccL8YdpV.s:24     .text.SystemInit:0000000000000000 SystemInit
-     /tmp/ccL8YdpV.s:96     .text.SystemInit:0000000000000050 $d
-     /tmp/ccL8YdpV.s:107    .text.SystemCoreClockUpdate:0000000000000000 $t
-     /tmp/ccL8YdpV.s:114    .text.SystemCoreClockUpdate:0000000000000000 SystemCoreClockUpdate
-     /tmp/ccL8YdpV.s:270    .text.SystemCoreClockUpdate:0000000000000084 $d
-     /tmp/ccL8YdpV.s:313    .rodata.APBPrescTable:0000000000000000 APBPrescTable
-     /tmp/ccL8YdpV.s:292    .rodata.AHBPrescTable:0000000000000000 AHBPrescTable
-     /tmp/ccL8YdpV.s:285    .data.SystemCoreClock:0000000000000000 SystemCoreClock
-     /tmp/ccL8YdpV.s:281    .data.SystemCoreClock:0000000000000000 $d
-     /tmp/ccL8YdpV.s:288    .rodata.AHBPrescTable:0000000000000000 $d
-     /tmp/ccL8YdpV.s:310    .rodata.APBPrescTable:0000000000000000 $d
+     /tmp/ccli5LHT.s:16     .text.SystemInit:0000000000000000 $t
+     /tmp/ccli5LHT.s:24     .text.SystemInit:0000000000000000 SystemInit
+     /tmp/ccli5LHT.s:96     .text.SystemInit:0000000000000050 $d
+     /tmp/ccli5LHT.s:107    .text.SystemCoreClockUpdate:0000000000000000 $t
+     /tmp/ccli5LHT.s:114    .text.SystemCoreClockUpdate:0000000000000000 SystemCoreClockUpdate
+     /tmp/ccli5LHT.s:270    .text.SystemCoreClockUpdate:0000000000000084 $d
+     /tmp/ccli5LHT.s:313    .rodata.APBPrescTable:0000000000000000 APBPrescTable
+     /tmp/ccli5LHT.s:292    .rodata.AHBPrescTable:0000000000000000 AHBPrescTable
+     /tmp/ccli5LHT.s:285    .data.SystemCoreClock:0000000000000000 SystemCoreClock
+     /tmp/ccli5LHT.s:281    .data.SystemCoreClock:0000000000000000 $d
+     /tmp/ccli5LHT.s:288    .rodata.AHBPrescTable:0000000000000000 $d
+     /tmp/ccli5LHT.s:310    .rodata.APBPrescTable:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_uidiv

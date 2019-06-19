@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccSe8U4X.s 			page 1
+ARM GAS  /tmp/ccOPuUpt.s 			page 1
 
 
    1              		.cpu cortex-m0
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
   29:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   * Redistribution and use in source and binary forms, with or without modification,
   30:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   * are permitted provided that the following conditions are met:
   31:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   *   1. Redistributions of source code must retain the above copyright notice,
-ARM GAS  /tmp/ccSe8U4X.s 			page 2
+ARM GAS  /tmp/ccOPuUpt.s 			page 2
 
 
   32:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   *      this list of conditions and the following disclaimer.
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
   86:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** /** @defgroup UARTEx_Exported_Functions UARTEx Exported Functions
   87:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   * @{
   88:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   */
-ARM GAS  /tmp/ccSe8U4X.s 			page 3
+ARM GAS  /tmp/ccOPuUpt.s 			page 3
 
 
   89:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  143:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****       |-------------------|-----------|---------------------------------------|
  144:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****       |         1         |     1     |    | SB | 8-bit data | PB | STB |     |
  145:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****       +-----------------------------------------------------------------------+
-ARM GAS  /tmp/ccSe8U4X.s 			page 4
+ARM GAS  /tmp/ccOPuUpt.s 			page 4
 
 
  146:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****       |  M1 bit |  M0 bit |  PCE bit  |             UART frame                |
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
   44 0006 1600     		movs	r6, r2
   45 0008 1D00     		movs	r5, r3
  184:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   uint32_t temp = 0x0U;
-ARM GAS  /tmp/ccSe8U4X.s 			page 5
+ARM GAS  /tmp/ccOPuUpt.s 			page 5
 
 
   46              		.loc 1 184 3 is_stmt 1 view .LVU2
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  213:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
  214:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   /* Disable the Peripheral */
  215:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   __HAL_UART_DISABLE(huart);
-ARM GAS  /tmp/ccSe8U4X.s 			page 6
+ARM GAS  /tmp/ccOPuUpt.s 			page 6
 
 
   72              		.loc 1 215 3 is_stmt 1 view .LVU15
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  234:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   /* Set the Driver Enable assertion and deassertion times */
  235:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   temp = (AssertionTime << UART_CR1_DEAT_ADDRESS_LSB_POS);
  108              		.loc 1 235 3 is_stmt 1 view .LVU24
-ARM GAS  /tmp/ccSe8U4X.s 			page 7
+ARM GAS  /tmp/ccOPuUpt.s 			page 7
 
 
  109              		.loc 1 235 8 is_stmt 0 view .LVU25
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  206:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
  152              		.loc 1 206 17 view .LVU38
  153 0076 C254     		strb	r2, [r0, r3]
-ARM GAS  /tmp/ccSe8U4X.s 			page 8
+ARM GAS  /tmp/ccOPuUpt.s 			page 8
 
 
  209:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   }
@@ -478,7 +478,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  259:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   /* Check the UART handle allocation */
  260:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   if(huart == NULL)
  261:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   {
-ARM GAS  /tmp/ccSe8U4X.s 			page 9
+ARM GAS  /tmp/ccOPuUpt.s 			page 9
 
 
  262:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****     return HAL_ERROR;
@@ -538,7 +538,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  316:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   MODIFY_REG(huart->Instance->CR2, USART_CR2_LBDL, BreakDetectLength);
  317:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
  318:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   /* Enable the Peripheral */
-ARM GAS  /tmp/ccSe8U4X.s 			page 10
+ARM GAS  /tmp/ccOPuUpt.s 			page 10
 
 
  319:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   __HAL_UART_ENABLE(huart);
@@ -598,7 +598,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  373:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****  ===============================================================================
  374:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****                       ##### Peripheral Control functions #####
  375:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****  ===============================================================================
-ARM GAS  /tmp/ccSe8U4X.s 			page 11
+ARM GAS  /tmp/ccOPuUpt.s 			page 11
 
 
  376:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****     [..]
@@ -658,7 +658,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  430:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
  431:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   /* Init tickstart for timeout managment*/
  432:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   tickstart = HAL_GetTick();
-ARM GAS  /tmp/ccSe8U4X.s 			page 12
+ARM GAS  /tmp/ccOPuUpt.s 			page 12
 
 
  433:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
@@ -718,7 +718,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  487:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   assert_param(IS_UART_WAKEUP_FROMSTOP_INSTANCE(huart->Instance));
  488:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
  489:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   /* Process Locked */
-ARM GAS  /tmp/ccSe8U4X.s 			page 13
+ARM GAS  /tmp/ccOPuUpt.s 			page 13
 
 
  490:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   __HAL_LOCK(huart);
@@ -778,7 +778,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  528:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   assert_param(IS_UART_ADDRESSLENGTH_DETECT(AddressLength));
  207              		.loc 1 528 3 is_stmt 1 view .LVU48
  529:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c **** 
-ARM GAS  /tmp/ccSe8U4X.s 			page 14
+ARM GAS  /tmp/ccOPuUpt.s 			page 14
 
 
  530:Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c ****   huart->gState = HAL_UART_STATE_BUSY;
@@ -838,7 +838,7 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  246              		.cfi_endproc
  247              	.LFE38:
  249              		.text
-ARM GAS  /tmp/ccSe8U4X.s 			page 15
+ARM GAS  /tmp/ccOPuUpt.s 			page 15
 
 
  250              	.Letext0:
@@ -853,16 +853,16 @@ ARM GAS  /tmp/ccSe8U4X.s 			page 1
  259              		.file 10 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
  260              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h"
  261              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h"
-ARM GAS  /tmp/ccSe8U4X.s 			page 16
+ARM GAS  /tmp/ccOPuUpt.s 			page 16
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f0xx_hal_uart_ex.c
-     /tmp/ccSe8U4X.s:16     .text.HAL_RS485Ex_Init:0000000000000000 $t
-     /tmp/ccSe8U4X.s:24     .text.HAL_RS485Ex_Init:0000000000000000 HAL_RS485Ex_Init
-     /tmp/ccSe8U4X.s:175    .text.HAL_RS485Ex_Init:000000000000008c $d
-     /tmp/ccSe8U4X.s:181    .text.HAL_MultiProcessorEx_AddressLength_Set:0000000000000000 $t
-     /tmp/ccSe8U4X.s:188    .text.HAL_MultiProcessorEx_AddressLength_Set:0000000000000000 HAL_MultiProcessorEx_AddressLength_Set
+     /tmp/ccOPuUpt.s:16     .text.HAL_RS485Ex_Init:0000000000000000 $t
+     /tmp/ccOPuUpt.s:24     .text.HAL_RS485Ex_Init:0000000000000000 HAL_RS485Ex_Init
+     /tmp/ccOPuUpt.s:175    .text.HAL_RS485Ex_Init:000000000000008c $d
+     /tmp/ccOPuUpt.s:181    .text.HAL_MultiProcessorEx_AddressLength_Set:0000000000000000 $t
+     /tmp/ccOPuUpt.s:188    .text.HAL_MultiProcessorEx_AddressLength_Set:0000000000000000 HAL_MultiProcessorEx_AddressLength_Set
 
 UNDEFINED SYMBOLS
 UART_SetConfig

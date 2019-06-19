@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "main.h": "c",
+        "mb.h": "c",
+        "mbport.h": "c",
+        "stm32f0xx_it.h": "c",
+        "stm32f0xx_hal_tim.h": "c",
+        "stm32f0xx_hal.h": "c",
+        "port.h": "c"
+    }
+}

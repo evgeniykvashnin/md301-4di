@@ -1,0 +1,461 @@
+ARM GAS  /tmp/cc7NHp6X.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"porttimer.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.prvvTIMERExpiredISR,"ax",%progbits
+  16              		.align	1
+  17              		.arch armv6s-m
+  18              		.syntax unified
+  19              		.code	16
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	prvvTIMERExpiredISR:
+  24              	.LFB40:
+  25              		.file 1 "modbus/port/porttimer.c"
+   1:modbus/port/porttimer.c **** /*
+   2:modbus/port/porttimer.c ****  * FreeModbus Libary: BARE Port
+   3:modbus/port/porttimer.c ****  * Copyright (C) 2006 Christian Walter <wolti@sil.at>
+   4:modbus/port/porttimer.c ****  *
+   5:modbus/port/porttimer.c ****  * This library is free software; you can redistribute it and/or
+   6:modbus/port/porttimer.c ****  * modify it under the terms of the GNU Lesser General Public
+   7:modbus/port/porttimer.c ****  * License as published by the Free Software Foundation; either
+   8:modbus/port/porttimer.c ****  * version 2.1 of the License, or (at your option) any later version.
+   9:modbus/port/porttimer.c ****  *
+  10:modbus/port/porttimer.c ****  * This library is distributed in the hope that it will be useful,
+  11:modbus/port/porttimer.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  12:modbus/port/porttimer.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  13:modbus/port/porttimer.c ****  * Lesser General Public License for more details.
+  14:modbus/port/porttimer.c ****  *
+  15:modbus/port/porttimer.c ****  * You should have received a copy of the GNU Lesser General Public
+  16:modbus/port/porttimer.c ****  * License along with this library; if not, write to the Free Software
+  17:modbus/port/porttimer.c ****  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  18:modbus/port/porttimer.c ****  *
+  19:modbus/port/porttimer.c ****  * File: $Id$
+  20:modbus/port/porttimer.c ****  */
+  21:modbus/port/porttimer.c **** 
+  22:modbus/port/porttimer.c **** /* ----------------------- Platform includes --------------------------------*/
+  23:modbus/port/porttimer.c **** #include "port.h"
+  24:modbus/port/porttimer.c **** #include "stm32f0xx_hal.h"
+  25:modbus/port/porttimer.c **** /* ----------------------- Modbus includes ----------------------------------*/
+  26:modbus/port/porttimer.c **** #include "mb.h"
+  27:modbus/port/porttimer.c **** #include "mbport.h"
+  28:modbus/port/porttimer.c **** 
+  29:modbus/port/porttimer.c **** /* ----------------------- static functions ---------------------------------*/
+  30:modbus/port/porttimer.c **** static void prvvTIMERExpiredISR( void );
+  31:modbus/port/porttimer.c **** static TIM_HandleTypeDef htim14;
+  32:modbus/port/porttimer.c **** static uint16_t timeout = 0;
+  33:modbus/port/porttimer.c **** static uint16_t counter = 0;
+ARM GAS  /tmp/cc7NHp6X.s 			page 2
+
+
+  34:modbus/port/porttimer.c **** /* ----------------------- Start implementation -----------------------------*/
+  35:modbus/port/porttimer.c **** BOOL
+  36:modbus/port/porttimer.c **** xMBPortTimersInit( USHORT usTim1Timerout50us )
+  37:modbus/port/porttimer.c **** {
+  38:modbus/port/porttimer.c ****     htim14.Instance = TIM14;
+  39:modbus/port/porttimer.c ****     htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  40:modbus/port/porttimer.c ****     htim14.Init.Prescaler = (HAL_RCC_GetPCLK1Freq()/1000000);
+  41:modbus/port/porttimer.c ****     htim14.Init.Period = 50 - 1;
+  42:modbus/port/porttimer.c ****     timeout = usTim1Timerout50us;
+  43:modbus/port/porttimer.c ****     return HAL_OK == HAL_TIM_Base_Init(&htim14) ? TRUE : FALSE;
+  44:modbus/port/porttimer.c **** }
+  45:modbus/port/porttimer.c **** 
+  46:modbus/port/porttimer.c **** 
+  47:modbus/port/porttimer.c **** inline void
+  48:modbus/port/porttimer.c **** vMBPortTimersEnable(  )
+  49:modbus/port/porttimer.c **** {
+  50:modbus/port/porttimer.c ****     counter = timeout;
+  51:modbus/port/porttimer.c ****     HAL_TIM_Base_Start_IT(&htim14);
+  52:modbus/port/porttimer.c ****     /* Enable the timer with the timeout passed to xMBPortTimersInit( ) */
+  53:modbus/port/porttimer.c **** }
+  54:modbus/port/porttimer.c **** 
+  55:modbus/port/porttimer.c **** inline void
+  56:modbus/port/porttimer.c **** vMBPortTimersDisable(  )
+  57:modbus/port/porttimer.c **** {
+  58:modbus/port/porttimer.c ****     HAL_TIM_Base_Stop_IT(&htim14);
+  59:modbus/port/porttimer.c ****     /* Disable any pending timers. */
+  60:modbus/port/porttimer.c **** }
+  61:modbus/port/porttimer.c **** 
+  62:modbus/port/porttimer.c **** /* Create an ISR which is called whenever the timer has expired. This function
+  63:modbus/port/porttimer.c ****  * must then call pxMBPortCBTimerExpired( ) to notify the protocol stack that
+  64:modbus/port/porttimer.c ****  * the timer has expired.
+  65:modbus/port/porttimer.c ****  */
+  66:modbus/port/porttimer.c **** static void prvvTIMERExpiredISR( void )
+  67:modbus/port/porttimer.c **** {
+  26              		.loc 1 67 1 view -0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30 0000 10B5     		push	{r4, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+  68:modbus/port/porttimer.c ****     HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+  35              		.loc 1 68 5 view .LVU1
+  36 0002 0122     		movs	r2, #1
+  37 0004 4021     		movs	r1, #64
+  38 0006 0348     		ldr	r0, .L2
+  39 0008 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  40              	.LVL0:
+  69:modbus/port/porttimer.c ****     ( void )pxMBPortCBTimerExpired(  );
+  41              		.loc 1 69 5 view .LVU2
+  42 000c 024B     		ldr	r3, .L2+4
+  43 000e 1B68     		ldr	r3, [r3]
+  44              		.loc 1 69 13 is_stmt 0 view .LVU3
+  45 0010 9847     		blx	r3
+  46              	.LVL1:
+ARM GAS  /tmp/cc7NHp6X.s 			page 3
+
+
+  70:modbus/port/porttimer.c **** }
+  47              		.loc 1 70 1 view .LVU4
+  48              		@ sp needed
+  49 0012 10BD     		pop	{r4, pc}
+  50              	.L3:
+  51              		.align	2
+  52              	.L2:
+  53 0014 00040048 		.word	1207960576
+  54 0018 00000000 		.word	pxMBPortCBTimerExpired
+  55              		.cfi_endproc
+  56              	.LFE40:
+  58              		.global	__aeabi_uidiv
+  59              		.section	.text.xMBPortTimersInit,"ax",%progbits
+  60              		.align	1
+  61              		.global	xMBPortTimersInit
+  62              		.syntax unified
+  63              		.code	16
+  64              		.thumb_func
+  65              		.fpu softvfp
+  67              	xMBPortTimersInit:
+  68              	.LVL2:
+  69              	.LFB37:
+  37:modbus/port/porttimer.c ****     htim14.Instance = TIM14;
+  70              		.loc 1 37 1 is_stmt 1 view -0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  37:modbus/port/porttimer.c ****     htim14.Instance = TIM14;
+  74              		.loc 1 37 1 is_stmt 0 view .LVU6
+  75 0000 70B5     		push	{r4, r5, r6, lr}
+  76              	.LCFI1:
+  77              		.cfi_def_cfa_offset 16
+  78              		.cfi_offset 4, -16
+  79              		.cfi_offset 5, -12
+  80              		.cfi_offset 6, -8
+  81              		.cfi_offset 14, -4
+  82 0002 0500     		movs	r5, r0
+  38:modbus/port/porttimer.c ****     htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  83              		.loc 1 38 5 is_stmt 1 view .LVU7
+  38:modbus/port/porttimer.c ****     htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  84              		.loc 1 38 21 is_stmt 0 view .LVU8
+  85 0004 0A4C     		ldr	r4, .L5
+  86 0006 0B4B     		ldr	r3, .L5+4
+  87 0008 2360     		str	r3, [r4]
+  39:modbus/port/porttimer.c ****     htim14.Init.Prescaler = (HAL_RCC_GetPCLK1Freq()/1000000);
+  88              		.loc 1 39 5 is_stmt 1 view .LVU9
+  39:modbus/port/porttimer.c ****     htim14.Init.Prescaler = (HAL_RCC_GetPCLK1Freq()/1000000);
+  89              		.loc 1 39 29 is_stmt 0 view .LVU10
+  90 000a 0023     		movs	r3, #0
+  91 000c A360     		str	r3, [r4, #8]
+  40:modbus/port/porttimer.c ****     htim14.Init.Period = 50 - 1;
+  92              		.loc 1 40 5 is_stmt 1 view .LVU11
+  40:modbus/port/porttimer.c ****     htim14.Init.Period = 50 - 1;
+  93              		.loc 1 40 30 is_stmt 0 view .LVU12
+  94 000e FFF7FEFF 		bl	HAL_RCC_GetPCLK1Freq
+  95              	.LVL3:
+  40:modbus/port/porttimer.c ****     htim14.Init.Period = 50 - 1;
+ARM GAS  /tmp/cc7NHp6X.s 			page 4
+
+
+  96              		.loc 1 40 52 view .LVU13
+  97 0012 0949     		ldr	r1, .L5+8
+  98 0014 FFF7FEFF 		bl	__aeabi_uidiv
+  99              	.LVL4:
+  40:modbus/port/porttimer.c ****     htim14.Init.Period = 50 - 1;
+ 100              		.loc 1 40 27 view .LVU14
+ 101 0018 6060     		str	r0, [r4, #4]
+  41:modbus/port/porttimer.c ****     timeout = usTim1Timerout50us;
+ 102              		.loc 1 41 5 is_stmt 1 view .LVU15
+  41:modbus/port/porttimer.c ****     timeout = usTim1Timerout50us;
+ 103              		.loc 1 41 24 is_stmt 0 view .LVU16
+ 104 001a 3123     		movs	r3, #49
+ 105 001c E360     		str	r3, [r4, #12]
+  42:modbus/port/porttimer.c ****     return HAL_OK == HAL_TIM_Base_Init(&htim14) ? TRUE : FALSE;
+ 106              		.loc 1 42 5 is_stmt 1 view .LVU17
+  42:modbus/port/porttimer.c ****     return HAL_OK == HAL_TIM_Base_Init(&htim14) ? TRUE : FALSE;
+ 107              		.loc 1 42 13 is_stmt 0 view .LVU18
+ 108 001e 074B     		ldr	r3, .L5+12
+ 109 0020 1D80     		strh	r5, [r3]
+  43:modbus/port/porttimer.c **** }
+ 110              		.loc 1 43 5 is_stmt 1 view .LVU19
+  43:modbus/port/porttimer.c **** }
+ 111              		.loc 1 43 22 is_stmt 0 view .LVU20
+ 112 0022 2000     		movs	r0, r4
+ 113 0024 FFF7FEFF 		bl	HAL_TIM_Base_Init
+ 114              	.LVL5:
+  43:modbus/port/porttimer.c **** }
+ 115              		.loc 1 43 56 view .LVU21
+ 116 0028 4342     		rsbs	r3, r0, #0
+ 117 002a 5841     		adcs	r0, r0, r3
+ 118 002c C0B2     		uxtb	r0, r0
+  44:modbus/port/porttimer.c **** 
+ 119              		.loc 1 44 1 view .LVU22
+ 120              		@ sp needed
+ 121 002e 70BD     		pop	{r4, r5, r6, pc}
+ 122              	.L6:
+ 123              		.align	2
+ 124              	.L5:
+ 125 0030 00000000 		.word	.LANCHOR0
+ 126 0034 00200040 		.word	1073750016
+ 127 0038 40420F00 		.word	1000000
+ 128 003c 00000000 		.word	.LANCHOR1
+ 129              		.cfi_endproc
+ 130              	.LFE37:
+ 132              		.section	.text.vMBPortTimersEnable,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	vMBPortTimersEnable
+ 135              		.syntax unified
+ 136              		.code	16
+ 137              		.thumb_func
+ 138              		.fpu softvfp
+ 140              	vMBPortTimersEnable:
+ 141              	.LFB38:
+  49:modbus/port/porttimer.c ****     counter = timeout;
+ 142              		.loc 1 49 1 is_stmt 1 view -0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/cc7NHp6X.s 			page 5
+
+
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146 0000 10B5     		push	{r4, lr}
+ 147              	.LCFI2:
+ 148              		.cfi_def_cfa_offset 8
+ 149              		.cfi_offset 4, -8
+ 150              		.cfi_offset 14, -4
+  50:modbus/port/porttimer.c ****     HAL_TIM_Base_Start_IT(&htim14);
+ 151              		.loc 1 50 5 view .LVU24
+  50:modbus/port/porttimer.c ****     HAL_TIM_Base_Start_IT(&htim14);
+ 152              		.loc 1 50 13 is_stmt 0 view .LVU25
+ 153 0002 044B     		ldr	r3, .L8
+ 154 0004 1A88     		ldrh	r2, [r3]
+ 155 0006 044B     		ldr	r3, .L8+4
+ 156 0008 1A80     		strh	r2, [r3]
+  51:modbus/port/porttimer.c ****     /* Enable the timer with the timeout passed to xMBPortTimersInit( ) */
+ 157              		.loc 1 51 5 is_stmt 1 view .LVU26
+ 158 000a 0448     		ldr	r0, .L8+8
+ 159 000c FFF7FEFF 		bl	HAL_TIM_Base_Start_IT
+ 160              	.LVL6:
+  53:modbus/port/porttimer.c **** 
+ 161              		.loc 1 53 1 is_stmt 0 view .LVU27
+ 162              		@ sp needed
+ 163 0010 10BD     		pop	{r4, pc}
+ 164              	.L9:
+ 165 0012 C046     		.align	2
+ 166              	.L8:
+ 167 0014 00000000 		.word	.LANCHOR1
+ 168 0018 00000000 		.word	.LANCHOR2
+ 169 001c 00000000 		.word	.LANCHOR0
+ 170              		.cfi_endproc
+ 171              	.LFE38:
+ 173              		.section	.text.vMBPortTimersDisable,"ax",%progbits
+ 174              		.align	1
+ 175              		.global	vMBPortTimersDisable
+ 176              		.syntax unified
+ 177              		.code	16
+ 178              		.thumb_func
+ 179              		.fpu softvfp
+ 181              	vMBPortTimersDisable:
+ 182              	.LFB39:
+  57:modbus/port/porttimer.c ****     HAL_TIM_Base_Stop_IT(&htim14);
+ 183              		.loc 1 57 1 is_stmt 1 view -0
+ 184              		.cfi_startproc
+ 185              		@ args = 0, pretend = 0, frame = 0
+ 186              		@ frame_needed = 0, uses_anonymous_args = 0
+ 187 0000 10B5     		push	{r4, lr}
+ 188              	.LCFI3:
+ 189              		.cfi_def_cfa_offset 8
+ 190              		.cfi_offset 4, -8
+ 191              		.cfi_offset 14, -4
+  58:modbus/port/porttimer.c ****     /* Disable any pending timers. */
+ 192              		.loc 1 58 5 view .LVU29
+ 193 0002 0248     		ldr	r0, .L11
+ 194 0004 FFF7FEFF 		bl	HAL_TIM_Base_Stop_IT
+ 195              	.LVL7:
+  60:modbus/port/porttimer.c **** 
+ 196              		.loc 1 60 1 is_stmt 0 view .LVU30
+ARM GAS  /tmp/cc7NHp6X.s 			page 6
+
+
+ 197              		@ sp needed
+ 198 0008 10BD     		pop	{r4, pc}
+ 199              	.L12:
+ 200 000a C046     		.align	2
+ 201              	.L11:
+ 202 000c 00000000 		.word	.LANCHOR0
+ 203              		.cfi_endproc
+ 204              	.LFE39:
+ 206              		.section	.text.TIM6_DAC1_IRQHandler,"ax",%progbits
+ 207              		.align	1
+ 208              		.global	TIM6_DAC1_IRQHandler
+ 209              		.syntax unified
+ 210              		.code	16
+ 211              		.thumb_func
+ 212              		.fpu softvfp
+ 214              	TIM6_DAC1_IRQHandler:
+ 215              	.LFB41:
+  71:modbus/port/porttimer.c **** void TIM6_DAC1_IRQHandler(void) {
+ 216              		.loc 1 71 33 is_stmt 1 view -0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 0
+ 219              		@ frame_needed = 0, uses_anonymous_args = 0
+ 220 0000 10B5     		push	{r4, lr}
+ 221              	.LCFI4:
+ 222              		.cfi_def_cfa_offset 8
+ 223              		.cfi_offset 4, -8
+ 224              		.cfi_offset 14, -4
+  72:modbus/port/porttimer.c **** 	/* TIM Update event */
+  73:modbus/port/porttimer.c ****    
+  74:modbus/port/porttimer.c **** 	if(__HAL_TIM_GET_FLAG(&htim14, TIM_FLAG_UPDATE) != RESET && __HAL_TIM_GET_IT_SOURCE(&htim14, TIM_I
+ 225              		.loc 1 74 2 view .LVU32
+ 226              		.loc 1 74 5 is_stmt 0 view .LVU33
+ 227 0002 0B4B     		ldr	r3, .L16
+ 228 0004 1B68     		ldr	r3, [r3]
+ 229 0006 1A69     		ldr	r2, [r3, #16]
+ 230              		.loc 1 74 4 view .LVU34
+ 231 0008 D207     		lsls	r2, r2, #31
+ 232 000a 0CD5     		bpl	.L13
+ 233              		.loc 1 74 62 discriminator 1 view .LVU35
+ 234 000c DA68     		ldr	r2, [r3, #12]
+ 235              		.loc 1 74 59 discriminator 1 view .LVU36
+ 236 000e D207     		lsls	r2, r2, #31
+ 237 0010 09D5     		bpl	.L13
+  75:modbus/port/porttimer.c **** 		__HAL_TIM_CLEAR_IT(&htim14, TIM_IT_UPDATE);
+ 238              		.loc 1 75 3 is_stmt 1 view .LVU37
+ 239 0012 0222     		movs	r2, #2
+ 240 0014 5242     		rsbs	r2, r2, #0
+ 241 0016 1A61     		str	r2, [r3, #16]
+  76:modbus/port/porttimer.c **** 		if (!--counter)
+ 242              		.loc 1 76 3 view .LVU38
+ 243              		.loc 1 76 8 is_stmt 0 view .LVU39
+ 244 0018 064A     		ldr	r2, .L16+4
+ 245 001a 1388     		ldrh	r3, [r2]
+ 246 001c 013B     		subs	r3, r3, #1
+ 247 001e 9BB2     		uxth	r3, r3
+ 248              		.loc 1 76 6 view .LVU40
+ 249 0020 1380     		strh	r3, [r2]
+ARM GAS  /tmp/cc7NHp6X.s 			page 7
+
+
+ 250 0022 002B     		cmp	r3, #0
+ 251 0024 00D0     		beq	.L15
+ 252              	.L13:
+  77:modbus/port/porttimer.c **** 			prvvTIMERExpiredISR();
+  78:modbus/port/porttimer.c **** 	}
+  79:modbus/port/porttimer.c **** }
+ 253              		.loc 1 79 1 view .LVU41
+ 254              		@ sp needed
+ 255 0026 10BD     		pop	{r4, pc}
+ 256              	.L15:
+  77:modbus/port/porttimer.c **** 			prvvTIMERExpiredISR();
+ 257              		.loc 1 77 4 is_stmt 1 view .LVU42
+ 258 0028 FFF7FEFF 		bl	prvvTIMERExpiredISR
+ 259              	.LVL8:
+ 260              		.loc 1 79 1 is_stmt 0 view .LVU43
+ 261 002c FBE7     		b	.L13
+ 262              	.L17:
+ 263 002e C046     		.align	2
+ 264              	.L16:
+ 265 0030 00000000 		.word	.LANCHOR0
+ 266 0034 00000000 		.word	.LANCHOR2
+ 267              		.cfi_endproc
+ 268              	.LFE41:
+ 270              		.section	.bss.counter,"aw",%nobits
+ 271              		.align	1
+ 272              		.set	.LANCHOR2,. + 0
+ 275              	counter:
+ 276 0000 0000     		.space	2
+ 277              		.section	.bss.htim14,"aw",%nobits
+ 278              		.align	2
+ 279              		.set	.LANCHOR0,. + 0
+ 282              	htim14:
+ 283 0000 00000000 		.space	64
+ 283      00000000 
+ 283      00000000 
+ 283      00000000 
+ 283      00000000 
+ 284              		.section	.bss.timeout,"aw",%nobits
+ 285              		.align	1
+ 286              		.set	.LANCHOR1,. + 0
+ 289              	timeout:
+ 290 0000 0000     		.space	2
+ 291              		.text
+ 292              	.Letext0:
+ 293              		.file 2 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/machine/_default_types.h"
+ 294              		.file 3 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_stdint.h"
+ 295              		.file 4 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/system_stm32f0xx.h"
+ 296              		.file 5 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f070x6.h"
+ 297              		.file 6 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/lock.h"
+ 298              		.file 7 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/_types.h"
+ 299              		.file 8 "/opt/gcc-arm-none-eabi-8-2018-q4-major/lib/gcc/arm-none-eabi/8.2.1/include/stddef.h"
+ 300              		.file 9 "/opt/gcc-arm-none-eabi-8-2018-q4-major/arm-none-eabi/include/sys/reent.h"
+ 301              		.file 10 "Drivers/CMSIS/Device/ST/STM32F0xx/Include/stm32f0xx.h"
+ 302              		.file 11 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_def.h"
+ 303              		.file 12 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_gpio.h"
+ 304              		.file 13 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_dma.h"
+ 305              		.file 14 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h"
+ARM GAS  /tmp/cc7NHp6X.s 			page 8
+
+
+ 306              		.file 15 "modbus/port/port.h"
+ 307              		.file 16 "modbus/include/mbport.h"
+ 308              		.file 17 "Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_rcc.h"
+ARM GAS  /tmp/cc7NHp6X.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 porttimer.c
+     /tmp/cc7NHp6X.s:16     .text.prvvTIMERExpiredISR:0000000000000000 $t
+     /tmp/cc7NHp6X.s:23     .text.prvvTIMERExpiredISR:0000000000000000 prvvTIMERExpiredISR
+     /tmp/cc7NHp6X.s:53     .text.prvvTIMERExpiredISR:0000000000000014 $d
+     /tmp/cc7NHp6X.s:60     .text.xMBPortTimersInit:0000000000000000 $t
+     /tmp/cc7NHp6X.s:67     .text.xMBPortTimersInit:0000000000000000 xMBPortTimersInit
+     /tmp/cc7NHp6X.s:125    .text.xMBPortTimersInit:0000000000000030 $d
+     /tmp/cc7NHp6X.s:133    .text.vMBPortTimersEnable:0000000000000000 $t
+     /tmp/cc7NHp6X.s:140    .text.vMBPortTimersEnable:0000000000000000 vMBPortTimersEnable
+     /tmp/cc7NHp6X.s:167    .text.vMBPortTimersEnable:0000000000000014 $d
+     /tmp/cc7NHp6X.s:174    .text.vMBPortTimersDisable:0000000000000000 $t
+     /tmp/cc7NHp6X.s:181    .text.vMBPortTimersDisable:0000000000000000 vMBPortTimersDisable
+     /tmp/cc7NHp6X.s:202    .text.vMBPortTimersDisable:000000000000000c $d
+     /tmp/cc7NHp6X.s:207    .text.TIM6_DAC1_IRQHandler:0000000000000000 $t
+     /tmp/cc7NHp6X.s:214    .text.TIM6_DAC1_IRQHandler:0000000000000000 TIM6_DAC1_IRQHandler
+     /tmp/cc7NHp6X.s:265    .text.TIM6_DAC1_IRQHandler:0000000000000030 $d
+     /tmp/cc7NHp6X.s:271    .bss.counter:0000000000000000 $d
+     /tmp/cc7NHp6X.s:275    .bss.counter:0000000000000000 counter
+     /tmp/cc7NHp6X.s:278    .bss.htim14:0000000000000000 $d
+     /tmp/cc7NHp6X.s:282    .bss.htim14:0000000000000000 htim14
+     /tmp/cc7NHp6X.s:285    .bss.timeout:0000000000000000 $d
+     /tmp/cc7NHp6X.s:289    .bss.timeout:0000000000000000 timeout
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+pxMBPortCBTimerExpired
+__aeabi_uidiv
+HAL_RCC_GetPCLK1Freq
+HAL_TIM_Base_Init
+HAL_TIM_Base_Start_IT
+HAL_TIM_Base_Stop_IT
